@@ -30,11 +30,12 @@ export async function GET() {
     const studyTime = Math.round((totalAttempts / 60) * 10) / 10
 
     // Calculer la série (jours consécutifs avec au moins une tentative)
-    const uniqueDates = [...new Set(
+    const dateSet = new Set(
       questions.flatMap(q => 
         q.attempts.map(a => new Date(a.createdAt).toDateString())
       )
-    )].sort().reverse()
+    )
+    const uniqueDates = Array.from(dateSet).sort().reverse()
     
     let streak = 0
     const today = new Date().toDateString()

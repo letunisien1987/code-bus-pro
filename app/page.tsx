@@ -129,7 +129,7 @@ export default function HomePage() {
               </div>
               <CardTitle className="text-xl">IA d&apos;apprentissage</CardTitle>
               <CardDescription>
-                Algorithmes intelligents qui s'adaptent à votre niveau et identifient vos points faibles
+                Algorithmes intelligents qui s&apos;adaptent à votre niveau et identifient vos points faibles
               </CardDescription>
             </CardHeader>
             <CardContent>

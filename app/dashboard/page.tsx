@@ -144,6 +144,7 @@ export default function DashboardPage() {
     })
     
     return hierarchy
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stats.byQuestion])
 
   // Fonctions de calcul des statistiques
