@@ -144,7 +144,7 @@ export default function DashboardPage() {
     })
     
     return hierarchy
-  }, [stats.byQuestion])
+  }, [stats])
 
   // Fonctions de calcul des statistiques
   const getQuestionnaireStats = (questionnaireNum: number) => {
@@ -195,7 +195,7 @@ export default function DashboardPage() {
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 mb-6 shadow-lg">
               <Trophy className="h-5 w-5 text-yellow-500" />
-              <span className="text-sm font-medium">Tableau de bord d'apprentissage</span>
+              <span className="text-sm font-medium">Tableau de bord d&apos;apprentissage</span>
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-4">
               Votre parcours <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Code Bus</span>
@@ -265,7 +265,7 @@ export default function DashboardPage() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Temps d'étude</p>
+                    <p className="text-sm font-medium text-gray-600">Temps d&apos;étude</p>
                     <p className="text-3xl font-bold text-purple-600">{stats.global.studyTime}h</p>
                   </div>
                   <div className="h-12 w-12 bg-purple-100 rounded-full flex items-center justify-center">
@@ -355,7 +355,7 @@ export default function DashboardPage() {
                   Activité récente
                 </CardTitle>
                 <CardDescription>
-                  Vos dernières sessions d'entraînement et d'examens
+                  Vos dernières sessions d&apos;entraînement et d&apos;examens
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -578,7 +578,7 @@ export default function DashboardPage() {
                                   window.open(`/train?questionnaire=${qNum}`, '_blank')
                                 }}
                               >
-                                S'entraîner
+                                S&apos;entraîner
                               </Button>
                             </div>
                           </div>
@@ -625,7 +625,7 @@ export default function DashboardPage() {
                                             window.open(`/train?categorie=${encodeURIComponent(category)}`, '_blank')
                                           }}
                                         >
-                                          S'entraîner
+                                          S&apos;entraîner
                                         </Button>
                                       </div>
                                     </div>
@@ -651,7 +651,7 @@ export default function DashboardPage() {
                                               </div>
                                               <div className="flex-1 min-w-0">
                                                 <p className="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
-                                                  {question.enonce || 'Pas d\'énoncé'}
+                                                  {question.enonce || &apos;Pas d&apos;énoncé&apos;}
                                                 </p>
                                                 <div className="flex gap-4 mt-1 text-xs text-gray-600">
                                                   <span>{question.attempts} tentatives</span>
@@ -666,8 +666,8 @@ export default function DashboardPage() {
                                                 question.status === 'to_review' ? 'bg-orange-100 text-orange-700' :
                                                 'bg-gray-100 text-gray-700'
                                               }>
-                                                {question.status === 'mastered' ? 'Maîtrisée' :
-                                                 question.status === 'to_review' ? 'À revoir' : 'Non vue'}
+                                                {question.status === &apos;mastered&apos; ? &apos;Maîtrisée&apos; :
+                                                 question.status === &apos;to_review&apos; ? &apos;À revoir&apos; : &apos;Non vue&apos;}
                                               </Badge>
                                             </div>
                                           </div>
@@ -748,7 +748,7 @@ export default function DashboardPage() {
                       <span className="font-bold text-green-600">{stats.global.averageScore}%</span>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
-                      <span className="text-sm">Temps d'étude total</span>
+                      <span className="text-sm">Temps d&apos;étude total</span>
                       <span className="font-bold text-purple-600">{stats.global.studyTime}h</span>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-orange-50 rounded-lg">

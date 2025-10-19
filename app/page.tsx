@@ -43,7 +43,7 @@ export default function HomePage() {
               Maîtrisez le <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">code de la route</span>
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Plateforme d'entraînement intelligente avec analyses avancées, 
+              Plateforme d&apos;entraînement intelligente avec analyses avancées, 
               examens chronométrés et suivi personnalisé de vos progrès.
             </p>
             
@@ -58,7 +58,7 @@ export default function HomePage() {
               <Link href="/train">
                 <Button size="lg" variant="outline" className="px-8 py-4 text-lg">
                   <BookOpen className="h-5 w-5 mr-2" />
-                  Commencer l'entraînement
+                  Commencer l&apos;entraînement
                 </Button>
               </Link>
             </div>
@@ -75,7 +75,7 @@ export default function HomePage() {
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold text-purple-600 mb-2">15min</div>
-                <div className="text-gray-600">Temps d'étude quotidien</div>
+                <div className="text-gray-600">Temps d&apos;étude quotidien</div>
               </div>
             </div>
           </div>
@@ -89,7 +89,7 @@ export default function HomePage() {
             Fonctionnalités <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">avancées</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Une plateforme complète pour maîtriser le code de la route avec des outils d'analyse professionnels
+            Une plateforme complète pour maîtriser le code de la route avec des outils d&apos;analyse professionnels
           </p>
         </div>
 
@@ -127,7 +127,7 @@ export default function HomePage() {
               <div className="h-16 w-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Brain className="h-8 w-8 text-white" />
               </div>
-              <CardTitle className="text-xl">IA d'apprentissage</CardTitle>
+              <CardTitle className="text-xl">IA d&apos;apprentissage</CardTitle>
               <CardDescription>
                 Algorithmes intelligents qui s'adaptent à votre niveau et identifient vos points faibles
               </CardDescription>
@@ -144,7 +144,7 @@ export default function HomePage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
-                  Plan d'étude personnalisé
+                  Plan d&apos;étude personnalisé
                 </li>
               </ul>
             </CardContent>
@@ -157,14 +157,14 @@ export default function HomePage() {
               </div>
               <CardTitle className="text-xl">Examens chronométrés</CardTitle>
               <CardDescription>
-                Simulez les conditions réelles d'examen avec timer, score final et revue détaillée
+                Simulez les conditions réelles d&apos;examen avec timer, score final et revue détaillée
               </CardDescription>
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
-                  Conditions d'examen réelles
+                  Conditions d&apos;examen réelles
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
@@ -279,7 +279,7 @@ export default function HomePage() {
             <Link href="/train">
               <Button size="lg" variant="outline" className="px-8 py-4 text-lg">
                 <BookOpen className="h-5 w-5 mr-2" />
-                Commencer l'entraînement
+                Commencer l&apos;entraînement
               </Button>
             </Link>
             <Link href="/exam">

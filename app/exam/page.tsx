@@ -248,7 +248,7 @@ export default function ExamPage() {
 
     window.addEventListener('keydown', handleKeyPress)
     return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [state, currentIndex, examQuestions.length, reviewIndex, result])
+  }, [state, currentIndex, examQuestions.length, reviewIndex, result, handleAnswerSelect, handleNext, handlePrevious])
 
   if (loading) {
     return (
@@ -316,7 +316,7 @@ export default function ExamPage() {
                     <ArrowLeft className="h-4 w-4 mr-1" />
                     Retour
                   </Button>
-                  <h1 className="text-xl font-bold">Revue de l'examen</h1>
+                  <h1 className="text-xl font-bold">Revue de l&apos;examen</h1>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="text-center">
@@ -482,7 +482,7 @@ export default function ExamPage() {
                           )}
                         </p>
                         <p className="text-xs text-gray-600 mt-1">
-                          Votre réponse : <span className="font-medium">{currentAnswer?.answer.toUpperCase() || 'Non répondue'}</span>
+                          Votre réponse : <span className="font-medium">{currentAnswer?.answer.toUpperCase() || &apos;Non répondue&apos;}</span>
                           {!currentAnswer?.correct && (
                             <span className="ml-2">
                               • Bonne réponse : <span className="font-medium">{currentReviewQuestion.bonneReponse.toUpperCase()}</span>
@@ -726,7 +726,7 @@ export default function ExamPage() {
                     className="w-full bg-green-600 hover:bg-green-700 text-white"
                   >
                     <CheckCircle className="h-4 w-4 mr-2" />
-                    Terminer l'examen
+                    Terminer l&apos;examen
                   </Button>
                 </div>
               )}

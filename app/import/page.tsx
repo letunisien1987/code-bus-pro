@@ -39,7 +39,7 @@ export default function ImportPage() {
     } catch (error) {
       setResult({
         success: false,
-        message: 'Erreur lors de l\'importation des données',
+        message: &apos;Erreur lors de l&apos;importation des données&apos;,
         errors: [error instanceof Error ? error.message : 'Erreur inconnue']
       })
     } finally {
@@ -98,7 +98,7 @@ export default function ImportPage() {
                   <li>• <code>enonce</code> : Énoncé de la question</li>
                   <li>• <code>options</code> : Options A, B, C, D</li>
                   <li>• <code>bonne_reponse</code> : Lettre de la bonne réponse</li>
-                  <li>• <code>image_path</code> : Chemin vers l'image</li>
+                  <li>• <code>image_path</code> : Chemin vers l&apos;image</li>
                 </ul>
               </div>
 
@@ -127,7 +127,7 @@ export default function ImportPage() {
               <div className="p-4 bg-blue-50 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
                   <CheckCircle className="h-5 w-5 text-blue-600" />
-                  <span className="font-medium text-blue-900">Prêt pour l'import</span>
+                  <span className="font-medium text-blue-900">Prêt pour l&apos;import</span>
                 </div>
                 <p className="text-sm text-blue-700">
                   Le fichier <code className="bg-blue-100 px-2 py-1 rounded">data/questions.json</code> 
@@ -169,7 +169,7 @@ export default function ImportPage() {
                     <span className={`font-medium ${
                       result.success ? 'text-green-900' : 'text-red-900'
                     }`}>
-                      {result.success ? 'Import réussi !' : 'Erreur d\'import'}
+                      {result.success ? &apos;Import réussi !&apos; : &apos;Erreur d&apos;import&apos;}
                     </span>
                   </div>
 

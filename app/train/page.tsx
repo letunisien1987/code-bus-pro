@@ -67,11 +67,11 @@ export default function TrainPage() {
         setSmartMode(false)
       }
     }
-  }, [searchParams])
+  }, [searchParams, fetchQuestions])
 
   useEffect(() => {
     fetchQuestions()
-  }, [])
+  }, [fetchQuestions])
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
