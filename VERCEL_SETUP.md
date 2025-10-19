@@ -1,76 +1,101 @@
 # 🚀 Guide de Déploiement Vercel
 
-## Étapes pour déployer Code Bus Pro sur Vercel
+Ce projet utilise **SQLite en développement local** et **PostgreSQL en production (Vercel)**. Suivez ce guide pour basculer proprement vers Postgres avant le déploiement.
 
-### 1️⃣ Créer une base de données Postgres
+## 🧭 Vue d’ensemble
+- Local (dev): `provider = "sqlite"` et `DATABASE_URL="file:./dev.db"`
+- Prod (Vercel): `provider = "postgresql"` et `DATABASE_URL` fourni par Vercel Postgres
+- Les images sont servies depuis `public/images/...` (aucune configuration supplémentaire requise)
 
-1. Allez sur [Vercel Dashboard](https://vercel.com/dashboard)
-2. Cliquez sur **"Storage"** dans le menu de gauche
-3. Cliquez sur **"Create Database"**
-4. Sélectionnez **"Postgres"**
-5. Nommez-la `code-bus-db`
-6. Choisissez la région la plus proche
-7. Cliquez sur **"Create"**
+---
 
-### 2️⃣ Connecter la base au projet
+## 1️⃣ Créer une base de données Postgres sur Vercel
+1. Ouvrez le [Vercel Dashboard](https://vercel.com/dashboard)
+2. Dans le menu, cliquez sur **Storage** → **Create Database**
+3. Choisissez **Postgres**, nommez-la par ex. `code-bus-db`
+4. Choisissez la région proche et cliquez **Create**
 
-1. Dans la page de la base de données
-2. Cliquez sur l'onglet **"Projects"**
-3. Cliquez sur **"Connect Project"**
-4. Sélectionnez votre projet `code-bus-pro`
-5. Vercel ajoutera automatiquement les variables d'environnement :
-   - `DATABASE_URL`
-   - `POSTGRES_URL`
-   - etc.
+## 2️⃣ Connecter la base au projet
+1. Sur la page de la base → onglet **Projects**
+2. Cliquez **Connect Project** et sélectionnez votre projet
+3. Vercel ajoute automatiquement des variables d’environnement, incluant: `DATABASE_URL`, `POSTGRES_URL`, etc.
 
-### 3️⃣ Initialiser la base de données
+## 3️⃣ Préparer le schéma Prisma pour la production
+En local, le schéma est configuré pour SQLite. Avant de déployer sur Vercel, **modifiez le provider en `postgresql`**.
 
-Une fois la base connectée, vous devez créer les tables :
+### Modifier `prisma/schema.prisma`
+```prisma
+// datasource initial en dev local
+// datasource db {
+//   provider = "sqlite"
+//   url      = env("DATABASE_URL")
+// }
 
-**Option A : Via Vercel CLI (Recommandé)**
+// 👉 Basculer en production (Vercel):
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+```
+
+> Astuce: vous pouvez conserver un schéma SQLite pour le dev local et basculer manuellement vers Postgres avant déploiement. (Option avancée: deux fichiers `schema.sqlite.prisma` et `schema.postgres.prisma` + script de copie en CI.)
+
+## 4️⃣ Initialiser la base (tables + seed)
+Deux options s’offrent à vous:
+
+### Option A — Vercel CLI (recommandé)
 ```bash
-# Installer Vercel CLI si ce n'est pas fait
+# Installer Vercel CLI si nécessaire
 npm i -g vercel
 
-# Se connecter
-vercel login
+# Authentification et lien du projet
+overcel login
+overcel link
 
-# Lier le projet
-vercel link
+# Récupérer les envs localement (facultatif)
+overcel env pull .env.local
 
-# Pusher le schéma Prisma vers la base
-vercel env pull .env.local
+# ⚠️ Assurez-vous que `provider = "postgresql"` est commité avant ces commandes
 npx prisma db push
 npx prisma db seed
 ```
 
-**Option B : Via API Route**
-1. Créez une route `/api/setup` dans votre projet
-2. Appelez cette route une fois déployé
-3. Elle exécutera `prisma db push` et `prisma db seed`
+### Option B — Route API de setup
+- Déployez le projet, puis appelez `/api/setup` une fois (depuis votre navigateur ou un curl)
+- Cette route exécute `prisma db push` et `prisma db seed` côté serveur
 
-### 4️⃣ Redéployer
+## 5️⃣ Déployer
+1. Committez le schéma Postgres et poussez votre branche
+2. Vercel build et utilise `DATABASE_URL` (Postgres)
+3. Votre application est en ligne 🎉
 
-1. Vercel détectera automatiquement le nouveau commit
-2. Le build utilisera PostgreSQL au lieu de SQLite
-3. L'application sera fonctionnelle ! 🎉
+---
 
-## 🔧 Fichiers modifiés
+## 👩‍💻 Développement local (SQLite)
+- `.env`: `DATABASE_URL="file:./dev.db"`
+- Scripts utiles:
+  - `npm run db:push` — synchroniser le schéma
+  - `npm run db:seed` — peupler les questions
+  - `npm run db:reset` — réinitialiser (supprime/recrée + seed)
+  - `npm run dev` — lancer l’app
 
-- ✅ `prisma/schema.prisma` : Provider changé de `sqlite` à `postgresql`
-- ✅ `package.json` : Scripts avec `prisma generate`
+> Le seed corrige automatiquement les chemins d’images en `/images/...`.
 
-## 📝 Notes importantes
+## 🧪 Vérifications rapides
+- API: `GET /api/questions` doit renvoyer une liste (ex. ~119)
+- Page Entraînement: `http://localhost:3000/train` affiche les questions
+- Si “Aucune question…”: utilisez “Réinitialiser les filtres” pour remettre tout à “Tous”.
 
-- SQLite ne fonctionne pas sur Vercel (système de fichiers en lecture seule)
-- PostgreSQL est gratuit jusqu'à 256 MB sur Vercel
-- Les données seront persistées en production
-- Pensez à faire un backup régulier de vos données
+## 🆘 Dépannage
+- En prod:
+  - Vérifiez `DATABASE_URL` dans Vercel → Project → Settings → Environment Variables
+  - Consultez les **Runtime Logs** et les logs de build
+- En local:
+  - Vérifiez `.env` (SQLite) et relancez `npm run db:push && npm run db:seed`
+  - Supprimez/réinitialisez via `npm run db:reset` si nécessaire
 
-## 🆘 En cas de problème
-
-Si l'application ne fonctionne toujours pas :
-1. Vérifiez que `DATABASE_URL` est bien défini dans Vercel
-2. Vérifiez les logs de déploiement
-3. Vérifiez les Runtime Logs dans Vercel Dashboard
+## 📝 Notes
+- Le système de fichiers Vercel est en lecture seule → SQLite n’est pas supporté en production
+- Vercel Postgres est gratuit (quota raisonnable) et persistant
+- Pensez à effectuer des backups réguliers
 

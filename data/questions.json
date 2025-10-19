@@ -26,7 +26,7 @@
       "b": "Avec un triangle de panne",
       "c": "Avec un chiffon rouge"
     },
-    "bonne_reponse": "a",
+    "bonne_reponse": "b",
     "image_path": "images/questionnaire_1/Question (2).jpg"
   },
   {
@@ -71,7 +71,7 @@
       "b": "S'arrêter, ensuite arrêter le moteur, quitter rapidement le véhicule et se mettre en sécurité",
       "c": "S'arrêter sur le côté, arrêter le moteur, porter secours, appeler le 118"
     },
-    "bonne_reponse": "b",
+    "bonne_reponse": "a",
     "image_path": "images/questionnaire_1/Question (5).jpg"
   },
   {
@@ -86,7 +86,7 @@
       "b": "Ces marques interdisent l'arrêt du véhicule pour prendre en charge des passagers et leurs bagages",
       "c": "Ces marques n'autorisent l'arrêt du véhicule que pour respecter les pauses, selon l'OTR1, jusqu'à 120 minutes"
     },
-    "bonne_reponse": "b",
+    "bonne_reponse": "a",
     "image_path": "images/questionnaire_1/Question (6).jpg"
   },
   {
@@ -206,7 +206,7 @@
       "b": "La plage jaune du compte-tours de 1800 à 2200 t/min indique la régime où le frein moteur obtient la meilleure efficacité",
       "c": "La plage jaune du compte-tours signifie 'danger'. Il ne faut, si possible, jamais rouler dans cette zone"
     },
-    "bonne_reponse": "a",
+    "bonne_reponse": "b",
     "image_path": "images/questionnaire_1/Question (14).jpg"
   },
   {
@@ -251,7 +251,7 @@
       "b": "Les autocars sont touchés par cette signalisation",
       "c": "Les camions et autocars peuvent passer, mais les trains routiers lourds sont touchés par cette signalisation"
     },
-    "bonne_reponse": "a",
+    "bonne_reponse": "b",
     "image_path": "images/questionnaire_1/Question (17).jpg"
   },
   {
@@ -266,7 +266,7 @@
       "b": "2,60 m",
       "c": "2,55 m"
     },
-    "bonne_reponse": "a",
+    "bonne_reponse": "c",
     "image_path": "images/questionnaire_1/Question (18).jpg"
   },
   {
@@ -371,7 +371,7 @@
       "b": "Ici, on ne dépassera pas 30 km/h",
       "c": "Ici, on doit pouvoir s’arrêter sur la distance de visibilité"
     },
-    "bonne_reponse": "c",
+    "bonne_reponse": "a",
     "image_path": "images/questionnaire_1/Question (25).jpg"
   },
   {
@@ -461,7 +461,7 @@
       "b": "Pour tirer cette remorque, le permis de la cat. E n’est pas nécessaire",
       "c": "Pour tirer une remorque, il faut toujours avoir un permis de la cat. E"
     },
-    "bonne_reponse": "b",
+    "bonne_reponse": "a",
     "image_path": "images/questionnaire_1/Question (31).jpg"
   },
   {
@@ -521,7 +521,7 @@
       "b": "Je dois attendre derrière le bus scolaire jusqu’au moment où les feux de panne seront déclenchés",
       "c": "Avec les précautions nécessaires, je peux passer lentement"
     },
-    "bonne_reponse": "a",
+    "bonne_reponse": "c",
     "image_path": "images/questionnaire_1/Question (35).jpg"
   },
   {
@@ -551,7 +551,7 @@
       "b": "Ce signal se réfère à un véhicule sans chargement",
       "c": "Ce signal indique la hauteur maximale du passage sous voies"
     },
-    "bonne_reponse": "c",
+    "bonne_reponse": "a",
     "image_path": "images/questionnaire_1/Question (37).jpg"
   },
   {
@@ -611,7 +611,7 @@
       "b": "Il doit être relié au véhicule remorqueur au moyen d’un dispositif rigide ou selon le manuel d’utilisation",
       "c": "Avec une corde ou une barre"
     },
-    "bonne_reponse": "a",
+    "bonne_reponse": "b",
     "image_path": "images/questionnaire_2/Question (2).jpg"
   },
   {
@@ -656,7 +656,7 @@
       "b": "les camions, les autocars, les voitures automobiles de travail et les trains routiers d’un poids effectif supérieur à 3,5 t, ainsi que les véhicules spéciaux d’agriculture",
       "c": "toutes les voitures automobiles lourdes, les tracteurs industriels, les véhicules agricoles et les véhicules qui tirent une remorque affectée au transport professionnel de choses, dont le poids effectif est supérieur à 3,5 t"
     },
-    "bonne_reponse": "b",
+    "bonne_reponse": "a",
     "image_path": "images/questionnaire_2/Question (5).jpg"
   },
   {
@@ -746,7 +746,7 @@
       "b": "",
       "c": ""
     },
-    "bonne_reponse": "a",
+    "bonne_reponse": "c",
     "image_path": "images/questionnaire_2/Question (11).jpg"
   },
   {
@@ -776,7 +776,7 @@
       "b": "L’élément 1 est un cylindre de frein à membrane et l’élément 2, un cylindre combiné à ressort",
       "c": "L’élément 1 est un cylindre combiné à ressort et l’élément 2, un cylindre de frein à membrane"
     },
-    "bonne_reponse": "a",
+    "bonne_reponse": "b",
     "image_path": "images/questionnaire_2/Question (13).jpg"
   },
   {
@@ -806,7 +806,7 @@
       "b": "Oui, mais seulement pour des courses à vide",
       "c": "Non, cela n’est pas autorisé"
     },
-    "bonne_reponse": "c",
+    "bonne_reponse": "b",
     "image_path": "images/questionnaire_2/Question (15).jpg"
   },
   {
@@ -836,7 +836,7 @@
       "b": "80 km/h, parce que je me trouve sur une route secondaire en localité",
       "c": "50 km/h, parce que je me trouve sur une route secondaire en localité"
     },
-    "bonne_reponse": "c",
+    "bonne_reponse": "b",
     "image_path": "images/questionnaire_2/Question (17).jpg"
   },
   {
@@ -986,7 +986,7 @@
       "b": "Après cette signalisation, je ne dois pas dépasser 60 km/h avec mon autocar",
       "c": "Après cette signalisation, je peux circuler à 80 km/h avec mon autocar"
     },
-    "bonne_reponse": "b",
+    "bonne_reponse": "c",
     "image_path": "images/questionnaire_2/Question (27).jpg"
   },
   {
@@ -1046,7 +1046,7 @@
       "b": "Si, avec ce véhicule, j’effectue un transport professionnel avec des voyageurs, je dois me conformer à la limite de 0,5 pour mille, valable dès le 1er janvier 2004",
       "c": "Si, avec ce véhicule, j’effectue un transport professionnel, je suis soumis à une interdiction absolue de consommer de l’alcool durant les six heures qui précèdent le début du travail ainsi que durant les heures de travail"
     },
-    "bonne_reponse": "c",
+    "bonne_reponse": "a",
     "image_path": "images/questionnaire_2/Question (31).jpg"
   },
   {
@@ -1061,7 +1061,7 @@
       "b": "par temps de brouillard, par bourrasque de neige ou forte averse, lorsque la visibilité est inférieure à 100 m",
       "c": "par temps de brouillard, par bourrasque de neige ou forte averse, lorsque la visibilité est inférieure à 50 m"
     },
-    "bonne_reponse": "a",
+    "bonne_reponse": "c",
     "image_path": "images/questionnaire_2/Question (32).jpg"
   },
   {
@@ -1183,5 +1183,605 @@
     },
     "bonne_reponse": "c",
     "image_path": "images/questionnaire_2/Question (40).jpg"
+  },
+   {
+    "id": "3_0071",
+    "questionnaire": 3,
+    "question": "0071",
+    "categorie": "Règles et prescriptions",
+    "astag D/F/I ": "SVG Art. 26",
+    "enonce": "Dans quel but est placé ce miroir?",
+    "options": {
+      "a": "Afin de mieux apercevoir les cyclistes qui se trouveraient dans l’angle mort, à côté du véhicule à l’arrêt, aux signaux lumineux",
+      "b": "Afin que les transports publics puissent mieux observer la circulation",
+      "c": "Il permet aux cyclistes de mieux estimer la distance latérale entre le trottoir et le véhicule"
+    },
+    "bonne_reponse": "a",
+    "image_path": "images/questionnaire_3/Question (1).jpg"
+  },
+  {
+    "id": "3_3537",
+    "questionnaire": 3,
+    "question": "3537",
+    "categorie": "Entretien",
+    "astag D/F/I ": "",
+    "enonce": "Qui est responsable du contrôle et de l’entretien de l’installation d’éclairage?",
+    "options": {
+      "a": "L’atelier de réparation",
+      "b": "Le propriétaire",
+      "c": "Le conducteur"
+    },
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_3/Question (2).jpg"
+  },
+  {
+    "id": "3_0043",
+    "questionnaire": 3,
+    "question": "0043",
+    "categorie": "Signalisation routière et vitesse",
+    "astag D/F/I ": "2/22",
+    "enonce": "Le signal du haut interdit-il le passage aux véhicules?",
+    "options": {
+      "a": "Le signal du haut interdit le passage aux véhicules et ensembles de véhicules qui, chargement non compris, ne dépassent pas la hauteur de 2,95 m",
+      "b": "Le signal du haut m’interdit le passage avec des véhicules et ensembles de véhicules qui, chargement compris, dépassent la hauteur de 2,95 m",
+      "c": "Le signal du haut m’indique la hauteur maximale du prochain sous-voie"
+    },
+    "bonne_reponse": "b",
+    "image_path": "images/questionnaire_3/Question (3).jpg"
+  },
+  {
+    "id": "3_0093",
+    "questionnaire": 3,
+    "question": "0093",
+    "categorie": "Freins",
+    "astag D/F/I ": "",
+    "enonce": "Le poids total de cette remorque équipée d’un frein de poussée:",
+    "options": {
+      "a": "est de 5’000 kg au max.",
+      "b": "est de 750 kg au max.",
+      "c": "est de 3’500 kg au max."
+    },
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_3/Question (4).jpg"
+  },
+  {
+    "id": "3_1771",
+    "questionnaire": 3,
+    "question": "1771",
+    "categorie": "Règles et prescriptions",
+    "astag D/F/I ": "12/108",
+    "enonce": "Sur les extincteurs des véhicules:",
+    "options": {
+      "a": "il faut contrôler la contenance de remplissage",
+      "b": "il faut contrôler la date du dernier remplissage",
+      "c": "il faut contrôler la contenance, la date du prochain contrôle et que ceux-ci aient des plombs"
+    },
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_3/Question (5).jpg"
+  },
+  {
+    "id": "3_3823",
+    "questionnaire": 3,
+    "question": "3823",
+    "categorie": "Règles et prescriptions",
+    "astag D/F/I ": "4/29",
+    "enonce": "La roue de secours doit-elle présenter les mêmes caractéristiques légales que les autres roues du véhicule?",
+    "options": {
+      "a": "La roue de secours ne doit pas présenter les mêmes caractéristiques légales que les autres roues du véhicule",
+      "b": "La roue de secours doit présenter les mêmes caractéristiques légales que les autres roues du véhicule",
+      "c": "La roue de secours doit être un pneu regommé"
+    },
+    "bonne_reponse": "b",
+    "image_path": "images/questionnaire_3/Question (6).jpg"
+  },
+  {
+    "id": "3_3053",
+    "questionnaire": 3,
+    "question": "3053",
+    "categorie": "Poids et mesures",
+    "astag D/F/I ": "11/80",
+    "enonce": "La longueur maximale d’un train routier peut-elle dépasser 18,75 m?",
+    "options": {
+      "a": "La longueur maximale d’un train routier ne peut dépasser les 18,75 m que s’il tire une remorque à deux essieux",
+      "b": "La longueur maximale d’un train routier, chargement compris, est toujours de 18,75 m au plus",
+      "c": "La longueur maximale de ce train routier, chargement non compris, est 18,75 m au plus"
+    },
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_3/Question (7).jpg"
+  },
+  {
+    "id": "3_1072",
+    "questionnaire": 3,
+    "question": "1072",
+    "categorie": "Permis",
+    "astag D/F/I ": "VTS art. 43",
+    "enonce": "La charge sur le toit de ce véhicule peut atteindre:",
+    "options": {
+      "a": "300 kg",
+      "b": "Ce véhicule ne peut pas transporter de charge sur son toit",
+      "c": "C’est le conducteur qui décide de la charge autorisée sur le toit"
+    },
+    "bonne_reponse": "a",
+    "image_path": "images/questionnaire_3/Question (8).jpg"
+  },
+  {
+    "id": "3_0089",
+    "questionnaire": 3,
+    "question": "0089",
+    "categorie": "Moteur",
+    "astag D/F/I ": "14/128",
+    "enonce": "Le niveau d’huile du moteur reste-t-il toujours identique?",
+    "options": {
+      "a": "Oui, sauf pour les moteurs Diesel",
+      "b": "Oui",
+      "c": "Non, car le moteur consomme durant son activité une certaine quantité d’huile"
+    },
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_3/Question (9).jpg"
+  },
+  {
+    "id": "3_0299",
+    "questionnaire": 3,
+    "question": "0299",
+    "categorie": "Règles et prescriptions",
+    "astag D/F/I ": "7/45",
+    "enonce": "Existe-t-il des prescriptions particulières pour les conducteurs de voitures automobiles lourdes circulant en colonne à l’extérieur des localités?",
+    "options": {
+      "a": "La moitié du compteur",
+      "b": "Ils doivent circuler tout à droite, maintenir entre eux une distance de 100 m au moins et si nécessaire s’arrêter sur les places d’évitement",
+      "c": "Ils doivent toujours pouvoir s’arrêter sur la moitié de la distance visible"
+    },
+    "bonne_reponse": "b",
+    "image_path": "images/questionnaire_3/Question (10).jpg"
+  },
+  {
+    "id": "3_1333",
+    "questionnaire": 3,
+    "question": "1333",
+    "categorie": "Signalisation routière et vitesse",
+    "astag D/F/I ": "2/19",
+    "enonce": "Sous réserve de dispositions dérogatoires applicables à certains d’entre eux, les signaux de danger seront placés :",
+    "options": {
+      "a": "à l’extérieur des localités, entre 0 et 50 m avant l’endroit dangereux; s’il est impossible d’observer cette règle, l’éloignement sera indiqué sur une «Plaque de distance»;",
+      "b": "à l’extérieur des localités, entre 150 et 250 m avant l’endroit dangereux; s’il est impossible d’observer cette règle, l’éloignement sera indiqué sur une «Plaque de distance»;",
+      "c": "à l’extérieur des localités, entre 100 et 200 m avant l’endroit dangereux; s’il est impossible d’observer cette règle, l’éloignement sera indiqué sur une «Plaque de distance»;"
+    },
+    "bonne_reponse": "b",
+    "image_path": "images/questionnaire_3/Question (11).jpg"
+  },
+  {
+    "id": "3_0442",
+    "questionnaire": 3,
+    "question": "0442",
+    "categorie": "Signalisation routière et vitesse",
+    "astag D/F/I ": "2/19",
+    "enonce": "Quel comportement faut-il adopter après ce signal?",
+    "options": {
+      "a": "Rétrograder de suite jusqu’en 3ème vitesse",
+      "b": "Employer le même rapport de vitesses que l’on utiliserait à la montée",
+      "c": "Rétrograder à temps, choisir le rapport de vitesses qui, avec le ralentisseur, freine suffisamment le véhicule"
+    },
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_3/Question (12).jpg"
+  },
+  {
+    "id": "3_0257",
+    "questionnaire": 3,
+    "question": "0257",
+    "categorie": "Freins",
+    "astag D/F/I ": "16/151",
+    "enonce": "",
+    "options": {
+      "a": "Le circuit de frein 1 représente la pression de freinage dans la voiture automobile et le circuit de frein 2 la pression de freinage dans la remorque",
+      "b": "En partant maintenant, le système ABS ne fonctionne pas",
+      "c": "Les circuits de frein 1 et 2 présentent une pression de freinage insuffisante. Je suis averti par un voyant lumineux et par un vibreur"
+    },
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_3/Question (13).jpg"
+  },
+  {
+    "id": "3_0387",
+    "questionnaire": 3,
+    "question": "0387",
+    "categorie": "Moteur",
+    "astag D/F/I ": "14/133",
+    "enonce": "Doit-on éviter les pertes d’huiles?",
+    "options": {
+      "a": "Seules, des pertes de gasoil sont dangereuses",
+      "b": "Oui, à cause des risques d’accidents pour les usagers de la route et pour la protection de l’environnement",
+      "c": "Une perte d’huile est insignifiante"
+    },
+    "bonne_reponse": "b",
+    "image_path": "images/questionnaire_3/Question (14).jpg"
+  },
+  {
+    "id": "3_3497",
+    "questionnaire": 3,
+    "question": "3497",
+    "categorie": "Règles et prescriptions",
+    "astag D/F/I ": "7/41",
+    "enonce": "",
+    "options": {
+      "a": "En conduisant ce véhicule, je suis soumis à la même interdiction de consommer de l’alcool que le chauffeur d’un camion",
+      "b": "Si, avec ce véhicule, j’effectue un transport professionnel avec des voyageurs, je dois me conformer à la limite de 0,5 pour mille, valable dès le 1er janvier 2004",
+      "c": "Si, avec ce véhicule, j’effectue un transport professionnel, je suis soumis à une interdiction absolue de consommer de l’alcool durant les six heures qui précèdent le début du travail ainsi que durant les heures de travail"
+    },
+    "bonne_reponse": "a",
+    "image_path": "images/questionnaire_3/Question (15).jpg"
+  },
+  {
+    "id": "3_0472",
+    "questionnaire": 3,
+    "question": "0472",
+    "categorie": "Roues et pneumatiques",
+    "astag D/F/I ": "13/121",
+    "enonce": "",
+    "options": {
+      "a": "Les boulons des jantes à voile pleine doivent être resserrés à la suite l’un de l’autre",
+      "b": "Les boulons des jantes à voile pleine doivent être resserrés en croix",
+      "c": "Les boulons des jantes trilex doivent être resserrés en croix"
+    },
+    "bonne_reponse": "b",
+    "image_path": "images/questionnaire_3/Question (16).jpg"
+  },
+  {
+    "id": "3_0691",
+    "questionnaire": 3,
+    "question": "0691",
+    "categorie": "Signalisation routière et vitesse",
+    "astag D/F/I ": "2/19",
+    "enonce": "",
+    "options": {
+      "a": "Ici, je m’approche d’un virage à droite qui aura une longueur de 100 m; au vu de mon véhicule et de son chargement, je dois ralentir",
+      "b": "Ce signal ne me concerne pas",
+      "c": "À 100 m se trouvera un virage à droite; au vu de mon véhicule et de son chargement, je dois ralentir"
+    },
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_3/Question (17).jpg"
+  },
+  {
+    "id": "3_3429",
+    "questionnaire": 3,
+    "question": "3429",
+    "categorie": "Poids et mesures",
+    "astag D/F/I ": "11/82",
+    "enonce": "Qu’est-ce qu’on entend par «charge par essieu»?",
+    "options": {
+      "a": "Le poids transmis sur la chaussée par un essieu ou par un essieu double",
+      "b": "La charge utile plus le poids à vide",
+      "c": "C’est 50 % du poids total"
+    },
+    "bonne_reponse": "a",
+    "image_path": "images/questionnaire_3/Question (18).jpg"
+  },
+  {
+    "id": "3_0119",
+    "questionnaire": 3,
+    "question": "0119",
+    "categorie": "Entretien",
+    "astag D/F/I ": "15/141",
+    "enonce": "Lors du démontage et du remontage de cette batterie:",
+    "options": {
+      "a": "l’ordre, lors de la déconnexion et de la connexion des liaisons de câbles, ne joue aucun rôle essentiel",
+      "b": "je dois faire attention à toujours déconnecter d’abord le câble positif et ensuite enlever la masse, et lors du remontage de procéder dans l’ordre inverse",
+      "c": "je dois faire attention à toujours enlever d’abord la masse et ensuite déconnecter le câble positif, et lors du remontage, de procéder dans l’ordre inverse"
+    },
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_3/Question (19).jpg"
+  },
+  {
+    "id": "3_0632",
+    "questionnaire": 3,
+    "question": "0632",
+    "categorie": "Règles et prescriptions",
+    "astag D/F/I ": "11/81",
+    "enonce": "De combien le chargement peut-il dépasser latéralement le véhicule?",
+    "options": {
+      "a": "Le chargement ne peut pas dépasser latéralement le véhicule",
+      "b": "Au maximum 5 cm",
+      "c": "Au maximum 5 cm de chaque côté"
+    },
+    "bonne_reponse": "a",
+    "image_path": "images/questionnaire_3/Question (20).jpg"
+  },
+  {
+    "id": "3_0983",
+    "questionnaire": 3,
+    "question": "0983",
+    "categorie": "Moteur",
+    "astag D/F/I ": "14/124",
+    "enonce": "Quels avantages apporte au moteur diesel le turbocompresseur avec refroidissement de l’air (Intercooler)?",
+    "options": {
+      "a": "Une meilleure combustion et un plus grand rendement",
+      "b": "Une surchauffe du moteur peut être évitée",
+      "c": "On peut économiser beaucoup de carburant"
+    },
+    "bonne_reponse": "a",
+    "image_path": "images/questionnaire_3/Question (21).jpg"
+  },
+  {
+    "id": "3_0105",
+    "questionnaire": 3,
+    "question": "0105",
+    "categorie": "Roues et pneumatiques",
+    "astag D/F/I ": "13/118",
+    "enonce": "",
+    "options": {
+      "a": "Puisqu’on trouve sur ce pneu l’inscription «Regroovables». Il peut être resculpté sans autre encore une fois jusqu’à un profil d’environ 6 mm de profondeur",
+      "b": "Le pneu doit être changé ou son profil resculpté au plus tard lorsque la profondeur minimale du profil n’est plus que de 1,6 mm",
+      "c": "Les pneus de véhicules de chantier peuvent être usés jusqu’à ce stade"
+    },
+    "bonne_reponse": "b",
+    "image_path": "images/questionnaire_3/Question (22).jpg"
+  },
+  {
+    "id": "3_1122",
+    "questionnaire": 3,
+    "question": "1122",
+    "categorie": "Moteur",
+    "astag D/F/I ": "8/58",
+    "enonce": "Le cadran bleu de droite est :",
+    "options": {
+      "a": "un indicateur de pression d’huile",
+      "b": "un manomètre de frein",
+      "c": "un compte-tours"
+    },
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_3/Question (23).jpg"
+  },
+  {
+    "id": "3_0541",
+    "questionnaire": 3,
+    "question": "0541",
+    "categorie": "Freins",
+    "astag D/F/I ": "16/153",
+    "enonce": "Le frein auxiliaire et le frein de stationnement doivent-ils également fonctionner en cas de défaillance du frein de service?",
+    "options": {
+      "a": "Seulement pour la remorque",
+      "b": "Oui",
+      "c": "Non"
+    },
+    "bonne_reponse": "b",
+    "image_path": "images/questionnaire_3/Question (24).jpg"
+  },
+  {
+    "id": "3_0879",
+    "questionnaire": 3,
+    "question": "0879",
+    "categorie": "Règles et prescriptions",
+    "astag D/F/I ": "",
+    "enonce": "Quelles précautions particulières sont à prendre lors de basses températures et de mauvais temps si vous utilisez un véhicule carrossé ou bâché?",
+    "options": {
+      "a": "Enclencher à temps le chauffage d’arrêt",
+      "b": "Enlever la neige et les plaques de glace du toit",
+      "c": "Vérifier particulièrement les serrures de portes et serrer les cordes de la bâche"
+    },
+    "bonne_reponse": "b",
+    "image_path": "images/questionnaire_3/Question (25).jpg"
+  },
+  {
+    "id": "3_0841",
+    "questionnaire": 3,
+    "question": "0841",
+    "categorie": "Freins",
+    "astag D/F/I ": "16/147",
+    "enonce": "Qu’est-ce qu’on entend par «frein à double circuit»?",
+    "options": {
+      "a": "Un dispositif de commande et deux dispositifs de transmission séparés",
+      "b": "Deux dispositifs de commande séparés et un de transmission",
+      "c": "Le système de freinage de la remorque"
+    },
+    "bonne_reponse": "a",
+    "image_path": "images/questionnaire_3/Question (26).jpg"
+  },
+  {
+    "id": "3_0805",
+    "questionnaire": 3,
+    "question": "0805",
+    "categorie": "Signalisation routière et vitesse",
+    "astag D/F/I ": "2/25",
+    "enonce": "Sur les lignes en zigzag réservées à l’arrêt des véhicules en trafic de ligne :",
+    "options": {
+      "a": "je ne peux m’arrêter que pour laisser monter ou descendre des passagers, mais non pour charger ou décharger des marchandises",
+      "b": "je ne peux m’arrêter ni pour laisser monter ou descendre des passagers, ni pour charger ou décharger des marchandises",
+      "c": "je peux m’arrêter pour charger ou décharger des marchandises, mais non pour laisser monter ou descendre des passagers"
+    },
+    "bonne_reponse": "a",
+    "image_path": "images/questionnaire_3/Question (27).jpg"
+  },
+  {
+    "id": "3_3610",
+    "questionnaire": 3,
+    "question": "3610",
+    "categorie": "Poids et mesures",
+    "astag D/F/I ": "11/80",
+    "enonce": "Quelle est la longueur maximale d’un bus à plate-forme pivotante?",
+    "options": {
+      "a": "16,50 m",
+      "b": "14 m",
+      "c": "18,75 m"
+    },
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_3/Question (28).jpg"
+  },
+  {
+    "id": "3_0791",
+    "questionnaire": 3,
+    "question": "0791",
+    "categorie": "Roues et pneumatiques",
+    "astag D/F/I ": "13/119",
+    "enonce": "",
+    "options": {
+      "a": "La roue de secours ne doit pas avoir un profil minimum",
+      "b": "La roue de secours doit avoir le profil minimum, seulement lorsqu’elle est utilisée",
+      "c": "La roue de secours doit présenter les mêmes exigences minimales que les autres roues du véhicule"
+    },
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_3/Question (29).jpg"
+  },
+  {
+    "id": "3_3954",
+    "questionnaire": 3,
+    "question": "3954",
+    "categorie": "Règles et prescriptions",
+    "astag D/F/I ": "15/145",
+    "enonce": "Sur quelle distance les feux de croisement doivent-ils éclairer la chaussée?",
+    "options": {
+      "a": "Au minimum 200 m",
+      "b": "Au maximum 50 / 75 m",
+      "c": "Au minimum 100 m"
+    },
+    "bonne_reponse": "b",
+    "image_path": "images/questionnaire_3/Question (30).jpg"
+  },
+  {
+    "id": "3_0946",
+    "questionnaire": 3,
+    "question": "0946",
+    "categorie": "Règles et prescriptions",
+    "astag D/F/I ": "7/45",
+    "enonce": "Sur une route de montagne étroite et sinueuse, deux autocars ne peuvent se croiser. Lequel des deux conducteurs doit faire marche arrière?",
+    "options": {
+      "a": "Le conducteur du véhicule descendant, à moins que l’autre ne se trouve plus près d’une place d’évitement",
+      "b": "Le conducteur du véhicule montant, car c’est plus simple de faire marche arrière à la descente",
+      "c": "Dans tous les cas, ils doivent s’entendre entre eux"
+    },
+    "bonne_reponse": "a",
+    "image_path": "images/questionnaire_3/Question (31).jpg"
+  },
+  {
+    "id": "3_0729",
+    "questionnaire": 3,
+    "question": "0729",
+    "categorie": "Moteur",
+    "astag D/F/I ": "14/128",
+    "enonce": "Quand devez-vous contrôler le niveau d’huile?",
+    "options": {
+      "a": "Tous les jours, à froid, avant le départ, mais il faut quand même consulter le manuel d’entretien du véhicule",
+      "b": "À la fin de chaque semaine, lors du contrôle hebdomadaire",
+      "c": "Tant que la lampe de contrôle de la pression d’huile ne s’allume pas, aucun contrôle ne s’impose"
+    },
+    "bonne_reponse": "a",
+    "image_path": "images/questionnaire_3/Question (32).jpg"
+  },
+  {
+    "id": "3_2083",
+    "questionnaire": 3,
+    "question": "2083",
+    "categorie": "Chargement",
+    "astag D/F/I ": "12/103",
+    "enonce": "De quel pourcentage doit être la force de sécurité du poids de la charge latéralement?",
+    "options": {
+      "a": "Au minimum 100 %",
+      "b": "Dans ce cas, il n’y a pas de prescriptions",
+      "c": "Au minimum 50 %"
+    },
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_3/Question (33).jpg"
+  },
+  {
+    "id": "3_0989",
+    "questionnaire": 3,
+    "question": "0989",
+    "categorie": "Moteur",
+    "astag D/F/I ": "14/124",
+    "enonce": "Avant de partir, doit-on laisser tourner le moteur pour l’échauffer?",
+    "options": {
+      "a": "Oui, si la notice d’entretien le spécifie",
+      "b": "Cela n’a pas d’importance",
+      "c": "Non, le moteur doit s’échauffer en roulant à bas régime"
+    },
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_3/Question (34).jpg"
+  },
+  {
+    "id": "3_1110",
+    "questionnaire": 3,
+    "question": "1110",
+    "categorie": "Règles et prescriptions",
+    "astag D/F/I ": "",
+    "enonce": "Lors d’un accident dans un tunnel, le conducteur:",
+    "options": {
+      "a": "évaluera ses passagers sur le bord droit et les dirigera en direction d’une niche, il avertira les premiers secours au moyen de son natel",
+      "b": "informera ses passagers qu’ils doivent rester à leur place dans le véhicule, ensuite il avertira les premiers secours au moyen de son natel",
+      "c": "prendra toutes les mesures de sécurité nécessaires pour évacuer les passagers en direction d’une niche, il assistera psychologiquement les personnes choquées et avisera les premiers secours au moyen du prochain téléphone de secours"
+    },
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_3/Question (35).jpg"
+  },
+  {
+    "id": "3_0785",
+    "questionnaire": 3,
+    "question": "0785",
+    "categorie": "Signalisation routière et vitesse",
+    "astag D/F/I ": "2/23",
+    "enonce": "Dans cette situation peut-on dépasser le tracteur agricole?",
+    "options": {
+      "a": "Non",
+      "b": "Oui",
+      "c": "Il est permis de dépasser des tracteurs agricoles, malgré la ligne de sécurité"
+    },
+    "bonne_reponse": "a",
+    "image_path": "images/questionnaire_3/Question (36).jpg"
+  },
+  {
+    "id": "3_1105",
+    "questionnaire": 3,
+    "question": "1105",
+    "categorie": "Permis",
+    "astag D/F/I ": "11/79",
+    "enonce": "",
+    "options": {
+      "a": "Ces deux permis de circulation sont compatibles",
+      "b": "Seul, le permis de circulation du car est compatible",
+      "c": "Ces deux permis de circulation ne sont pas compatibles"
+    },
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_3/Question (37).jpg"
+  },
+  {
+    "id": "3_0845",
+    "questionnaire": 3,
+    "question": "0845",
+    "categorie": "Freins",
+    "astag D/F/I ": "16/154",
+    "enonce": "Comment peut-on desserrer le frein à ressort lorsque le véhicule est freiné à cause d’une baisse de pression?",
+    "options": {
+      "a": "Par pression d’air comprimé provenant d’un réservoir auxiliaire ou en libérant mécaniquement le piston du cylindre de frein",
+      "b": "En faisant échapper l’air comprimé du cylindre à ressort",
+      "c": "Il y a une installation spéciale combinée avec le ralentisseur"
+    },
+    "bonne_reponse": "a",
+    "image_path": "images/questionnaire_3/Question (38).jpg"
+  },
+  {
+    "id": "3_3943",
+    "questionnaire": 3,
+    "question": "3943",
+    "categorie": "Poids et mesures",
+    "astag D/F/I ": "11/84",
+    "enonce": "Quel est, dans le meilleur des cas, le poids total autorisé pour une remorque à bagages, à un essieu, attelée à un car?",
+    "options": {
+      "a": "3,5 tonnes",
+      "b": "8 tonnes",
+      "c": "12 tonnes"
+    },
+    "bonne_reponse": "a",
+    "image_path": "images/questionnaire_3/Question (39).jpg"
+  },
+  {
+    "id": "3_1086",
+    "questionnaire": 3,
+    "question": "1086",
+    "categorie": "Permis",
+    "astag D/F/I ": "VZV art. 3.2",
+    "enonce": "",
+    "options": {
+      "a": "Ce véhicule peut être conduit avec le permis de la cat. D1",
+      "b": "Ce véhicule peut être conduit avec le permis de la cat. B",
+      "c": "Ce véhicule ne peut pas être conduit avec le permis de la cat. D1"
+    },
+    "bonne_reponse": "a",
+    "image_path": "images/questionnaire_3/Question (40).jpg"
   }
 ]

@@ -85,22 +85,24 @@ export default function TrainPage() {
 
   // Initialiser les filtres depuis les paramètres URL
   useEffect(() => {
-    const questionnaire = searchParams.get('questionnaire')
-    const categorie = searchParams.get('categorie')
+    const qParam = searchParams.get('questionnaire')
+    const cParam = searchParams.get('categorie')
     const questionId = searchParams.get('questionId')
+
+    const questionnaire = qParam && qParam.trim() !== '' ? qParam : 'all'
+    const categorie = cParam && cParam.trim() !== '' ? cParam : 'all'
     
-    if (questionnaire || categorie || questionId) {
+    if (qParam !== null || cParam !== null || questionId) {
       setFilters(prev => ({
         ...prev,
-        questionnaire: questionnaire || 'all',
-        categorie: categorie || 'all'
+        questionnaire,
+        categorie
       }))
       
       if (questionId) {
         setSmartMode(false)
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
 
   useEffect(() => {
@@ -186,6 +188,16 @@ export default function TrainPage() {
     fetchQuestions()
   }
 
+  const resetFilters = useCallback(() => {
+    setFilters({
+      questionnaire: 'all',
+      categorie: 'all',
+      astag: 'all',
+      statut: 'all'
+    })
+    router.replace('/train')
+  }, [router])
+
   if (loading) {
     return (
       <div className="h-screen bg-gray-50 flex items-center justify-center">
@@ -203,12 +215,7 @@ export default function TrainPage() {
         <Card>
           <CardContent className="p-8">
             <p className="text-gray-600 mb-4">Aucune question trouvée avec ces filtres.</p>
-            <Button onClick={() => setFilters({
-              questionnaire: 'all',
-              categorie: 'all',
-              astag: 'all',
-              statut: 'all'
-            })}>
+            <Button onClick={resetFilters}>
               Réinitialiser les filtres
             </Button>
           </CardContent>
