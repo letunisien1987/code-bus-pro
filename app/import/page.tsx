@@ -39,7 +39,7 @@ export default function ImportPage() {
     } catch (error) {
       setResult({
         success: false,
-        message: &apos;Erreur lors de l&apos;importation des données&apos;,
+        message: 'Erreur lors de l\'importation des données',
         errors: [error instanceof Error ? error.message : 'Erreur inconnue']
       })
     } finally {
@@ -169,7 +169,7 @@ export default function ImportPage() {
                     <span className={`font-medium ${
                       result.success ? 'text-green-900' : 'text-red-900'
                     }`}>
-                      {result.success ? &apos;Import réussi !&apos; : &apos;Erreur d&apos;import&apos;}
+                      {result.success ? 'Import réussi !' : 'Erreur d\'import'}
                     </span>
                   </div>
 

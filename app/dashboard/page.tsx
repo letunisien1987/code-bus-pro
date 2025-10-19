@@ -651,7 +651,7 @@ export default function DashboardPage() {
                                               </div>
                                               <div className="flex-1 min-w-0">
                                                 <p className="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
-                                                  {question.enonce || &apos;Pas d&apos;énoncé&apos;}
+                                                  {question.enonce || 'Pas d\'énoncé'}
                                                 </p>
                                                 <div className="flex gap-4 mt-1 text-xs text-gray-600">
                                                   <span>{question.attempts} tentatives</span>
@@ -666,8 +666,8 @@ export default function DashboardPage() {
                                                 question.status === 'to_review' ? 'bg-orange-100 text-orange-700' :
                                                 'bg-gray-100 text-gray-700'
                                               }>
-                                                {question.status === &apos;mastered&apos; ? &apos;Maîtrisée&apos; :
-                                                 question.status === &apos;to_review&apos; ? &apos;À revoir&apos; : &apos;Non vue&apos;}
+                                                {question.status === 'mastered' ? 'Maîtrisée' :
+                                                 question.status === 'to_review' ? 'À revoir' : 'Non vue'}
                                               </Badge>
                                             </div>
                                           </div>

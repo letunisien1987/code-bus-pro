@@ -482,7 +482,7 @@ export default function ExamPage() {
                           )}
                         </p>
                         <p className="text-xs text-gray-600 mt-1">
-                          Votre réponse : <span className="font-medium">{currentAnswer?.answer.toUpperCase() || &apos;Non répondue&apos;}</span>
+                          Votre réponse : <span className="font-medium">{currentAnswer?.answer.toUpperCase() || 'Non répondue'}</span>
                           {!currentAnswer?.correct && (
                             <span className="ml-2">
                               • Bonne réponse : <span className="font-medium">{currentReviewQuestion.bonneReponse.toUpperCase()}</span>
