@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
 import { Button } from '../../components/ui/button'
@@ -50,45 +50,7 @@ export default function TrainPage() {
   const [showMenu, setShowMenu] = useState(false)
   const [showFilters, setShowFilters] = useState(false)
 
-  // Initialiser les filtres depuis les paramètres URL
-  useEffect(() => {
-    const questionnaire = searchParams.get('questionnaire')
-    const categorie = searchParams.get('categorie')
-    const questionId = searchParams.get('questionId')
-    
-    if (questionnaire || categorie || questionId) {
-      setFilters(prev => ({
-        ...prev,
-        questionnaire: questionnaire || 'all',
-        categorie: categorie || 'all'
-      }))
-      
-      if (questionId) {
-        setSmartMode(false)
-      }
-    }
-  }, [searchParams, fetchQuestions])
-
-  useEffect(() => {
-    fetchQuestions()
-  }, [fetchQuestions])
-
-  useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      if (showFeedback && event.key === 'ArrowRight') {
-        handleNext()
-      } else if (event.key === 'ArrowLeft') {
-        handlePrevious()
-      } else if (!showFeedback && ['a', 'b', 'c', 'd'].includes(event.key.toLowerCase())) {
-        handleAnswerSelect(event.key.toLowerCase())
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyPress)
-    return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [showFeedback, currentIndex])
-
-  const fetchQuestions = async () => {
+  const fetchQuestions = useCallback(async () => {
     try {
       console.log('🔄 Chargement des questions...')
       const questionId = searchParams.get('questionId')
@@ -119,7 +81,45 @@ export default function TrainPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [searchParams])
+
+  // Initialiser les filtres depuis les paramètres URL
+  useEffect(() => {
+    const questionnaire = searchParams.get('questionnaire')
+    const categorie = searchParams.get('categorie')
+    const questionId = searchParams.get('questionId')
+    
+    if (questionnaire || categorie || questionId) {
+      setFilters(prev => ({
+        ...prev,
+        questionnaire: questionnaire || 'all',
+        categorie: categorie || 'all'
+      }))
+      
+      if (questionId) {
+        setSmartMode(false)
+      }
+    }
+  }, [searchParams])
+
+  useEffect(() => {
+    fetchQuestions()
+  }, [fetchQuestions])
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (showFeedback && event.key === 'ArrowRight') {
+        handleNext()
+      } else if (event.key === 'ArrowLeft') {
+        handlePrevious()
+      } else if (!showFeedback && ['a', 'b', 'c', 'd'].includes(event.key.toLowerCase())) {
+        handleAnswerSelect(event.key.toLowerCase())
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyPress)
+    return () => window.removeEventListener('keydown', handleKeyPress)
+  }, [showFeedback, currentIndex, handleNext, handlePrevious, handleAnswerSelect])
 
   const filteredQuestions = questions.filter(q => {
     if (filters.questionnaire !== 'all' && q.questionnaire.toString() !== filters.questionnaire) return false
