@@ -197,22 +197,20 @@ export default function TrainPage() {
 
   if (filteredQuestions.length === 0) {
     return (
-      <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
-        <div className="flex-1 flex items-center justify-center p-4">
-          <Card>
-            <CardContent className="p-8">
-              <p className="text-gray-600 mb-4">Aucune question trouvée avec ces filtres.</p>
-              <Button onClick={() => setFilters({
-                questionnaire: 'all',
-                categorie: 'all',
-                astag: 'all',
-                statut: 'all'
-              })}>
-                Réinitialiser les filtres
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
+      <div className="h-screen bg-gray-50 flex items-center justify-center">
+        <Card>
+          <CardContent className="p-8">
+            <p className="text-gray-600 mb-4">Aucune question trouvée avec ces filtres.</p>
+            <Button onClick={() => setFilters({
+              questionnaire: 'all',
+              categorie: 'all',
+              astag: 'all',
+              statut: 'all'
+            })}>
+              Réinitialiser les filtres
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     )
   }
