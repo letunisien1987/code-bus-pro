@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Question {
+  id            String   @id
+  questionnaire Int
+  question      String
+  categorie     String?
+  astag         String?  @map("astag D/F/I ")
+  enonce        String?
+  optionA       String?
+  optionB       String?
+  optionC       String?
+  optionD       String?
+  bonneReponse  String
+  imagePath     String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  attempts      Attempt[]
+}
+
+model Attempt {
+  id         String   @id @default(cuid())
+  userId    String?
+  questionId String
+  choix     String
+  correct   Boolean
+  createdAt DateTime @default(now())
+  question  Question @relation(fields: [questionId], references: [id])
+}
