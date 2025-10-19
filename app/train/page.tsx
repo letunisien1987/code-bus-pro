@@ -119,7 +119,8 @@ export default function TrainPage() {
 
     window.addEventListener('keydown', handleKeyPress)
     return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [showFeedback, currentIndex, handleNext, handlePrevious, handleAnswerSelect])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showFeedback])
 
   const filteredQuestions = questions.filter(q => {
     if (filters.questionnaire !== 'all' && q.questionnaire.toString() !== filters.questionnaire) return false
