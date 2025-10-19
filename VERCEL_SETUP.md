@@ -2,6 +2,8 @@
 
 Ce projet utilise **SQLite en développement local** et **PostgreSQL en production (Vercel)**. Suivez ce guide pour basculer proprement vers Postgres avant le déploiement.
 
+> Branche de déploiement: `vercel-prod` (Prisma: postgresql). Déployez cette branche sur Vercel; `main` reste SQLite pour le dev local.
+
 ## 🧭 Vue d’ensemble
 - Local (dev): `provider = "sqlite"` et `DATABASE_URL="file:./dev.db"`
 - Prod (Vercel): `provider = "postgresql"` et `DATABASE_URL` fourni par Vercel Postgres
@@ -49,11 +51,11 @@ Deux options s’offrent à vous:
 npm i -g vercel
 
 # Authentification et lien du projet
-overcel login
-overcel link
+vercel login
+vercel link
 
 # Récupérer les envs localement (facultatif)
-overcel env pull .env.local
+vercel env pull .env.local
 
 # ⚠️ Assurez-vous que `provider = "postgresql"` est commité avant ces commandes
 npx prisma db push
@@ -62,7 +64,7 @@ npx prisma db seed
 
 ### Option B — Route API de setup
 - Déployez le projet, puis appelez `/api/setup` une fois (depuis votre navigateur ou un curl)
-- Cette route exécute `prisma db push` et `prisma db seed` côté serveur
+- Cette route crée les tables via SQL et importe les questions depuis `data/questions.json` via Prisma (à appeler une seule fois)
 
 ## 5️⃣ Déployer
 1. Committez le schéma Postgres et poussez votre branche
