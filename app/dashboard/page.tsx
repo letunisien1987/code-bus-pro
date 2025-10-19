@@ -144,7 +144,7 @@ export default function DashboardPage() {
     })
     
     return hierarchy
-  }, [stats])
+  }, [stats.byQuestion])
 
   // Fonctions de calcul des statistiques
   const getQuestionnaireStats = (questionnaireNum: number) => {
@@ -285,7 +285,7 @@ export default function DashboardPage() {
       <div className="container mx-auto px-4 pb-12">
         <Tabs defaultValue="overview" className="w-full">
           <TabsList className="grid w-full grid-cols-5 mb-8">
-            <TabsTrigger value="overview">Vue d'ensemble</TabsTrigger>
+            <TabsTrigger value="overview">Vue d&apos;ensemble</TabsTrigger>
             <TabsTrigger value="categories">Catégories</TabsTrigger>
             <TabsTrigger value="questionnaires">Questionnaires</TabsTrigger>
             <TabsTrigger value="questions">Questions</TabsTrigger>

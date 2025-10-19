@@ -64,6 +64,7 @@ export default function ExamPage() {
       finishExam()
     }
     return () => clearInterval(interval)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, timeLeft])
 
   const fetchQuestions = async () => {
@@ -248,7 +249,8 @@ export default function ExamPage() {
 
     window.addEventListener('keydown', handleKeyPress)
     return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [state, currentIndex, examQuestions.length, reviewIndex, result, handleAnswerSelect, handleNext, handlePrevious])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state, currentIndex, examQuestions.length, reviewIndex, result])
 
   if (loading) {
     return (
@@ -266,7 +268,7 @@ export default function ExamPage() {
       <div className="h-screen bg-gray-50 flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle className="text-center">Configuration de l'examen</CardTitle>
+            <CardTitle className="text-center">Configuration de l&apos;examen</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="text-center">
@@ -503,7 +505,7 @@ export default function ExamPage() {
                 </Button>
                 <Button onClick={() => router.push('/')}>
                   <ArrowLeft className="h-4 w-4 mr-2" />
-                  Retour à l'accueil
+                  Retour à l&apos;accueil
                 </Button>
               </div>
             </div>

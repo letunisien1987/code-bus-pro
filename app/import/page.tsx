@@ -94,7 +94,7 @@ export default function ImportPage() {
                   <li>• <code>id</code> : Identifiant unique</li>
                   <li>• <code>questionnaire</code> : Numéro du questionnaire</li>
                   <li>• <code>question</code> : Numéro de la question</li>
-                  <li>• <code>categorie</code> : Catégorie (ex: "Signalisation")</li>
+                  <li>• <code>categorie</code> : Catégorie (ex: &quot;Signalisation&quot;)</li>
                   <li>• <code>enonce</code> : Énoncé de la question</li>
                   <li>• <code>options</code> : Options A, B, C, D</li>
                   <li>• <code>bonne_reponse</code> : Lettre de la bonne réponse</li>

@@ -100,6 +100,7 @@ export default function TrainPage() {
         setSmartMode(false)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
 
   useEffect(() => {
