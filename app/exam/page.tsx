@@ -439,15 +439,19 @@ export default function ExamPage() {
                               ? 'question-option-correct' 
                               : isWrong 
                               ? 'question-option-incorrect' 
-                              : 'bg-muted border-border'
+                              : option === 'A' ? 'question-option-a' :
+                                option === 'B' ? 'question-option-b' :
+                                option === 'C' ? 'question-option-c' :
+                                option === 'D' ? 'question-option-d' :
+                                'bg-muted border-border'
                           }`}
                         >
                           <div className="flex items-center gap-2 md:gap-3">
                             <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
                               isCorrect 
-                            ? 'bg-emerald text-emerald-foreground'
+                            ? 'bg-success text-success-foreground'
                             : isWrong
-                            ? 'bg-rose text-rose-foreground'
+                            ? 'bg-destructive text-destructive-foreground'
                             : 'bg-muted text-muted-foreground'
                             }`}>
                               {option}
@@ -455,13 +459,13 @@ export default function ExamPage() {
                             <span className="text-left flex-1 break-words whitespace-pre-wrap text-sm md:text-base">{optionValue}</span>
                             <div className="flex items-center gap-1 md:gap-2">
                               {isCorrect && (
-                                <div className="flex items-center gap-1 text-emerald">
+                                <div className="flex items-center gap-1 text-success">
                                   <CheckCircle className="h-3 w-3 md:h-4 md:w-4" />
                                   <span className="text-xs font-medium">Correcte</span>
                                 </div>
                               )}
                               {isWrong && (
-                                <div className="flex items-center gap-1 text-rose">
+                                <div className="flex items-center gap-1 text-destructive">
                                   <XCircle className="h-3 w-3 md:h-4 md:w-4" />
                                   <span className="text-xs font-medium">Votre réponse</span>
                                 </div>
@@ -479,9 +483,9 @@ export default function ExamPage() {
                       <div>
                         <p className="text-xs md:text-sm font-medium">
                           {currentAnswer?.correct ? (
-                            <span className="text-emerald">✓ Réponse correcte</span>
+                            <span className="text-success">✓ Réponse correcte</span>
                           ) : (
-                            <span className="text-rose">✗ Réponse incorrecte</span>
+                            <span className="text-destructive">✗ Réponse incorrecte</span>
                           )}
                         </p>
                         <p className="text-xs text-muted-foreground mt-1">
@@ -607,7 +611,7 @@ export default function ExamPage() {
                           isMarked
                             ? 'bg-accent text-accent-foreground hover:bg-accent/80'
                             : isAnswered
-                            ? 'bg-emerald text-emerald-foreground hover:bg-emerald/80'
+                            ? 'bg-success text-success-foreground hover:bg-success/80'
                             : 'bg-muted text-muted-foreground hover:bg-muted/80'
                         }`}
                       >
@@ -620,7 +624,7 @@ export default function ExamPage() {
                 {/* Légende masquée sur mobile */}
                 <div className="hidden md:flex gap-4 mt-3 text-xs text-muted-foreground">
                   <div className="flex items-center gap-1">
-                    <div className="w-4 h-4 rounded-full bg-emerald"></div>
+                    <div className="w-4 h-4 rounded-full bg-success"></div>
                     <span>Répondue</span>
                   </div>
                   <div className="flex items-center gap-1">
@@ -694,13 +698,33 @@ export default function ExamPage() {
                           key={option}
                           variant={isSelected ? "default" : "outline"}
                           className={`w-full justify-start h-auto p-2 md:p-3 ${
-                            isSelected ? 'bg-secondary/10 border-secondary text-secondary-foreground' : 'hover:bg-muted/30'
+                            isSelected 
+                              ? option === 'A' ? 'question-option-selected-a' :
+                                option === 'B' ? 'question-option-selected-b' :
+                                option === 'C' ? 'question-option-selected-c' :
+                                option === 'D' ? 'question-option-selected-d' :
+                                'bg-secondary/10 border-secondary text-secondary-foreground'
+                              : option === 'A' ? 'question-option-a' :
+                                option === 'B' ? 'question-option-b' :
+                                option === 'C' ? 'question-option-c' :
+                                option === 'D' ? 'question-option-d' :
+                                'hover:bg-muted/30'
                           }`}
                           onClick={() => handleAnswerSelect(answerKey)}
                         >
                           <div className="flex items-center gap-2 md:gap-3">
                             <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
-                              isSelected ? 'bg-purple text-purple-foreground' : 'bg-muted text-muted-foreground'
+                              isSelected 
+                                ? option === 'A' ? 'bg-primary text-primary-foreground' :
+                                  option === 'B' ? 'bg-info text-info-foreground' :
+                                  option === 'C' ? 'bg-warning text-warning-foreground' :
+                                  option === 'D' ? 'bg-accent text-accent-foreground' :
+                                  'bg-info text-info-foreground'
+                                : option === 'A' ? 'bg-primary/20 text-primary' :
+                                  option === 'B' ? 'bg-info/20 text-info' :
+                                  option === 'C' ? 'bg-warning/20 text-warning' :
+                                  option === 'D' ? 'bg-accent/20 text-accent' :
+                                  'bg-muted text-muted-foreground'
                             }`}>
                               {option}
                             </div>

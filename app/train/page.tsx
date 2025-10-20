@@ -411,29 +411,47 @@ export default function TrainPage() {
                       <Button
                         key={option}
                         variant={isSelected ? "default" : "outline"}
-                        className={`w-full justify-start h-auto p-2 md:p-3 ${
-                          showCorrect ? 'question-option-correct' :
-                          showIncorrect ? 'question-option-incorrect' :
-                          isSelected ? 'bg-secondary/10 border-secondary text-secondary-foreground' :
-                          'hover:bg-muted/30'
-                        }`}
+                          className={`w-full justify-start h-auto p-2 md:p-3 ${
+                            showCorrect ? 'question-option-correct' :
+                            showIncorrect ? 'question-option-incorrect' :
+                            isSelected 
+                              ? option === 'A' ? 'question-option-selected-a' :
+                                option === 'B' ? 'question-option-selected-b' :
+                                option === 'C' ? 'question-option-selected-c' :
+                                option === 'D' ? 'question-option-selected-d' :
+                                'bg-secondary/10 border-secondary text-secondary-foreground'
+                              : option === 'A' ? 'question-option-a' :
+                                option === 'B' ? 'question-option-b' :
+                                option === 'C' ? 'question-option-c' :
+                                option === 'D' ? 'question-option-d' :
+                                'hover:bg-muted/30'
+                          }`}
                         onClick={() => handleAnswerSelect(answerKey)}
                         disabled={showFeedback}
                       >
                         <div className="flex items-center gap-2 md:gap-3 w-full">
                           <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
-                            showCorrect ? 'bg-emerald text-emerald-foreground' :
-                            showIncorrect ? 'bg-rose text-rose-foreground' :
-                            isSelected ? 'bg-cyan text-cyan-foreground' :
-                            'bg-muted text-muted-foreground'
+                            showCorrect ? 'bg-success text-success-foreground' :
+                            showIncorrect ? 'bg-destructive text-destructive-foreground' :
+                            isSelected 
+                              ? option === 'A' ? 'bg-primary text-primary-foreground' :
+                                option === 'B' ? 'bg-info text-info-foreground' :
+                                option === 'C' ? 'bg-warning text-warning-foreground' :
+                                option === 'D' ? 'bg-accent text-accent-foreground' :
+                                'bg-info text-info-foreground'
+                              : option === 'A' ? 'bg-primary/20 text-primary' :
+                                option === 'B' ? 'bg-info/20 text-info' :
+                                option === 'C' ? 'bg-warning/20 text-warning' :
+                                option === 'D' ? 'bg-accent/20 text-accent' :
+                                'bg-muted text-muted-foreground'
                           }`}>
                             {option}
                           </div>
                           <span className="text-xs md:text-sm text-left break-words whitespace-pre-wrap flex-1">{optionValue}</span>
                           {showFeedback && (
                             <div className="ml-auto">
-                              {showCorrect && <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-emerald" />}
-                              {showIncorrect && <XCircle className="h-4 w-4 md:h-5 md:w-5 text-rose" />}
+                              {showCorrect && <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-success" />}
+                              {showIncorrect && <XCircle className="h-4 w-4 md:h-5 md:w-5 text-destructive" />}
                             </div>
                           )}
                         </div>
@@ -446,9 +464,9 @@ export default function TrainPage() {
                   <div className="mt-2 md:mt-4 p-2 md:p-3 bg-muted/30 rounded-lg">
                     <p className="text-xs md:text-sm text-muted-foreground">
                       {selectedAnswer === currentQuestion.bonneReponse ? (
-                        <span className="text-emerald font-medium">✓ Correct !</span>
+                        <span className="text-success font-medium">✓ Correct !</span>
                       ) : (
-                        <span className="text-rose font-medium">
+                        <span className="text-destructive font-medium">
                           ✗ Incorrect. La bonne réponse était {currentQuestion.bonneReponse.toUpperCase()}.
                         </span>
                       )}
