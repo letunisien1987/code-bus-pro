@@ -229,9 +229,9 @@ export default function TrainPage() {
   return (
     <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
       {/* Header épuré - Fixe en haut */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3 flex-shrink-0">
+      <div className="bg-white border-b border-gray-200 px-2 md:px-4 py-2 md:py-3 flex-shrink-0">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3">
             <Button 
               variant="ghost" 
               size="sm" 
@@ -240,10 +240,10 @@ export default function TrainPage() {
             >
               <Menu className="h-4 w-4" />
             </Button>
-            <h1 className="text-lg font-semibold">Entraînement</h1>
+            <h1 className="text-base md:text-lg font-semibold">Entraînement</h1>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 md:gap-2">
             <Button 
               variant="ghost" 
               size="sm" 
@@ -251,7 +251,7 @@ export default function TrainPage() {
               className="text-gray-600"
             >
               <Filter className="h-4 w-4 mr-1" />
-              Filtres
+              <span className="hidden md:inline">Filtres</span>
             </Button>
             <Badge variant="outline" className="text-xs">
               {currentIndex + 1} / {filteredQuestions.length}
@@ -352,30 +352,30 @@ export default function TrainPage() {
           </div>
         )}
 
-        {/* Contenu principal - Layout côte à côte sans scroll */}
-        <div className="flex-1 flex gap-4 p-4 min-h-0">
-          {/* Image - 50% */}
-          <div className="w-1/2">
-            <Card className="h-full">
-              <CardContent className="p-4 h-full flex items-center justify-center">
+        {/* Contenu principal - Layout responsive */}
+        <div className="flex-1 flex flex-col md:flex-row gap-4 p-2 md:p-4 min-h-0 pb-20 md:pb-4">
+          {/* Image - responsive */}
+          <div className="w-full md:w-1/2">
+            <Card className="h-48 md:h-full">
+              <CardContent className="p-2 md:p-4 h-full flex items-center justify-center">
                 <img 
                   src={currentQuestion.imagePath} 
                   alt={`Question ${currentQuestion.question}`}
-                  className="max-w-full max-h-full object-contain"
+                  className="max-w-full max-h-48 md:max-h-full object-contain"
                 />
               </CardContent>
             </Card>
           </div>
 
-          {/* Question et options - 50% */}
-          <div className="w-1/2 flex flex-col">
+          {/* Question et options - responsive */}
+          <div className="w-full md:w-1/2 flex flex-col">
             <Card className="flex-1">
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-2 md:pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">
+                  <CardTitle className="text-base md:text-lg">
                     Question {currentQuestion.question}
                   </CardTitle>
-                  <div className="flex gap-2">
+                  <div className="flex gap-1 md:gap-2">
                     {currentQuestion.categorie && (
                       <Badge variant="secondary" className="text-xs">
                         {currentQuestion.categorie}
@@ -389,12 +389,12 @@ export default function TrainPage() {
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-gray-700 font-medium break-words whitespace-pre-wrap">
+              <CardContent className="space-y-2 md:space-y-4 p-2 md:p-6">
+                <p className="text-sm md:text-base text-gray-700 font-medium break-words whitespace-pre-wrap">
                   {currentQuestion.enonce}
                 </p>
 
-                <div className="space-y-2">
+                <div className="space-y-1 md:space-y-2">
                   {['A', 'B', 'C', 'D'].map((option, index) => {
                     const optionKey = `option${option}` as keyof Question
                     const optionValue = currentQuestion[optionKey] as string
@@ -411,7 +411,7 @@ export default function TrainPage() {
                       <Button
                         key={option}
                         variant={isSelected ? "default" : "outline"}
-                        className={`w-full justify-start h-auto p-3 ${
+                        className={`w-full justify-start h-auto p-2 md:p-3 ${
                           showCorrect ? 'bg-green-100 border-green-500 text-green-700' :
                           showIncorrect ? 'bg-red-100 border-red-500 text-red-700' :
                           isSelected ? 'bg-blue-100 border-blue-500 text-blue-700' :
@@ -420,8 +420,8 @@ export default function TrainPage() {
                         onClick={() => handleAnswerSelect(answerKey)}
                         disabled={showFeedback}
                       >
-                        <div className="flex items-center gap-3 w-full">
-                          <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold ${
+                        <div className="flex items-center gap-2 md:gap-3 w-full">
+                          <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
                             showCorrect ? 'bg-green-500 text-white' :
                             showIncorrect ? 'bg-red-500 text-white' :
                             isSelected ? 'bg-blue-500 text-white' :
@@ -429,11 +429,11 @@ export default function TrainPage() {
                           }`}>
                             {option}
                           </div>
-                          <span className="text-left break-words whitespace-pre-wrap flex-1">{optionValue}</span>
+                          <span className="text-xs md:text-sm text-left break-words whitespace-pre-wrap flex-1">{optionValue}</span>
                           {showFeedback && (
                             <div className="ml-auto">
-                              {showCorrect && <CheckCircle className="h-5 w-5 text-green-600" />}
-                              {showIncorrect && <XCircle className="h-5 w-5 text-red-600" />}
+                              {showCorrect && <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-green-600" />}
+                              {showIncorrect && <XCircle className="h-4 w-4 md:h-5 md:w-5 text-red-600" />}
                             </div>
                           )}
                         </div>
@@ -443,8 +443,8 @@ export default function TrainPage() {
                 </div>
 
                 {showFeedback && (
-                  <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                    <p className="text-sm text-gray-600">
+                  <div className="mt-2 md:mt-4 p-2 md:p-3 bg-gray-50 rounded-lg">
+                    <p className="text-xs md:text-sm text-gray-600">
                       {selectedAnswer === currentQuestion.bonneReponse ? (
                         <span className="text-green-600 font-medium">✓ Correct !</span>
                       ) : (
@@ -458,8 +458,8 @@ export default function TrainPage() {
               </CardContent>
             </Card>
 
-            {/* Navigation */}
-            <div className="flex justify-between mt-4">
+            {/* Navigation - masquée sur mobile (sera fixe en bas) */}
+            <div className="hidden md:flex justify-between mt-4">
               <Button 
                 variant="outline" 
                 onClick={handlePrevious}
@@ -479,6 +479,30 @@ export default function TrainPage() {
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
+          </div>
+        </div>
+
+        {/* Navigation fixe mobile */}
+        <div className="fixed md:hidden bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-50">
+          <div className="flex justify-between gap-2">
+            <Button 
+              variant="outline" 
+              onClick={handlePrevious}
+              disabled={currentIndex === 0}
+              className="flex items-center gap-2 flex-1"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Précédent
+            </Button>
+            
+            <Button 
+              onClick={handleNext}
+              disabled={currentIndex === filteredQuestions.length - 1}
+              className="flex items-center gap-2 flex-1"
+            >
+              Suivant
+              <ArrowRight className="h-4 w-4" />
+            </Button>
           </div>
         </div>
       </div>

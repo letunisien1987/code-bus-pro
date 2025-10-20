@@ -79,6 +79,43 @@
   }
 }
 
+@layer utilities {
+  /* Styles pour mobile responsive */
+  @media (max-width: 768px) {
+    .mobile-text-sm {
+      font-size: 0.875rem;
+    }
+    
+    .mobile-padding-reduced {
+      padding: 0.5rem;
+    }
+    
+    .mobile-nav-fixed {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+    }
+    
+    .mobile-full-width {
+      width: 100%;
+    }
+    
+    .mobile-flex-col {
+      flex-direction: column;
+    }
+    
+    .mobile-gap-sm {
+      gap: 0.5rem;
+    }
+    
+    .mobile-text-xs {
+      font-size: 0.75rem;
+    }
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

@@ -527,29 +527,29 @@ export default function ExamPage() {
       <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
         <div className="flex-1 flex flex-col">
           {/* Header avec timer et navigation par numéros */}
-          <Card className="m-4 mb-2">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <h1 className="text-xl font-bold">Examen en cours</h1>
+          <Card className="m-2 md:m-4 mb-2">
+            <CardContent className="p-2 md:p-4">
+              <div className="flex items-center justify-between mb-2 md:mb-3">
+                <div className="flex items-center gap-2 md:gap-3">
+                  <h1 className="text-base md:text-xl font-bold">Examen en cours</h1>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-orange-600" />
-                    <span className="font-mono text-lg">
+                <div className="flex items-center gap-2 md:gap-4">
+                  <div className="flex items-center gap-1 md:gap-2">
+                    <Clock className="h-3 w-3 md:h-4 md:w-4 text-orange-600" />
+                    <span className="font-mono text-sm md:text-lg">
                       {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
                     </span>
                   </div>
-                  <Badge variant={allAnswered ? "default" : "secondary"}>
-                    {answeredCount} / {examQuestions.length} répondues
+                  <Badge variant={allAnswered ? "default" : "secondary"} className="text-xs">
+                    {answeredCount} / {examQuestions.length}
                   </Badge>
                 </div>
               </div>
 
               {/* Navigation par numéros de questions */}
-              <div className="mt-3">
-                <div className="text-xs text-gray-600 mb-2">Cliquez sur un numéro pour aller à cette question :</div>
-                <div className="flex flex-wrap gap-2">
+              <div className="mt-2 md:mt-3">
+                <div className="text-xs text-gray-600 mb-1 md:mb-2">Cliquez sur un numéro pour aller à cette question :</div>
+                <div className="flex flex-wrap gap-1 md:gap-2">
                   {examQuestions.map((q, index) => {
                     const isAnswered = !!answers[q.id]
                     const isMarked = markedForReview.has(q.id)
@@ -559,7 +559,7 @@ export default function ExamPage() {
                       <button
                         key={q.id}
                         onClick={() => goToQuestion(index)}
-                        className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
+                        className={`w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs md:text-sm font-medium transition-all ${
                           isCurrent
                             ? 'ring-2 ring-blue-500 ring-offset-2'
                             : ''
@@ -596,30 +596,30 @@ export default function ExamPage() {
             </CardContent>
           </Card>
 
-          {/* Contenu principal - Layout côte à côte */}
-          <div className="flex-1 flex mx-4 mb-4 gap-4">
-            {/* Image - 50% */}
-            <div className="w-1/2">
-              <Card className="h-full">
-                <CardContent className="p-4 h-full flex items-center justify-center">
+          {/* Contenu principal - Layout responsive */}
+          <div className="flex-1 flex flex-col md:flex-row mx-2 md:mx-4 mb-20 md:mb-4 gap-4">
+            {/* Image - responsive */}
+            <div className="w-full md:w-1/2">
+              <Card className="h-48 md:h-full">
+                <CardContent className="p-2 md:p-4 h-full flex items-center justify-center">
                   <img 
                     src={currentQuestion.imagePath} 
                     alt={`Question ${currentQuestion.question}`}
-                    className="max-w-full max-h-full object-contain"
+                    className="max-w-full max-h-48 md:max-h-full object-contain"
                   />
                 </CardContent>
               </Card>
             </div>
 
-            {/* Question et options - 50% */}
-            <div className="w-1/2 flex flex-col">
+            {/* Question et options - responsive */}
+            <div className="w-full md:w-1/2 flex flex-col">
               <Card className="flex-1">
-                <CardHeader className="pb-3">
+                <CardHeader className="pb-2 md:pb-3">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg">
+                    <CardTitle className="text-base md:text-lg">
                       Question {currentQuestion.question}
                     </CardTitle>
-                    <div className="flex gap-2">
+                    <div className="flex gap-1 md:gap-2">
                       {currentQuestion.categorie && (
                         <Badge variant="secondary" className="text-xs">
                           {currentQuestion.categorie}
@@ -633,12 +633,12 @@ export default function ExamPage() {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-gray-700 font-medium break-words whitespace-pre-wrap">
+                <CardContent className="space-y-2 md:space-y-4 p-2 md:p-6">
+                  <p className="text-sm md:text-base text-gray-700 font-medium break-words whitespace-pre-wrap">
                     {currentQuestion.enonce}
                   </p>
 
-                  <div className="space-y-2">
+                  <div className="space-y-1 md:space-y-2">
                     {['A', 'B', 'C', 'D'].map((option, index) => {
                       const optionKey = `option${option}` as keyof Question
                       const optionValue = currentQuestion[optionKey] as string
@@ -653,18 +653,18 @@ export default function ExamPage() {
                         <Button
                           key={option}
                           variant={isSelected ? "default" : "outline"}
-                          className={`w-full justify-start h-auto p-3 ${
+                          className={`w-full justify-start h-auto p-2 md:p-3 ${
                             isSelected ? 'bg-blue-100 border-blue-500 text-blue-700' : 'hover:bg-gray-50'
                           }`}
                           onClick={() => handleAnswerSelect(answerKey)}
                         >
-                          <div className="flex items-center gap-3">
-                            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold ${
+                          <div className="flex items-center gap-2 md:gap-3">
+                            <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
                               isSelected ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'
                             }`}>
                               {option}
                             </div>
-                            <span className="text-left break-words whitespace-pre-wrap">{optionValue}</span>
+                            <span className="text-xs md:text-sm text-left break-words whitespace-pre-wrap">{optionValue}</span>
                           </div>
                         </Button>
                       )
@@ -674,11 +674,11 @@ export default function ExamPage() {
               </Card>
 
               {/* Bouton marquer pour révision */}
-              <div className="mt-4">
+              <div className="mt-2 md:mt-4">
                 <Button 
                   variant="outline"
                   onClick={() => toggleMarkForReview(currentQuestion.id)}
-                  className={`w-full ${
+                  className={`w-full text-xs md:text-sm ${
                     markedForReview.has(currentQuestion.id)
                       ? 'bg-orange-100 border-orange-500 text-orange-700 hover:bg-orange-200'
                       : 'hover:bg-gray-50'
@@ -686,20 +686,20 @@ export default function ExamPage() {
                 >
                   {markedForReview.has(currentQuestion.id) ? (
                     <>
-                      <CheckCircle className="h-4 w-4 mr-2" />
+                      <CheckCircle className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
                       Marquée pour révision
                     </>
                   ) : (
                     <>
-                      <span className="text-orange-500 mr-2">⚠️</span>
+                      <span className="text-orange-500 mr-1 md:mr-2 text-xs">⚠️</span>
                       Marquer pour révision
                     </>
                   )}
                 </Button>
               </div>
 
-              {/* Navigation */}
-              <div className="flex justify-between mt-4">
+              {/* Navigation - masquée sur mobile (sera fixe en bas) */}
+              <div className="hidden md:flex justify-between mt-4">
                 <Button 
                   variant="outline" 
                   onClick={handlePrevious}
@@ -722,7 +722,7 @@ export default function ExamPage() {
 
               {/* Bouton finir l'examen - Visible seulement si toutes les questions sont répondues */}
               {allAnswered && (
-                <div className="mt-4 text-center">
+                <div className="hidden md:block mt-4 text-center">
                   <Button 
                     onClick={finishExam}
                     className="w-full bg-green-600 hover:bg-green-700 text-white"
@@ -733,6 +733,43 @@ export default function ExamPage() {
                 </div>
               )}
             </div>
+          </div>
+
+          {/* Navigation fixe mobile */}
+          <div className="fixed md:hidden bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-50">
+            <div className="flex justify-between gap-2">
+              <Button 
+                variant="outline" 
+                onClick={handlePrevious}
+                disabled={currentIndex === 0}
+                className="flex items-center gap-2 flex-1"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Précédent
+              </Button>
+              
+              <Button 
+                onClick={handleNext}
+                disabled={currentIndex === examQuestions.length - 1}
+                className="flex items-center gap-2 flex-1"
+              >
+                Suivant
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </div>
+            
+            {/* Bouton terminer l'examen mobile */}
+            {allAnswered && (
+              <div className="mt-2">
+                <Button 
+                  onClick={finishExam}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white"
+                >
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Terminer l&apos;examen
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
