@@ -47,7 +47,7 @@
     --muted-foreground: 240 5% 64.9%;
     --accent: 38 92% 50%;
     --accent-foreground: 48 96% 89%;
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --warning: 38 92% 50%;
     --warning-foreground: 48 96% 89%;
@@ -210,6 +210,23 @@
   
   .hover\:bg-info\/20:hover {
     background-color: hsl(var(--info) / 0.2);
+  }
+
+  /* Amélioration de la lisibilité des textes destructifs */
+  .text-destructive {
+    color: hsl(var(--destructive));
+  }
+  
+  .dark .text-destructive {
+    color: hsl(0 84.2% 65%);
+  }
+  
+  .bg-destructive {
+    background-color: hsl(var(--destructive));
+  }
+  
+  .dark .bg-destructive {
+    background-color: hsl(0 84.2% 65%);
   }
 }
 
