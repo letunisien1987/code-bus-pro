@@ -412,20 +412,20 @@ export default function TrainPage() {
                         key={option}
                         variant={isSelected ? "default" : "outline"}
                         className={`w-full justify-start h-auto p-2 md:p-3 ${
-                          showCorrect ? 'question-option-correct' :
-                          showIncorrect ? 'question-option-incorrect' :
-                          isSelected ? 'question-option-neutral' :
-                          'question-option-neutral'
+                          showCorrect ? 'bg-success/15 border-2 border-success text-green-800 font-semibold' :
+                          showIncorrect ? 'bg-destructive/15 border-2 border-destructive text-red-800 font-semibold' :
+                          isSelected ? 'bg-accent/10 border-2 border-accent text-accent-foreground font-semibold' :
+                          'bg-muted/30 border-2 border-border text-foreground font-medium hover:bg-muted/50 hover:border-accent transition-all duration-200'
                         }`}
                         onClick={() => handleAnswerSelect(answerKey)}
                         disabled={showFeedback}
                       >
                         <div className="flex items-center gap-2 md:gap-3 w-full">
                           <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
-                            showCorrect ? 'question-option-circle-correct' :
-                            showIncorrect ? 'question-option-circle-incorrect' :
-                            isSelected ? 'question-option-circle-selected' :
-                            'question-option-circle-neutral'
+                            showCorrect ? 'bg-success text-success-foreground font-bold' :
+                            showIncorrect ? 'bg-destructive text-destructive-foreground font-bold' :
+                            isSelected ? 'bg-accent text-accent-foreground font-bold shadow-lg' :
+                            'bg-muted text-muted-foreground font-semibold'
                           }`}>
                             {option}
                           </div>

@@ -436,19 +436,19 @@ export default function ExamPage() {
                           key={option}
                           className={`p-2 md:p-3 rounded-lg ${
                             isCorrect 
-                              ? 'question-option-correct' 
+                              ? 'bg-success/15 border-2 border-success text-green-800 font-semibold' 
                               : isWrong 
-                              ? 'question-option-incorrect' 
-                              : 'question-option-neutral'
+                              ? 'bg-destructive/15 border-2 border-destructive text-red-800 font-semibold' 
+                              : 'bg-muted/30 border-2 border-border text-foreground font-medium hover:bg-muted/50 hover:border-accent transition-all duration-200'
                           }`}
                         >
                           <div className="flex items-center gap-2 md:gap-3">
                             <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
                               isCorrect 
-                                ? 'question-option-circle-correct' 
+                                ? 'bg-success text-success-foreground font-bold' 
                                 : isWrong 
-                                ? 'question-option-circle-incorrect' 
-                                : 'question-option-circle-neutral'
+                                ? 'bg-destructive text-destructive-foreground font-bold' 
+                                : 'bg-muted text-muted-foreground font-semibold'
                             }`}>
                               {option}
                             </div>
@@ -700,7 +700,7 @@ export default function ExamPage() {
                         >
                           <div className="flex items-center gap-2 md:gap-3">
                             <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
-                              isSelected ? 'question-option-circle-selected' : 'question-option-circle-neutral'
+                              isSelected ? 'bg-accent text-accent-foreground font-bold shadow-lg' : 'bg-muted text-muted-foreground font-semibold'
                             }`}>
                               {option}
                             </div>
