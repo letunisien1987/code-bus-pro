@@ -310,40 +310,40 @@ export default function ExamPage() {
       <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
         <div className="flex-1 flex flex-col">
           {/* Header avec score et navigation */}
-          <Card className="m-4 mb-2">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-3">
+          <Card className="m-2 md:m-4 mb-2">
+            <CardContent className="p-2 md:p-4">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-2 md:mb-3 gap-3 md:gap-0">
+                <div className="flex items-center gap-2 md:gap-3">
                   <Button variant="outline" size="sm" onClick={() => router.push('/')}>
                     <ArrowLeft className="h-4 w-4 mr-1" />
-                    Retour
+                    <span className="hidden md:inline">Retour</span>
                   </Button>
-                  <h1 className="text-xl font-bold">Revue de l&apos;examen</h1>
+                  <h1 className="text-base md:text-xl font-bold">Revue de l&apos;examen</h1>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 md:gap-4">
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-blue-600">{result.score}%</div>
+                    <div className="text-xl md:text-3xl font-bold text-blue-600">{result.score}%</div>
                     <p className="text-xs text-gray-600">Score final</p>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">{result.correct}</div>
+                    <div className="text-lg md:text-2xl font-bold text-green-600">{result.correct}</div>
                     <p className="text-xs text-gray-600">Correctes</p>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-red-600">{result.incorrect}</div>
+                    <div className="text-lg md:text-2xl font-bold text-red-600">{result.incorrect}</div>
                     <p className="text-xs text-gray-600">Incorrectes</p>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-0">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-600">Question {reviewIndex + 1} sur {examQuestions.length}</span>
-                  <div className="flex gap-1">
+                  <span className="text-xs md:text-sm text-gray-600">Question {reviewIndex + 1} sur {examQuestions.length}</span>
+                  <div className="flex gap-0.5 md:gap-1">
                     {examQuestions.map((_, index) => (
                       <div
                         key={index}
-                        className={`w-2 h-2 rounded-full ${
+                        className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full ${
                           result.answers.find(a => a.questionId === examQuestions[index].id)?.correct
                             ? 'bg-green-500'
                             : 'bg-red-500'
@@ -352,7 +352,8 @@ export default function ExamPage() {
                     ))}
                   </div>
                 </div>
-                <div className="flex gap-2">
+                {/* Navigation masquée sur mobile (sera fixe en bas) */}
+                <div className="hidden md:flex gap-2">
                   <Button
                     variant="outline"
                     size="sm"
@@ -375,30 +376,30 @@ export default function ExamPage() {
             </CardContent>
           </Card>
 
-          {/* Contenu principal - Layout côte à côte */}
-          <div className="flex-1 flex mx-4 mb-4 gap-4">
-            {/* Image - 50% */}
-            <div className="w-1/2">
-              <Card className="h-full">
-                <CardContent className="p-4 h-full flex items-center justify-center">
+          {/* Contenu principal - Layout responsive */}
+          <div className="flex-1 flex flex-col md:flex-row mx-2 md:mx-4 mb-20 md:mb-4 gap-4">
+            {/* Image - responsive */}
+            <div className="w-full md:w-1/2">
+              <Card className="h-48 md:h-full">
+                <CardContent className="p-2 md:p-4 h-full flex items-center justify-center">
                   <img 
                     src={currentReviewQuestion.imagePath} 
                     alt={`Question ${currentReviewQuestion.question}`}
-                    className="max-w-full max-h-full object-contain"
+                    className="max-w-full max-h-48 md:max-h-full object-contain"
                   />
                 </CardContent>
               </Card>
             </div>
 
-            {/* Question et réponses - 50% */}
-            <div className="w-1/2 flex flex-col">
+            {/* Question et réponses - responsive */}
+            <div className="w-full md:w-1/2 flex flex-col">
               <Card className="flex-1">
-                <CardHeader className="pb-3">
+                <CardHeader className="pb-2 md:pb-3">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg">
+                    <CardTitle className="text-base md:text-lg">
                       Question {currentReviewQuestion.question}
                     </CardTitle>
-                    <div className="flex gap-2">
+                    <div className="flex gap-1 md:gap-2">
                       {currentReviewQuestion.categorie && (
                         <Badge variant="secondary" className="text-xs">
                           {currentReviewQuestion.categorie}
@@ -412,12 +413,12 @@ export default function ExamPage() {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-gray-700 font-medium break-words whitespace-pre-wrap">
+                <CardContent className="space-y-2 md:space-y-4 p-2 md:p-6">
+                  <p className="text-sm md:text-base text-gray-700 font-medium break-words whitespace-pre-wrap">
                     {currentReviewQuestion.enonce}
                   </p>
 
-                  <div className="space-y-2">
+                  <div className="space-y-1 md:space-y-2">
                     {['A', 'B', 'C', 'D'].map((option, index) => {
                       const optionKey = `option${option}` as keyof Question
                       const optionValue = currentReviewQuestion[optionKey] as string
@@ -433,7 +434,7 @@ export default function ExamPage() {
                       return (
                         <div
                           key={option}
-                          className={`p-3 rounded-lg border-2 ${
+                          className={`p-2 md:p-3 rounded-lg border-2 ${
                             isCorrect 
                               ? 'bg-green-50 border-green-500' 
                               : isWrong 
@@ -441,8 +442,8 @@ export default function ExamPage() {
                               : 'bg-gray-50 border-gray-200'
                           }`}
                         >
-                          <div className="flex items-center gap-3">
-                            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold ${
+                          <div className="flex items-center gap-2 md:gap-3">
+                            <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
                               isCorrect 
                                 ? 'bg-green-500 text-white' 
                                 : isWrong 
@@ -451,17 +452,17 @@ export default function ExamPage() {
                             }`}>
                               {option}
                             </div>
-                            <span className="text-left flex-1 break-words whitespace-pre-wrap">{optionValue}</span>
-                            <div className="flex items-center gap-2">
+                            <span className="text-left flex-1 break-words whitespace-pre-wrap text-sm md:text-base">{optionValue}</span>
+                            <div className="flex items-center gap-1 md:gap-2">
                               {isCorrect && (
                                 <div className="flex items-center gap-1 text-green-600">
-                                  <CheckCircle className="h-4 w-4" />
+                                  <CheckCircle className="h-3 w-3 md:h-4 md:w-4" />
                                   <span className="text-xs font-medium">Correcte</span>
                                 </div>
                               )}
                               {isWrong && (
                                 <div className="flex items-center gap-1 text-red-600">
-                                  <XCircle className="h-4 w-4" />
+                                  <XCircle className="h-3 w-3 md:h-4 md:w-4" />
                                   <span className="text-xs font-medium">Votre réponse</span>
                                 </div>
                               )}
@@ -473,10 +474,10 @@ export default function ExamPage() {
                   </div>
 
                   {/* Résumé de la réponse */}
-                  <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                  <div className="mt-2 md:mt-4 p-2 md:p-3 bg-gray-50 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm font-medium">
+                        <p className="text-xs md:text-sm font-medium">
                           {currentAnswer?.correct ? (
                             <span className="text-green-600">✓ Réponse correcte</span>
                           ) : (
@@ -497,8 +498,8 @@ export default function ExamPage() {
                 </CardContent>
               </Card>
 
-              {/* Actions */}
-              <div className="flex justify-between mt-4">
+              {/* Actions - masquées sur mobile */}
+              <div className="hidden md:flex justify-between mt-4">
                 <Button onClick={resetExam} variant="outline">
                   <RotateCcw className="h-4 w-4 mr-2" />
                   Nouvel examen
@@ -508,6 +509,42 @@ export default function ExamPage() {
                   Retour à l&apos;accueil
                 </Button>
               </div>
+            </div>
+          </div>
+
+          {/* Navigation fixe mobile */}
+          <div className="fixed md:hidden bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-50">
+            <div className="flex justify-between gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setReviewIndex(Math.max(0, reviewIndex - 1))}
+                disabled={reviewIndex === 0}
+                className="flex items-center gap-2 flex-1"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Précédent
+              </Button>
+
+              <Button
+                onClick={() => setReviewIndex(Math.min(examQuestions.length - 1, reviewIndex + 1))}
+                disabled={reviewIndex === examQuestions.length - 1}
+                className="flex items-center gap-2 flex-1"
+              >
+                Suivant
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </div>
+            
+            {/* Actions mobile */}
+            <div className="flex gap-2 mt-2">
+              <Button onClick={resetExam} variant="outline" className="flex-1 text-xs">
+                <RotateCcw className="h-3 w-3 mr-1" />
+                Nouvel examen
+              </Button>
+              <Button onClick={() => router.push('/')} className="flex-1 text-xs">
+                <ArrowLeft className="h-3 w-3 mr-1" />
+                Accueil
+              </Button>
             </div>
           </div>
         </div>
