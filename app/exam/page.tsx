@@ -256,8 +256,8 @@ export default function ExamPage() {
     return (
       <div className="h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Chargement des questions...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Chargement des questions...</p>
         </div>
       </div>
     )
@@ -272,7 +272,7 @@ export default function ExamPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="text-center">
-              <p className="text-gray-600 mb-4">
+              <p className="text-muted-foreground mb-4">
                 Choisissez le nombre de questions pour votre examen
               </p>
               <div className="grid grid-cols-2 gap-2">
@@ -323,30 +323,30 @@ export default function ExamPage() {
                 <div className="flex items-center gap-2 md:gap-4">
                   <div className="text-center">
                     <div className="text-xl md:text-3xl font-bold text-blue-600">{result.score}%</div>
-                    <p className="text-xs text-gray-600">Score final</p>
+                    <p className="text-xs text-muted-foreground">Score final</p>
                   </div>
                   <div className="text-center">
-                    <div className="text-lg md:text-2xl font-bold text-green-600">{result.correct}</div>
-                    <p className="text-xs text-gray-600">Correctes</p>
+                    <div className="text-lg md:text-2xl font-bold text-primary">{result.correct}</div>
+                    <p className="text-xs text-muted-foreground">Correctes</p>
                   </div>
                   <div className="text-center">
-                    <div className="text-lg md:text-2xl font-bold text-red-600">{result.incorrect}</div>
-                    <p className="text-xs text-gray-600">Incorrectes</p>
+                    <div className="text-lg md:text-2xl font-bold text-destructive">{result.incorrect}</div>
+                    <p className="text-xs text-muted-foreground">Incorrectes</p>
                   </div>
                 </div>
               </div>
 
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-0">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs md:text-sm text-gray-600">Question {reviewIndex + 1} sur {examQuestions.length}</span>
+                  <span className="text-xs md:text-sm text-muted-foreground">Question {reviewIndex + 1} sur {examQuestions.length}</span>
                   <div className="flex gap-0.5 md:gap-1">
                     {examQuestions.map((_, index) => (
                       <div
                         key={index}
                         className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full ${
                           result.answers.find(a => a.questionId === examQuestions[index].id)?.correct
-                            ? 'bg-green-500'
-                            : 'bg-red-500'
+                            ? 'bg-primary'
+                            : 'bg-destructive'
                         }`}
                       />
                     ))}
@@ -455,7 +455,7 @@ export default function ExamPage() {
                             <span className="text-left flex-1 break-words whitespace-pre-wrap text-sm md:text-base">{optionValue}</span>
                             <div className="flex items-center gap-1 md:gap-2">
                               {isCorrect && (
-                                <div className="flex items-center gap-1 text-green-600">
+                                <div className="flex items-center gap-1 text-primary">
                                   <CheckCircle className="h-3 w-3 md:h-4 md:w-4" />
                                   <span className="text-xs font-medium">Correcte</span>
                                 </div>
@@ -586,7 +586,7 @@ export default function ExamPage() {
 
               {/* Navigation par numéros de questions */}
               <div className="mt-2 md:mt-3">
-                <div className="text-[10px] md:text-xs text-gray-600 mb-1">
+                <div className="text-[10px] md:text-xs text-muted-foreground mb-1">
                   Cliquez sur un numéro :
                 </div>
                 <div className="flex flex-wrap gap-0.5 md:gap-2">
@@ -605,10 +605,10 @@ export default function ExamPage() {
                             : ''
                         } ${
                           isMarked
-                            ? 'bg-orange-500 text-white hover:bg-orange-600'
+                            ? 'bg-accent text-accent-foreground hover:bg-accent/80'
                             : isAnswered
-                            ? 'bg-green-500 text-white hover:bg-green-600'
-                            : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+                            ? 'bg-primary text-primary-foreground hover:bg-primary/80'
+                            : 'bg-muted text-muted-foreground hover:bg-muted/80'
                         }`}
                       >
                         {index + 1}
@@ -618,17 +618,17 @@ export default function ExamPage() {
                 </div>
                 
                 {/* Légende masquée sur mobile */}
-                <div className="hidden md:flex gap-4 mt-3 text-xs text-gray-600">
+                <div className="hidden md:flex gap-4 mt-3 text-xs text-muted-foreground">
                   <div className="flex items-center gap-1">
-                    <div className="w-4 h-4 rounded-full bg-green-500"></div>
+                    <div className="w-4 h-4 rounded-full bg-primary"></div>
                     <span>Répondue</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <div className="w-4 h-4 rounded-full bg-orange-500"></div>
+                    <div className="w-4 h-4 rounded-full bg-accent"></div>
                     <span>À revoir</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <div className="w-4 h-4 rounded-full bg-gray-300"></div>
+                    <div className="w-4 h-4 rounded-full bg-muted"></div>
                     <span>Non répondue</span>
                   </div>
                 </div>
@@ -674,7 +674,7 @@ export default function ExamPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-2 md:space-y-4 p-2 md:p-6">
-                  <p className="text-sm md:text-base text-gray-700 font-medium break-words whitespace-pre-wrap">
+                  <p className="text-sm md:text-base text-foreground font-medium break-words whitespace-pre-wrap">
                     {currentQuestion.enonce}
                   </p>
 
@@ -700,7 +700,7 @@ export default function ExamPage() {
                         >
                           <div className="flex items-center gap-2 md:gap-3">
                             <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
-                              isSelected ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'
+                              isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
                             }`}>
                               {option}
                             </div>
@@ -731,7 +731,7 @@ export default function ExamPage() {
                     </>
                   ) : (
                     <>
-                      <span className="text-orange-500 mr-2">⚠️</span>
+                      <span className="text-accent-foreground mr-2">⚠️</span>
                       Marquer pour révision
                     </>
                   )}
@@ -765,7 +765,7 @@ export default function ExamPage() {
                 <div className="hidden md:block mt-4 text-center">
                   <Button 
                     onClick={finishExam}
-                    className="w-full bg-green-600 hover:bg-green-700 text-white"
+                    className="w-full bg-primary hover:bg-primary/80 text-primary-foreground"
                   >
                     <CheckCircle className="h-4 w-4 mr-2" />
                     Terminer l&apos;examen
@@ -803,7 +803,7 @@ export default function ExamPage() {
               <div className="mt-2">
                 <Button 
                   onClick={finishExam}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white"
+                  className="w-full bg-primary hover:bg-primary/80 text-primary-foreground"
                 >
                   <CheckCircle className="h-4 w-4 mr-2" />
                   Terminer l&apos;examen
