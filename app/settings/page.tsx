@@ -32,7 +32,7 @@ export default function SettingsPage() {
         <CardHeader>
           <CardTitle>Apparence</CardTitle>
           <CardDescription>
-            Personnalisez l'apparence de l'application selon vos préférences
+            Personnalisez l&apos;apparence de l&apos;application selon vos préférences
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -6,7 +6,7 @@ import {
   getLearningMetrics,
   SelectionOptions 
 } from '../../../../lib/questionSelector'
-import { ProgressStatus } from '@prisma/client'
+// ProgressStatus est maintenant un string dans SQLite
 
 export async function POST(request: Request) {
   try {

@@ -1,4 +1,4 @@
-import { Question, Attempt, QuestionProgress, ProgressStatus, DifficultyTag } from '@prisma/client'
+import { Question, Attempt, QuestionProgress } from '@prisma/client'
 import { computeAccuracy } from './learningMetrics'
 
 export interface QuestionWithScore extends Question {
@@ -171,7 +171,7 @@ export function selectQuestionsForExam(
     .sort(() => Math.random() - 0.5)
 }
 
-export function computeDifficultyTag(questionId: string, attempts: Attempt[]): DifficultyTag {
+export function computeDifficultyTag(questionId: string, attempts: Attempt[]): string {
   const recent = attempts.filter(a => a.questionId === questionId).slice(-5)
   const acc = computeAccuracy(recent)
   if (recent.length < 3) return 'medium'

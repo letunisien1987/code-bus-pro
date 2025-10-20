@@ -7,7 +7,7 @@ import { Button } from '../../components/ui/button'
 import { Badge } from '../../components/ui/badge'
 import { Progress } from '../../components/ui/progress'
 import { ThemeToggle } from '../../components/theme-toggle'
-import { ArrowLeft, ArrowRight, CheckCircle, XCircle, Clock, RotateCcw, LogOut } from 'lucide-react'
+import { ArrowLeft, ArrowRight, CheckCircle, XCircle, Clock, RotateCcw, LogOut, Sun, Moon } from 'lucide-react'
 
 interface Question {
   id: string
@@ -245,24 +245,35 @@ export default function ExamPage() {
   // Fonction pour détecter si le contenu est scrollable
   const checkScrollable = () => {
     const mainContent = document.querySelector('.exam-main-content')
+    const questionImage = document.querySelector('.question-image img')
+    
+    let isScrollable = false
+    
+    // Vérifier le contenu principal
     if (mainContent) {
-      const isScrollable = mainContent.scrollHeight > mainContent.clientHeight
-      setShowScrollIndicator(isScrollable)
+      isScrollable = mainContent.scrollHeight > mainContent.clientHeight
     }
+    
+    // Vérifier si l'image est plus grande que son conteneur
+    if (questionImage) {
+      const imageContainer = questionImage.parentElement
+      if (imageContainer) {
+        const imageHeight = questionImage.scrollHeight
+        const containerHeight = imageContainer.clientHeight
+        if (imageHeight > containerHeight) {
+          isScrollable = true
+        }
+      }
+    }
+    
+    setShowScrollIndicator(isScrollable)
   }
 
   // Vérifier le scroll au chargement et au redimensionnement
   useEffect(() => {
-    // Attendre que le DOM soit mis à jour
-    const timer = setTimeout(() => {
-      checkScrollable()
-    }, 100)
-    
+    checkScrollable()
     window.addEventListener('resize', checkScrollable)
-    return () => {
-      clearTimeout(timer)
-      window.removeEventListener('resize', checkScrollable)
-    }
+    return () => window.removeEventListener('resize', checkScrollable)
   }, [examQuestions, currentIndex, reviewIndex])
 
   // Raccourcis clavier
@@ -505,7 +516,7 @@ export default function ExamPage() {
                           )}
                         </p>
                         <p className="text-xs text-muted-foreground mt-1">
-                          Votre réponse : <span className="font-medium">{currentAnswer?.answer.toUpperCase() || 'Non répondue'}</span>
+                          Votre réponse : <span className="font-medium">{currentAnswer?.answer.toUpperCase() || &apos;Non répondue&apos;}</span>
                           {!currentAnswer?.correct && (
                             <span className="ml-2">
                               • Bonne réponse : <span className="font-medium">{currentReviewQuestion.bonneReponse.toUpperCase()}</span>
@@ -868,7 +879,7 @@ export default function ExamPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-center text-muted-foreground">
-                    Êtes-vous sûr de vouloir quitter l&apos;examen ? Vos réponses ne seront pas sauvegardées.
+                    Êtes-vous sûr de vouloir quitter l'examen ? Vos réponses ne seront pas sauvegardées.
                   </p>
                   <div className="flex gap-3">
                     <Button 

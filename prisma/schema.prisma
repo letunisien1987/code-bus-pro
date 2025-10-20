@@ -6,22 +6,13 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
-enum ProgressStatus {
-  not_seen
-  learning
-  to_review
-  mastered
-}
-
-enum DifficultyTag {
-  easy
-  medium
-  hard
-}
+// SQLite ne supporte pas les enums, on utilise des strings
+// ProgressStatus: "not_seen" | "learning" | "to_review" | "mastered"
+// DifficultyTag: "easy" | "medium" | "hard"
 
 model Question {
   id            String   @id
@@ -63,8 +54,8 @@ model QuestionProgress {
   intervalDays       Int             @default(0)
   nextDueAt          DateTime?
   lastAttemptAt      DateTime?
-  status             ProgressStatus  @default(not_seen)
-  difficultyTag      DifficultyTag?
+  status             String          @default("not_seen")
+  difficultyTag      String?
 
   question           Question        @relation(fields: [questionId], references: [id])
 

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
 import { Button } from '../../components/ui/button'
@@ -31,7 +31,7 @@ interface Attempt {
   createdAt: string
 }
 
-export default function TrainPage() {
+function TrainPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [questions, setQuestions] = useState<Question[]>([])
@@ -523,5 +523,20 @@ export default function TrainPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function TrainPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Chargement...</p>
+        </div>
+      </div>
+    }>
+      <TrainPageContent />
+    </Suspense>
   )
 }
