@@ -261,27 +261,27 @@
 
   /* Classes pour vert (success) avec bon contraste */
   .text-success {
-    color: hsl(var(--success));
+    color: oklch(var(--success));
   }
   
   .bg-success {
-    background-color: hsl(var(--success));
+    background-color: oklch(var(--success));
   }
   
   .border-success {
-    border-color: hsl(var(--success));
+    border-color: oklch(var(--success));
   }
   
   .bg-success\/10 {
-    background-color: hsl(var(--success) / 0.1);
+    background-color: oklch(var(--success) / 0.1);
   }
   
   .bg-success\/20 {
-    background-color: hsl(var(--success) / 0.2);
+    background-color: oklch(var(--success) / 0.2);
   }
   
   .hover\:bg-success\/20:hover {
-    background-color: hsl(var(--success) / 0.2);
+    background-color: oklch(var(--success) / 0.2);
   }
 
   /* Amélioration du contraste pour les textes sur fonds colorés */
@@ -299,27 +299,77 @@
 
   /* Classes pour rouge (destructive) avec bon contraste */
   .text-destructive {
-    color: hsl(var(--destructive));
+    color: oklch(var(--destructive));
   }
   
   .bg-destructive {
-    background-color: hsl(var(--destructive));
+    background-color: oklch(var(--destructive));
   }
   
   .border-destructive {
-    border-color: hsl(var(--destructive));
+    border-color: oklch(var(--destructive));
   }
   
   .bg-destructive\/10 {
-    background-color: hsl(var(--destructive) / 0.1);
+    background-color: oklch(var(--destructive) / 0.1);
   }
   
   .bg-destructive\/20 {
-    background-color: hsl(var(--destructive) / 0.2);
+    background-color: oklch(var(--destructive) / 0.2);
   }
   
   .hover\:bg-destructive\/20:hover {
-    background-color: hsl(var(--destructive) / 0.2);
+    background-color: oklch(var(--destructive) / 0.2);
+  }
+
+  /* Classes pour orange (warning) */
+  .text-warning {
+    color: oklch(var(--warning));
+  }
+  
+  .bg-warning {
+    background-color: oklch(var(--warning));
+  }
+  
+  .border-warning {
+    border-color: oklch(var(--warning));
+  }
+  
+  .bg-warning\/10 {
+    background-color: oklch(var(--warning) / 0.1);
+  }
+  
+  .bg-warning\/20 {
+    background-color: oklch(var(--warning) / 0.2);
+  }
+  
+  .hover\:bg-warning\/20:hover {
+    background-color: oklch(var(--warning) / 0.2);
+  }
+
+  /* Classes pour bleu (info) */
+  .text-info {
+    color: oklch(var(--info));
+  }
+  
+  .bg-info {
+    background-color: oklch(var(--info));
+  }
+  
+  .border-info {
+    border-color: oklch(var(--info));
+  }
+  
+  .bg-info\/10 {
+    background-color: oklch(var(--info) / 0.1);
+  }
+  
+  .bg-info\/20 {
+    background-color: oklch(var(--info) / 0.2);
+  }
+  
+  .hover\:bg-info\/20:hover {
+    background-color: oklch(var(--info) / 0.2);
   }
 
   /* Amélioration du contraste pour les textes destructifs sur fonds colorés */
