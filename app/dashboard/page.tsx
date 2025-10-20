@@ -193,52 +193,55 @@ export default function DashboardPage() {
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10"></div>
         <div className="relative container mx-auto px-4 py-12">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 mb-6 shadow-lg">
-              <Trophy className="h-5 w-5 text-yellow-500" />
-              <span className="text-sm font-medium">Tableau de bord d&apos;apprentissage</span>
+          <div className="text-center mb-8 md:mb-12">
+            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-3 md:px-4 py-2 mb-4 md:mb-6 shadow-lg">
+              <Trophy className="h-4 w-4 md:h-5 md:w-5 text-yellow-500" />
+              <span className="text-xs md:text-sm font-medium">
+                <span className="hidden md:inline">Tableau de bord d&apos;apprentissage</span>
+                <span className="md:hidden">Dashboard</span>
+              </span>
             </div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">
+            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-2 md:mb-4">
               Votre parcours <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Code Bus</span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-base md:text-xl text-gray-600 max-w-3xl mx-auto px-4 md:px-0">
               Analysez vos progrès, identifiez vos points forts et optimisez votre préparation 
               au code de la route avec des insights personnalisés.
             </p>
           </div>
 
           {/* Stats principales */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-8 md:mb-12">
             <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
-              <CardContent className="p-6">
+              <CardContent className="p-3 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Score moyen</p>
-                    <p className="text-3xl font-bold text-green-600">{stats.global.averageScore}%</p>
+                    <p className="text-xs md:text-sm font-medium text-gray-600">Score moyen</p>
+                    <p className="text-2xl md:text-3xl font-bold text-green-600">{stats.global.averageScore}%</p>
                   </div>
-                  <div className="h-12 w-12 bg-green-100 rounded-full flex items-center justify-center">
-                    <TrendingUp className="h-6 w-6 text-green-600" />
+                  <div className="h-8 w-8 md:h-12 md:w-12 bg-green-100 rounded-full flex items-center justify-center">
+                    <TrendingUp className="h-4 w-4 md:h-6 md:w-6 text-green-600" />
                   </div>
                 </div>
-                <div className="mt-4">
+                <div className="mt-2 md:mt-4">
                   <Progress value={stats.global.averageScore} size="sm" />
                 </div>
               </CardContent>
             </Card>
 
             <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
-              <CardContent className="p-6">
+              <CardContent className="p-3 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Questions étudiées</p>
-                    <p className="text-3xl font-bold text-blue-600">{stats.global.completedQuestions}</p>
+                    <p className="text-xs md:text-sm font-medium text-gray-600">Questions étudiées</p>
+                    <p className="text-2xl md:text-3xl font-bold text-blue-600">{stats.global.completedQuestions}</p>
                   </div>
-                  <div className="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <BookOpen className="h-6 w-6 text-blue-600" />
+                  <div className="h-8 w-8 md:h-12 md:w-12 bg-blue-100 rounded-full flex items-center justify-center">
+                    <BookOpen className="h-4 w-4 md:h-6 md:w-6 text-blue-600" />
                   </div>
                 </div>
-                <div className="mt-4">
-                  <p className="text-sm text-gray-500">
+                <div className="mt-2 md:mt-4">
+                  <p className="text-xs md:text-sm text-gray-500">
                     {stats.global.totalQuestions > 0 ? Math.round((stats.global.completedQuestions / stats.global.totalQuestions) * 100) : 0}% du programme
                   </p>
                 </div>
@@ -246,35 +249,35 @@ export default function DashboardPage() {
             </Card>
 
             <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
-              <CardContent className="p-6">
+              <CardContent className="p-3 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Série actuelle</p>
-                    <p className="text-3xl font-bold text-orange-600">{stats.global.streak} jours</p>
+                    <p className="text-xs md:text-sm font-medium text-gray-600">Série actuelle</p>
+                    <p className="text-2xl md:text-3xl font-bold text-orange-600">{stats.global.streak} jours</p>
                   </div>
-                  <div className="h-12 w-12 bg-orange-100 rounded-full flex items-center justify-center">
-                    <Zap className="h-6 w-6 text-orange-600" />
+                  <div className="h-8 w-8 md:h-12 md:w-12 bg-orange-100 rounded-full flex items-center justify-center">
+                    <Zap className="h-4 w-4 md:h-6 md:w-6 text-orange-600" />
                   </div>
                 </div>
-                <div className="mt-4">
-                  <p className="text-sm text-gray-500">Continuez votre série !</p>
+                <div className="mt-2 md:mt-4">
+                  <p className="text-xs md:text-sm text-gray-500">Continuez votre série !</p>
                 </div>
               </CardContent>
             </Card>
 
             <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
-              <CardContent className="p-6">
+              <CardContent className="p-3 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Temps d&apos;étude</p>
-                    <p className="text-3xl font-bold text-purple-600">{stats.global.studyTime}h</p>
+                    <p className="text-xs md:text-sm font-medium text-gray-600">Temps d&apos;étude</p>
+                    <p className="text-2xl md:text-3xl font-bold text-purple-600">{stats.global.studyTime}h</p>
                   </div>
-                  <div className="h-12 w-12 bg-purple-100 rounded-full flex items-center justify-center">
-                    <Clock className="h-6 w-6 text-purple-600" />
+                  <div className="h-8 w-8 md:h-12 md:w-12 bg-purple-100 rounded-full flex items-center justify-center">
+                    <Clock className="h-4 w-4 md:h-6 md:w-6 text-purple-600" />
                   </div>
                 </div>
-                <div className="mt-4">
-                  <p className="text-sm text-gray-500">Total</p>
+                <div className="mt-2 md:mt-4">
+                  <p className="text-xs md:text-sm text-gray-500">Total</p>
                 </div>
               </CardContent>
             </Card>
@@ -283,14 +286,29 @@ export default function DashboardPage() {
       </div>
 
       {/* Contenu principal */}
-      <div className="container mx-auto px-4 pb-12">
+      <div className="container mx-auto px-2 md:px-4 pb-8 md:pb-12">
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8">
-            <TabsTrigger value="overview">Vue d&apos;ensemble</TabsTrigger>
-            <TabsTrigger value="categories">Catégories</TabsTrigger>
-            <TabsTrigger value="questionnaires">Questionnaires</TabsTrigger>
-            <TabsTrigger value="questions">Questions</TabsTrigger>
-            <TabsTrigger value="analytics">Analyses</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-4 md:mb-8 gap-1 md:gap-2">
+            <TabsTrigger value="overview" className="text-xs md:text-sm px-2 md:px-4 py-2 md:py-3">
+              <span className="hidden md:inline">Vue d&apos;ensemble</span>
+              <span className="md:hidden">Vue</span>
+            </TabsTrigger>
+            <TabsTrigger value="categories" className="text-xs md:text-sm px-2 md:px-4 py-2 md:py-3">
+              <span className="hidden md:inline">Catégories</span>
+              <span className="md:hidden">Cat.</span>
+            </TabsTrigger>
+            <TabsTrigger value="questionnaires" className="text-xs md:text-sm px-2 md:px-4 py-2 md:py-3">
+              <span className="hidden md:inline">Questionnaires</span>
+              <span className="md:hidden">Quest.</span>
+            </TabsTrigger>
+            <TabsTrigger value="questions" className="text-xs md:text-sm px-2 md:px-4 py-2 md:py-3">
+              <span className="hidden md:inline">Questions</span>
+              <span className="md:hidden">Q.</span>
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="text-xs md:text-sm px-2 md:px-4 py-2 md:py-3 col-span-2 md:col-span-1">
+              <span className="hidden md:inline">Analyses</span>
+              <span className="md:hidden">Anal.</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-8">
@@ -391,8 +409,8 @@ export default function DashboardPage() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="categories" className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <TabsContent value="categories" className="space-y-4 md:space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {stats.byCategory.length > 0 ? (
                 stats.byCategory.map((category, index) => (
                   <Card 
@@ -400,15 +418,16 @@ export default function DashboardPage() {
                     className="bg-white/80 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer group"
                     onClick={() => window.open(`/train?categorie=${encodeURIComponent(category.name)}`, '_blank')}
                   >
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-lg font-semibold text-gray-900 break-words group-hover:text-blue-600 transition-colors">
+                    <CardHeader className="pb-2 md:pb-3">
+                      <CardTitle className="text-base md:text-lg font-semibold text-gray-900 break-words group-hover:text-blue-600 transition-colors">
                         {category.name}
                       </CardTitle>
-                      <CardDescription className="text-sm text-gray-600">
+                      <CardDescription className="text-xs md:text-sm text-gray-600">
                         {category.attempted} sur {category.total} questions étudiées
                       </CardDescription>
-                      <div className="mt-2 text-xs text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
-                        Cliquez pour vous entraîner sur cette catégorie →
+                      <div className="mt-1 md:mt-2 text-xs text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="hidden md:inline">Cliquez pour vous entraîner sur cette catégorie →</span>
+                        <span className="md:hidden">Cliquez pour entraîner →</span>
                       </div>
                     </CardHeader>
                     <CardContent className="pt-0">
@@ -416,10 +435,10 @@ export default function DashboardPage() {
                         {/* Score principal */}
                         <div className="text-center">
                           <div className="relative inline-block">
-                            <p className="text-5xl font-bold text-blue-600 mb-2">{category.percentage}%</p>
-                            <div className="w-24 h-2 bg-gray-200 rounded-full mx-auto">
+                            <p className="text-3xl md:text-5xl font-bold text-blue-600 mb-1 md:mb-2">{category.percentage}%</p>
+                            <div className="w-16 md:w-24 h-1 md:h-2 bg-gray-200 rounded-full mx-auto">
                               <div 
-                                className="h-2 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-500"
+                                className="h-1 md:h-2 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-500"
                                 style={{ width: `${category.percentage}%` }}
                               ></div>
                             </div>
@@ -427,29 +446,29 @@ export default function DashboardPage() {
                         </div>
                         
                         {/* Statistiques détaillées */}
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
+                        <div className="space-y-2 md:space-y-3">
+                          <div className="flex items-center justify-between p-2 md:p-3 bg-green-50 rounded-lg border border-green-200">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                              <span className="text-sm font-medium text-green-800">Maîtrisées</span>
+                              <div className="w-2 h-2 md:w-3 md:h-3 bg-green-500 rounded-full"></div>
+                              <span className="text-xs md:text-sm font-medium text-green-800">Maîtrisées</span>
                             </div>
-                            <span className="text-lg font-bold text-green-700">{category.mastered}</span>
+                            <span className="text-base md:text-lg font-bold text-green-700">{category.mastered}</span>
                           </div>
                           
-                          <div className="flex items-center justify-between p-3 bg-orange-50 rounded-lg border border-orange-200">
+                          <div className="flex items-center justify-between p-2 md:p-3 bg-orange-50 rounded-lg border border-orange-200">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                              <span className="text-sm font-medium text-orange-800">À revoir</span>
+                              <div className="w-2 h-2 md:w-3 md:h-3 bg-orange-500 rounded-full"></div>
+                              <span className="text-xs md:text-sm font-medium text-orange-800">À revoir</span>
                             </div>
-                            <span className="text-lg font-bold text-orange-700">{category.toReview}</span>
+                            <span className="text-base md:text-lg font-bold text-orange-700">{category.toReview}</span>
                           </div>
                           
-                          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200">
+                          <div className="flex items-center justify-between p-2 md:p-3 bg-gray-50 rounded-lg border border-gray-200">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 bg-gray-400 rounded-full"></div>
-                              <span className="text-sm font-medium text-gray-700">Non vues</span>
+                              <div className="w-2 h-2 md:w-3 md:h-3 bg-gray-400 rounded-full"></div>
+                              <span className="text-xs md:text-sm font-medium text-gray-700">Non vues</span>
                             </div>
-                            <span className="text-lg font-bold text-gray-600">{category.notSeen}</span>
+                            <span className="text-base md:text-lg font-bold text-gray-600">{category.notSeen}</span>
                           </div>
                         </div>
                         
@@ -480,8 +499,8 @@ export default function DashboardPage() {
             </div>
           </TabsContent>
 
-          <TabsContent value="questionnaires" className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <TabsContent value="questionnaires" className="space-y-4 md:space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               {stats.byQuestionnaire.length > 0 ? (
                 stats.byQuestionnaire.map((questionnaire, index) => (
                   <Card 
@@ -490,23 +509,24 @@ export default function DashboardPage() {
                     onClick={() => window.open(`/train?questionnaire=${questionnaire.number}`, '_blank')}
                   >
                     <CardHeader>
-                      <CardTitle className="text-lg group-hover:text-blue-600 transition-colors">
+                      <CardTitle className="text-base md:text-lg group-hover:text-blue-600 transition-colors">
                         Questionnaire {questionnaire.number}
                       </CardTitle>
-                      <CardDescription>
+                      <CardDescription className="text-xs md:text-sm">
                         {questionnaire.attempted} sur {questionnaire.total} questions
                       </CardDescription>
-                      <div className="mt-2 text-xs text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
-                        Cliquez pour vous entraîner sur ce questionnaire →
+                      <div className="mt-1 md:mt-2 text-xs text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="hidden md:inline">Cliquez pour vous entraîner sur ce questionnaire →</span>
+                        <span className="md:hidden">Cliquez pour entraîner →</span>
                       </div>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
                         <div className="text-center">
-                          <p className="text-4xl font-bold text-purple-600">{questionnaire.percentage}%</p>
-                          <Progress value={questionnaire.percentage} className="mt-2" />
+                          <p className="text-3xl md:text-4xl font-bold text-purple-600">{questionnaire.percentage}%</p>
+                          <Progress value={questionnaire.percentage} className="mt-1 md:mt-2" />
                         </div>
-                        <div className="flex justify-between text-sm">
+                        <div className="flex justify-between text-xs md:text-sm">
                           <span className="text-gray-600">Total: {questionnaire.total}</span>
                           <span className="text-blue-600">Vues: {questionnaire.attempted}</span>
                         </div>
