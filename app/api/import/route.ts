@@ -5,7 +5,7 @@ import path from 'path'
 
 export async function POST() {
   try {
-    console.log('🔄 Import des questions via Prisma (compatible Vercel) - v2...')
+    console.log('🔄 Import des questions via Prisma (compatible Vercel) - v3...')
 
     const questionsPath = path.join(process.cwd(), 'data', 'questions.json')
     if (!fs.existsSync(questionsPath)) {
