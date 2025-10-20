@@ -322,11 +322,11 @@ export default function ExamPage() {
                 </div>
                 <div className="flex items-center gap-2 md:gap-4">
                   <div className="text-center">
-                    <div className="text-xl md:text-3xl font-bold text-primary">{result.score}%</div>
+                    <div className="text-xl md:text-3xl font-bold text-accent">{result.score}%</div>
                     <p className="text-xs text-muted-foreground">Score final</p>
                   </div>
                   <div className="text-center">
-                    <div className="text-lg md:text-2xl font-bold text-primary">{result.correct}</div>
+                    <div className="text-lg md:text-2xl font-bold text-success">{result.correct}</div>
                     <p className="text-xs text-muted-foreground">Correctes</p>
                   </div>
                   <div className="text-center">
@@ -345,7 +345,7 @@ export default function ExamPage() {
                         key={index}
                         className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full ${
                           result.answers.find(a => a.questionId === examQuestions[index].id)?.correct
-                            ? 'bg-primary'
+                            ? 'bg-success'
                             : 'bg-destructive'
                         }`}
                       />
@@ -436,7 +436,7 @@ export default function ExamPage() {
                           key={option}
                           className={`p-2 md:p-3 rounded-lg border-2 ${
                             isCorrect 
-                              ? 'bg-primary/10 border-primary' 
+                              ? 'bg-success/10 border-success' 
                               : isWrong 
                               ? 'bg-destructive/10 border-destructive' 
                               : 'bg-muted border-border'
@@ -445,7 +445,7 @@ export default function ExamPage() {
                           <div className="flex items-center gap-2 md:gap-3">
                             <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
                               isCorrect 
-                                ? 'bg-primary text-primary-foreground' 
+                                ? 'bg-success text-success-foreground' 
                                 : isWrong 
                                 ? 'bg-destructive text-destructive-foreground' 
                                 : 'bg-muted text-muted-foreground'
@@ -455,7 +455,7 @@ export default function ExamPage() {
                             <span className="text-left flex-1 break-words whitespace-pre-wrap text-sm md:text-base">{optionValue}</span>
                             <div className="flex items-center gap-1 md:gap-2">
                               {isCorrect && (
-                                <div className="flex items-center gap-1 text-primary">
+                                <div className="flex items-center gap-1 text-success">
                                   <CheckCircle className="h-3 w-3 md:h-4 md:w-4" />
                                   <span className="text-xs font-medium">Correcte</span>
                                 </div>
@@ -479,7 +479,7 @@ export default function ExamPage() {
                       <div>
                         <p className="text-xs md:text-sm font-medium">
                           {currentAnswer?.correct ? (
-                            <span className="text-primary">✓ Réponse correcte</span>
+                            <span className="text-success">✓ Réponse correcte</span>
                           ) : (
                             <span className="text-destructive">✗ Réponse incorrecte</span>
                           )}
@@ -607,7 +607,7 @@ export default function ExamPage() {
                           isMarked
                             ? 'bg-accent text-accent-foreground hover:bg-accent/80'
                             : isAnswered
-                            ? 'bg-primary text-primary-foreground hover:bg-primary/80'
+                            ? 'bg-success text-success-foreground hover:bg-success/80'
                             : 'bg-muted text-muted-foreground hover:bg-muted/80'
                         }`}
                       >
@@ -620,7 +620,7 @@ export default function ExamPage() {
                 {/* Légende masquée sur mobile */}
                 <div className="hidden md:flex gap-4 mt-3 text-xs text-muted-foreground">
                   <div className="flex items-center gap-1">
-                    <div className="w-4 h-4 rounded-full bg-primary"></div>
+                    <div className="w-4 h-4 rounded-full bg-success"></div>
                     <span>Répondue</span>
                   </div>
                   <div className="flex items-center gap-1">
@@ -700,7 +700,7 @@ export default function ExamPage() {
                         >
                           <div className="flex items-center gap-2 md:gap-3">
                             <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
-                              isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                              isSelected ? 'bg-accent text-accent-foreground' : 'bg-muted text-muted-foreground'
                             }`}>
                               {option}
                             </div>
@@ -765,7 +765,7 @@ export default function ExamPage() {
                 <div className="hidden md:block mt-4 text-center">
                   <Button 
                     onClick={finishExam}
-                    className="w-full bg-primary hover:bg-primary/80 text-primary-foreground"
+                    className="w-full bg-accent hover:bg-accent/80 text-accent-foreground"
                   >
                     <CheckCircle className="h-4 w-4 mr-2" />
                     Terminer l&apos;examen
