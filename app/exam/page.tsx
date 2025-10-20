@@ -527,29 +527,32 @@ export default function ExamPage() {
       <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
         <div className="flex-1 flex flex-col">
           {/* Header avec timer et navigation par numéros */}
-          <Card className="m-2 md:m-4 mb-2">
+          <Card className="sticky top-0 z-40 bg-white shadow-md m-2 md:m-4 mb-2">
             <CardContent className="p-2 md:p-4">
-              <div className="flex items-center justify-between mb-2 md:mb-3">
-                <div className="flex items-center gap-2 md:gap-3">
-                  <h1 className="text-base md:text-xl font-bold">Examen en cours</h1>
+              <div className="flex items-center justify-between">
+                {/* Timer à gauche */}
+                <div className="flex items-center gap-1">
+                  <Clock className="h-4 w-4 text-orange-600" />
+                  <span className="font-mono text-sm font-semibold">
+                    {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
+                  </span>
                 </div>
-                <div className="flex items-center gap-2 md:gap-4">
-                  <div className="flex items-center gap-1 md:gap-2">
-                    <Clock className="h-3 w-3 md:h-4 md:w-4 text-orange-600" />
-                    <span className="font-mono text-sm md:text-lg">
-                      {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
-                    </span>
-                  </div>
-                  <Badge variant={allAnswered ? "default" : "secondary"} className="text-xs">
-                    {answeredCount} / {examQuestions.length}
-                  </Badge>
-                </div>
+                
+                {/* Compteur au centre */}
+                <Badge variant={allAnswered ? "default" : "secondary"} className="text-xs font-semibold">
+                  {answeredCount} / {examQuestions.length}
+                </Badge>
+                
+                {/* Titre masqué sur mobile, visible desktop */}
+                <h1 className="hidden md:block text-base md:text-xl font-bold">Examen en cours</h1>
               </div>
 
               {/* Navigation par numéros de questions */}
               <div className="mt-2 md:mt-3">
-                <div className="text-xs text-gray-600 mb-1 md:mb-2">Cliquez sur un numéro pour aller à cette question :</div>
-                <div className="flex flex-wrap gap-1 md:gap-2">
+                <div className="text-[10px] md:text-xs text-gray-600 mb-1">
+                  Cliquez sur un numéro :
+                </div>
+                <div className="flex flex-wrap gap-0.5 md:gap-2">
                   {examQuestions.map((q, index) => {
                     const isAnswered = !!answers[q.id]
                     const isMarked = markedForReview.has(q.id)
@@ -559,9 +562,9 @@ export default function ExamPage() {
                       <button
                         key={q.id}
                         onClick={() => goToQuestion(index)}
-                        className={`w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs md:text-sm font-medium transition-all ${
+                        className={`w-5 h-5 md:w-8 md:h-8 rounded-full flex items-center justify-center text-[10px] md:text-sm font-medium transition-all ${
                           isCurrent
-                            ? 'ring-2 ring-blue-500 ring-offset-2'
+                            ? 'ring-1 ring-blue-500 ring-offset-1'
                             : ''
                         } ${
                           isMarked
@@ -577,8 +580,8 @@ export default function ExamPage() {
                   })}
                 </div>
                 
-                {/* Légende */}
-                <div className="flex gap-4 mt-3 text-xs text-gray-600">
+                {/* Légende masquée sur mobile */}
+                <div className="hidden md:flex gap-4 mt-3 text-xs text-gray-600">
                   <div className="flex items-center gap-1">
                     <div className="w-4 h-4 rounded-full bg-green-500"></div>
                     <span>Répondue</span>
@@ -673,8 +676,8 @@ export default function ExamPage() {
                 </CardContent>
               </Card>
 
-              {/* Bouton marquer pour révision */}
-              <div className="mt-2 md:mt-4">
+              {/* Bouton marquer pour révision - Version desktop */}
+              <div className="hidden md:block mt-2 md:mt-4">
                 <Button 
                   variant="outline"
                   onClick={() => toggleMarkForReview(currentQuestion.id)}
@@ -686,12 +689,12 @@ export default function ExamPage() {
                 >
                   {markedForReview.has(currentQuestion.id) ? (
                     <>
-                      <CheckCircle className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+                      <CheckCircle className="h-4 w-4 mr-2" />
                       Marquée pour révision
                     </>
                   ) : (
                     <>
-                      <span className="text-orange-500 mr-1 md:mr-2 text-xs">⚠️</span>
+                      <span className="text-orange-500 mr-2">⚠️</span>
                       Marquer pour révision
                     </>
                   )}
@@ -771,6 +774,23 @@ export default function ExamPage() {
               </div>
             )}
           </div>
+
+          {/* Version mobile - bouton flottant pour marquer les questions */}
+          <button
+            onClick={() => toggleMarkForReview(currentQuestion.id)}
+            className={`md:hidden fixed bottom-20 right-4 z-30 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all ${
+              markedForReview.has(currentQuestion.id)
+                ? 'bg-orange-500 text-white'
+                : 'bg-white text-orange-500 border-2 border-orange-500'
+            }`}
+            aria-label="Marquer pour révision"
+          >
+            {markedForReview.has(currentQuestion.id) ? (
+              <CheckCircle className="h-6 w-6" />
+            ) : (
+              <span className="text-2xl">⚠️</span>
+            )}
+          </button>
         </div>
       </div>
     )
