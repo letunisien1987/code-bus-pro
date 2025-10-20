@@ -194,7 +194,7 @@ export default function DashboardPage() {
         <div className="absolute inset-0 bg-primary/5"></div>
         <div className="relative container mx-auto px-4 py-12">
           <div className="text-center mb-8 md:mb-12">
-            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-3 md:px-4 py-2 mb-4 md:mb-6 shadow-lg">
+            <div className="inline-flex items-center gap-2 bg-card/80 backdrop-blur-sm rounded-full px-3 md:px-4 py-2 mb-4 md:mb-6 shadow-lg">
               <Trophy className="h-4 w-4 md:h-5 md:w-5 text-accent-foreground" />
               <span className="text-xs md:text-sm font-medium">
                 <span className="hidden md:inline">Tableau de bord d&apos;apprentissage</span>
@@ -212,7 +212,7 @@ export default function DashboardPage() {
 
           {/* Stats principales */}
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-8 md:mb-12">
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
               <CardContent className="p-3 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -229,7 +229,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
               <CardContent className="p-3 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -248,7 +248,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
               <CardContent className="p-3 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -265,7 +265,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
               <CardContent className="p-3 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -313,7 +313,7 @@ export default function DashboardPage() {
 
           <TabsContent value="overview" className="space-y-8">
             {/* Performance par catégorie */}
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <BarChart3 className="h-5 w-5" />
@@ -367,7 +367,7 @@ export default function DashboardPage() {
             </Card>
 
             {/* Activité récente */}
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Calendar className="h-5 w-5" />
@@ -415,7 +415,7 @@ export default function DashboardPage() {
                 stats.byCategory.map((category, index) => (
                   <Card 
                     key={index} 
-                    className="bg-white/80 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer group"
+                    className="bg-card/80 backdrop-blur-sm border border-border shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer group"
                     onClick={() => window.open(`/train?categorie=${encodeURIComponent(category.name)}`, '_blank')}
                   >
                     <CardHeader className="pb-2 md:pb-3">
@@ -505,7 +505,7 @@ export default function DashboardPage() {
                 stats.byQuestionnaire.map((questionnaire, index) => (
                   <Card 
                     key={index} 
-                    className="bg-white/80 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer group"
+                    className="bg-card/80 backdrop-blur-sm border border-border shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer group"
                     onClick={() => window.open(`/train?questionnaire=${questionnaire.number}`, '_blank')}
                   >
                     <CardHeader>
@@ -545,7 +545,7 @@ export default function DashboardPage() {
           </TabsContent>
 
           <TabsContent value="questions" className="space-y-8">
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="h-5 w-5" />
@@ -717,7 +717,7 @@ export default function DashboardPage() {
 
           <TabsContent value="analytics" className="space-y-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+              <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <PieChart className="h-5 w-5" />
@@ -751,7 +751,7 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+              <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <TrendingUp className="h-5 w-5" />
@@ -782,7 +782,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Questions problématiques */}
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <AlertCircle className="h-5 w-5 text-destructive" />
