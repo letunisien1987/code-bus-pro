@@ -322,7 +322,7 @@ export default function ExamPage() {
                 </div>
                 <div className="flex items-center gap-2 md:gap-4">
                   <div className="text-center">
-                    <div className="text-xl md:text-3xl font-bold text-blue-600">{result.score}%</div>
+                    <div className="text-xl md:text-3xl font-bold text-primary">{result.score}%</div>
                     <p className="text-xs text-muted-foreground">Score final</p>
                   </div>
                   <div className="text-center">
@@ -461,7 +461,7 @@ export default function ExamPage() {
                                 </div>
                               )}
                               {isWrong && (
-                                <div className="flex items-center gap-1 text-red-600">
+                                <div className="flex items-center gap-1 text-destructive">
                                   <XCircle className="h-3 w-3 md:h-4 md:w-4" />
                                   <span className="text-xs font-medium">Votre réponse</span>
                                 </div>

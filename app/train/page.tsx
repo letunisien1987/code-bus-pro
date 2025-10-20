@@ -202,8 +202,8 @@ export default function TrainPage() {
     return (
       <div className="h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Chargement des questions...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Chargement des questions...</p>
         </div>
       </div>
     )
@@ -214,7 +214,7 @@ export default function TrainPage() {
       <div className="h-screen bg-background flex items-center justify-center">
         <Card>
           <CardContent className="p-8">
-            <p className="text-gray-600 mb-4">Aucune question trouvée avec ces filtres.</p>
+            <p className="text-muted-foreground mb-4">Aucune question trouvée avec ces filtres.</p>
             <Button onClick={resetFilters}>
               Réinitialiser les filtres
             </Button>
@@ -236,7 +236,7 @@ export default function TrainPage() {
               variant="ghost" 
               size="sm" 
               onClick={() => setShowMenu(!showMenu)}
-              className="text-gray-600"
+              className="text-muted-foreground"
             >
               <Menu className="h-4 w-4" />
             </Button>
@@ -248,7 +248,7 @@ export default function TrainPage() {
               variant="ghost" 
               size="sm" 
               onClick={() => setShowFilters(!showFilters)}
-              className="text-gray-600"
+              className="text-muted-foreground"
             >
               <Filter className="h-4 w-4 mr-1" />
               <span className="hidden md:inline">Filtres</span>
@@ -422,18 +422,18 @@ export default function TrainPage() {
                       >
                         <div className="flex items-center gap-2 md:gap-3 w-full">
                           <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
-                            showCorrect ? 'bg-green-500 text-white' :
-                            showIncorrect ? 'bg-red-500 text-white' :
-                            isSelected ? 'bg-blue-500 text-white' :
-                            'bg-gray-200 text-gray-700'
+                            showCorrect ? 'bg-primary text-primary-foreground' :
+                            showIncorrect ? 'bg-destructive text-destructive-foreground' :
+                            isSelected ? 'bg-secondary text-secondary-foreground' :
+                            'bg-muted text-muted-foreground'
                           }`}>
                             {option}
                           </div>
                           <span className="text-xs md:text-sm text-left break-words whitespace-pre-wrap flex-1">{optionValue}</span>
                           {showFeedback && (
                             <div className="ml-auto">
-                              {showCorrect && <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-green-600" />}
-                              {showIncorrect && <XCircle className="h-4 w-4 md:h-5 md:w-5 text-red-600" />}
+                              {showCorrect && <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-primary" />}
+                              {showIncorrect && <XCircle className="h-4 w-4 md:h-5 md:w-5 text-destructive" />}
                             </div>
                           )}
                         </div>
