@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
+import { ThemeToggle } from './theme-toggle'
 import { 
   BarChart3, 
   BookOpen, 
@@ -11,7 +12,8 @@ import {
   Upload, 
   Home,
   Menu,
-  X
+  X,
+  Settings
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -21,6 +23,7 @@ const navigation = [
   { name: 'Entraînement', href: '/train', icon: BookOpen },
   { name: 'Examens', href: '/exam', icon: FileText },
   { name: 'Import', href: '/import', icon: Upload },
+  { name: 'Paramètres', href: '/settings', icon: Settings },
 ]
 
 export default function Navigation() {
@@ -28,7 +31,7 @@ export default function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <nav className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
+    <nav className="bg-background/80 backdrop-blur-sm border-b border-border sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -36,7 +39,7 @@ export default function Navigation() {
             <div className="h-8 w-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">CB</span>
             </div>
-            <span className="font-bold text-gray-900">Code Bus</span>
+            <span className="font-bold text-foreground">Code Bus</span>
             <Badge variant="secondary" className="bg-green-100 text-green-700 text-xs">
               Pro
             </Badge>
@@ -54,7 +57,7 @@ export default function Navigation() {
                     className={`${
                       isActive 
                         ? 'bg-blue-600 text-white' 
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                     }`}
                   >
                     <item.icon className="h-4 w-4 mr-2" />
@@ -65,24 +68,29 @@ export default function Navigation() {
             })}
           </div>
 
-          {/* Mobile menu button */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="md:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
-          </Button>
+          {/* Theme toggle - visible sur desktop et mobile */}
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            
+            {/* Mobile menu button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="md:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </Button>
+          </div>
         </div>
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-gray-200 py-4">
+          <div className="md:hidden border-t border-border py-4">
             <div className="space-y-1">
               {navigation.map((item) => {
                 const isActive = pathname === item.href
@@ -94,7 +102,7 @@ export default function Navigation() {
                       className={`w-full justify-start ${
                         isActive 
                           ? 'bg-blue-600 text-white' 
-                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                       }`}
                       onClick={() => setMobileMenuOpen(false)}
                     >
