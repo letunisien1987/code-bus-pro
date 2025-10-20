@@ -6,11 +6,12 @@ import {
   getLearningMetrics,
   SelectionOptions 
 } from '../../../../lib/questionSelector'
+import { ProgressStatus } from '@prisma/client'
 
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { mode, count, filters, weights } = body as {
+    const { mode, count, filters, weights, userId, avoidRecentN } = body as {
       mode: 'exam' | 'training'
       count?: number
       filters?: {
@@ -25,6 +26,8 @@ export async function POST(request: Request) {
         timeSinceLastAttempt: number
         categoryBalance: number
       }
+      userId?: string | null
+      avoidRecentN?: number
     }
 
     // Récupérer toutes les questions
@@ -34,11 +37,17 @@ export async function POST(request: Request) {
       }
     })
 
-    // Récupérer toutes les tentatives
+    // Récupérer toutes les tentatives (scopées utilisateur si fourni)
     const attempts = await prisma.attempt.findMany({
+      where: { userId: userId ?? null },
       orderBy: {
         createdAt: 'desc'
       }
+    })
+
+    // Progress par question (utilisateur si fourni)
+    const progresses = await prisma.questionProgress.findMany({
+      where: { userId: userId ?? null }
     })
 
     // Options de sélection
@@ -46,7 +55,9 @@ export async function POST(request: Request) {
       mode,
       count,
       filters,
-      weights
+      weights,
+      userId: userId ?? null,
+      avoidRecentN: avoidRecentN ?? 40
     }
 
     let selectedQuestions
@@ -60,8 +71,79 @@ export async function POST(request: Request) {
         )
       }
 
-      // Sélection intelligente pour l'examen
-      selectedQuestions = selectQuestionsForExam(questions, attempts, count, options)
+      // Sélection adaptative basée sur QuestionProgress
+      const recentToAvoidIds = new Set(
+        attempts.slice(0, options.avoidRecentN!).map(a => a.questionId)
+      )
+
+      // Map progresses par question
+      const progressByQ = new Map(progresses.map(p => [p.questionId, p]))
+
+      // Helper filtre commun (filtres questionnaire/categorie)
+      const passFilters = (q: any) => {
+        if (filters?.questionnaire && filters.questionnaire !== 'all' && q.questionnaire.toString() !== filters.questionnaire) return false
+        if (filters?.categorie && filters.categorie !== 'all' && q.categorie !== filters.categorie) return false
+        if (filters?.astag && filters.astag !== 'all' && q.astag !== filters.astag) return false
+        return true
+      }
+
+      const notSeen = questions.filter(q => !progressByQ.has(q.id) && passFilters(q) && !recentToAvoidIds.has(q.id))
+
+      const dueToReview = questions.filter(q => {
+        const p = progressByQ.get(q.id)
+        if (!p) return false
+        if (!passFilters(q)) return false
+        if (recentToAvoidIds.has(q.id)) return false
+        if (!p.nextDueAt) return false
+        return new Date(p.nextDueAt) <= new Date()
+      })
+
+      const weak = questions.filter(q => {
+        const p = progressByQ.get(q.id)
+        if (!p) return false
+        if (!passFilters(q)) return false
+        if (recentToAvoidIds.has(q.id)) return false
+        // faiblesse: accuracy basse ou peu de bonnes d'affilée
+        return (p.accuracy < 0.6 || p.consecutiveCorrect < 1)
+      })
+
+      const take = (arr: any[], n: number) => arr
+        .slice() // copy
+        .sort(() => Math.random() - 0.5)
+        .slice(0, Math.max(0, n))
+
+      const targetNotSeen = Math.round(count * 0.4)
+      const targetReview = Math.round(count * 0.4)
+      const targetWeak = count - targetNotSeen - targetReview
+
+      const bucketNotSeen = take(notSeen, targetNotSeen)
+      const bucketReview = take(dueToReview, targetReview)
+      const bucketWeak = take(weak, targetWeak)
+
+      let combined = [...bucketNotSeen, ...bucketReview, ...bucketWeak]
+
+      // Compléter si insuffisant: fallback au sélecteur existant (score-based)
+      if (combined.length < count) {
+        const fallback = selectQuestionsForExam(
+          questions.filter(q => !recentToAvoidIds.has(q.id) && passFilters(q) && !combined.find(c => c.id === q.id)),
+          attempts,
+          count - combined.length,
+          options
+        ).map(q => ({ ...q }))
+        combined = [...combined, ...fallback]
+      }
+
+      selectedQuestions = combined.slice(0, count).map(q => ({
+        ...q,
+        score: 0,
+        metrics: {
+          successRate: 0,
+          attemptCount: 0,
+          daysSinceLastAttempt: 0,
+          neverSeen: !progressByQ.has(q.id),
+          category: q.categorie || 'Autre'
+        }
+      }))
       
       // Métadonnées pour l'examen
       const categoryDistribution = selectedQuestions.reduce((acc, q) => {
@@ -73,12 +155,12 @@ export async function POST(request: Request) {
       metadata = {
         totalSelected: selectedQuestions.length,
         categoryDistribution,
-        averageScore: selectedQuestions.reduce((sum, q) => sum + q.score, 0) / selectedQuestions.length,
-        priorityBreakdown: {
-          neverSeen: selectedQuestions.filter(q => q.metrics.neverSeen).length,
-          struggling: selectedQuestions.filter(q => q.metrics.successRate < 0.5 && q.metrics.attemptCount > 0).length,
-          recent: selectedQuestions.filter(q => q.metrics.daysSinceLastAttempt <= 7).length
-        }
+        buckets: {
+          notSeen: bucketNotSeen.length,
+          toReview: bucketReview.length,
+          weak: bucketWeak.length
+        },
+        avoidedRecent: recentToAvoidIds.size
       }
     } else {
       // Tri intelligent pour l'entraînement
