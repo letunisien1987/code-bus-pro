@@ -447,40 +447,40 @@ export default function DashboardPage() {
                         
                         {/* Statistiques détaillées */}
                         <div className="space-y-2 md:space-y-3">
-                          <div className="flex items-center justify-between p-2 md:p-3 bg-green-50 rounded-lg border border-green-200">
+                          <div className="flex items-center justify-between p-2 md:p-3 bg-primary/10 rounded-lg border border-primary/20">
                             <div className="flex items-center gap-2">
-                              <div className="w-2 h-2 md:w-3 md:h-3 bg-green-500 rounded-full"></div>
-                              <span className="text-xs md:text-sm font-medium text-green-800">Maîtrisées</span>
+                              <div className="w-2 h-2 md:w-3 md:h-3 bg-primary rounded-full"></div>
+                              <span className="text-xs md:text-sm font-medium text-primary">Maîtrisées</span>
                             </div>
-                            <span className="text-base md:text-lg font-bold text-green-700">{category.mastered}</span>
+                            <span className="text-base md:text-lg font-bold text-primary">{category.mastered}</span>
                           </div>
                           
-                          <div className="flex items-center justify-between p-2 md:p-3 bg-orange-50 rounded-lg border border-orange-200">
+                          <div className="flex items-center justify-between p-2 md:p-3 bg-secondary/10 rounded-lg border border-secondary/20">
                             <div className="flex items-center gap-2">
-                              <div className="w-2 h-2 md:w-3 md:h-3 bg-orange-500 rounded-full"></div>
-                              <span className="text-xs md:text-sm font-medium text-orange-800">À revoir</span>
+                              <div className="w-2 h-2 md:w-3 md:h-3 bg-secondary rounded-full"></div>
+                              <span className="text-xs md:text-sm font-medium text-secondary-foreground">À revoir</span>
                             </div>
-                            <span className="text-base md:text-lg font-bold text-orange-700">{category.toReview}</span>
+                            <span className="text-base md:text-lg font-bold text-secondary-foreground">{category.toReview}</span>
                           </div>
                           
-                          <div className="flex items-center justify-between p-2 md:p-3 bg-gray-50 rounded-lg border border-gray-200">
+                          <div className="flex items-center justify-between p-2 md:p-3 bg-muted rounded-lg border border-border">
                             <div className="flex items-center gap-2">
-                              <div className="w-2 h-2 md:w-3 md:h-3 bg-gray-400 rounded-full"></div>
-                              <span className="text-xs md:text-sm font-medium text-gray-700">Non vues</span>
+                              <div className="w-2 h-2 md:w-3 md:h-3 bg-muted-foreground rounded-full"></div>
+                              <span className="text-xs md:text-sm font-medium text-muted-foreground">Non vues</span>
                             </div>
-                            <span className="text-base md:text-lg font-bold text-gray-600">{category.notSeen}</span>
+                            <span className="text-base md:text-lg font-bold text-muted-foreground">{category.notSeen}</span>
                           </div>
                         </div>
                         
                         {/* Progression */}
                         <div className="pt-2">
-                          <div className="flex justify-between text-xs text-gray-500 mb-1">
+                          <div className="flex justify-between text-xs text-muted-foreground mb-1">
                             <span>Progression</span>
                             <span>{category.attempted}/{category.total}</span>
                           </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div className="w-full bg-muted rounded-full h-2">
                             <div 
-                              className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-500"
+                              className="bg-primary h-2 rounded-full transition-all duration-500"
                               style={{ width: `${(category.attempted / category.total) * 100}%` }}
                             ></div>
                           </div>
@@ -490,7 +490,7 @@ export default function DashboardPage() {
                   </Card>
                 ))
               ) : (
-                <div className="col-span-3 text-center py-12 text-gray-500">
+                <div className="col-span-3 text-center py-12 text-muted-foreground">
                   <BookOpen className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <p>Aucune catégorie disponible</p>
                   <p className="text-sm mt-2">Commencez à vous entraîner pour voir vos statistiques par catégorie</p>

@@ -414,7 +414,7 @@ export default function ExamPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-2 md:space-y-4 p-2 md:p-6">
-                  <p className="text-sm md:text-base text-gray-700 font-medium break-words whitespace-pre-wrap">
+                  <p className="text-sm md:text-base text-foreground font-medium break-words whitespace-pre-wrap">
                     {currentReviewQuestion.enonce}
                   </p>
 
@@ -436,19 +436,19 @@ export default function ExamPage() {
                           key={option}
                           className={`p-2 md:p-3 rounded-lg border-2 ${
                             isCorrect 
-                              ? 'bg-green-50 border-green-500' 
+                              ? 'bg-primary/10 border-primary' 
                               : isWrong 
-                              ? 'bg-red-50 border-red-500' 
-                              : 'bg-gray-50 border-gray-200'
+                              ? 'bg-destructive/10 border-destructive' 
+                              : 'bg-muted border-border'
                           }`}
                         >
                           <div className="flex items-center gap-2 md:gap-3">
                             <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
                               isCorrect 
-                                ? 'bg-green-500 text-white' 
+                                ? 'bg-primary text-primary-foreground' 
                                 : isWrong 
-                                ? 'bg-red-500 text-white' 
-                                : 'bg-gray-200 text-gray-700'
+                                ? 'bg-destructive text-destructive-foreground' 
+                                : 'bg-muted text-muted-foreground'
                             }`}>
                               {option}
                             </div>
