@@ -325,27 +325,29 @@
     font-weight: 600;
   }
 
-  /* Classes spécifiques pour les options de questions avec contraste optimisé */
+  /* Classes pour réponses correctes et incorrectes avec texte noir */
   .question-option-correct {
-    background-color: hsl(var(--success) / 0.1);
-    border-color: hsl(var(--success));
-    color: hsl(142.1 76.2% 25%);
+    background-color: hsl(142.1 76.2% 36.3%);
+    border-color: hsl(142.1 76.2% 36.3%);
+    color: hsl(0 0% 0%);
     font-weight: 600;
   }
   
   .question-option-incorrect {
-    background-color: hsl(var(--destructive) / 0.1);
-    border-color: hsl(var(--destructive));
-    color: hsl(0 72% 35%);
+    background-color: hsl(0 84.2% 60.2%);
+    border-color: hsl(0 84.2% 60.2%);
+    color: hsl(0 0% 0%);
     font-weight: 600;
   }
   
   .dark .question-option-correct {
-    color: hsl(142.1 76.2% 30%);
+    background-color: hsl(142.1 70.6% 45.3%);
+    color: hsl(0 0% 0%);
   }
   
   .dark .question-option-incorrect {
-    color: hsl(0 84.2% 45%);
+    background-color: hsl(0 84.2% 60.2%);
+    color: hsl(0 0% 0%);
   }
 
   /* Amélioration du contraste pour les textes dans les options */
@@ -422,57 +424,24 @@
   .hover\:text-rose:hover { color: hsl(var(--rose)); }
   .hover\:text-indigo:hover { color: hsl(var(--indigo)); }
 
-  /* Classes spéciales pour les questions avec couleurs variées */
-  .question-option-a {
-    background-color: hsl(var(--primary) / 0.1);
-    border-color: hsl(var(--primary));
-    color: hsl(var(--primary));
+  /* Classes pour les options de questions avec jaune */
+  .question-option-neutral {
+    background-color: hsl(var(--background));
+    border-color: hsl(var(--border));
+    color: hsl(var(--foreground));
+    transition: all 0.2s ease;
   }
   
-  .question-option-b {
-    background-color: hsl(var(--info) / 0.1);
-    border-color: hsl(var(--info));
-    color: hsl(var(--info));
+  .question-option-neutral:hover {
+    background-color: hsl(45.4 93.4% 47.5% / 0.5);
+    border-color: hsl(45.4 93.4% 47.5%);
   }
   
-  .question-option-c {
-    background-color: hsl(var(--warning) / 0.1);
-    border-color: hsl(var(--warning));
-    color: hsl(var(--warning));
-  }
-  
-  .question-option-d {
-    background-color: hsl(var(--accent) / 0.1);
-    border-color: hsl(var(--accent));
-    color: hsl(var(--accent));
-  }
-  
-  /* Options sélectionnées avec couleurs distinctes */
-  .question-option-selected-a {
-    background-color: hsl(var(--primary) / 0.2);
-    border-color: hsl(var(--primary));
-    color: hsl(var(--primary));
-    font-weight: 600;
-  }
-  
-  .question-option-selected-b {
-    background-color: hsl(var(--info) / 0.2);
-    border-color: hsl(var(--info));
-    color: hsl(var(--info));
-    font-weight: 600;
-  }
-  
-  .question-option-selected-c {
-    background-color: hsl(var(--warning) / 0.2);
-    border-color: hsl(var(--warning));
-    color: hsl(var(--warning));
-    font-weight: 600;
-  }
-  
-  .question-option-selected-d {
-    background-color: hsl(var(--accent) / 0.2);
-    border-color: hsl(var(--accent));
-    color: hsl(var(--accent));
+  /* Option sélectionnée avec jaune opacité 1 */
+  .question-option-selected {
+    background-color: hsl(45.4 93.4% 47.5%);
+    border-color: hsl(45.4 93.4% 47.5%);
+    color: hsl(26 83.3% 14.1%);
     font-weight: 600;
   }
 }

@@ -439,19 +439,15 @@ export default function ExamPage() {
                               ? 'question-option-correct' 
                               : isWrong 
                               ? 'question-option-incorrect' 
-                              : option === 'A' ? 'question-option-a' :
-                                option === 'B' ? 'question-option-b' :
-                                option === 'C' ? 'question-option-c' :
-                                option === 'D' ? 'question-option-d' :
-                                'bg-muted border-border'
+                              : 'question-option-neutral'
                           }`}
                         >
                           <div className="flex items-center gap-2 md:gap-3">
                             <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
                               isCorrect 
-                            ? 'bg-success text-success-foreground'
+                            ? 'bg-[#10b981] text-black'
                             : isWrong
-                            ? 'bg-destructive text-destructive-foreground'
+                            ? 'bg-[#f87171] text-black'
                             : 'bg-muted text-muted-foreground'
                             }`}>
                               {option}
@@ -699,32 +695,16 @@ export default function ExamPage() {
                           variant={isSelected ? "default" : "outline"}
                           className={`w-full justify-start h-auto p-2 md:p-3 ${
                             isSelected 
-                              ? option === 'A' ? 'question-option-selected-a' :
-                                option === 'B' ? 'question-option-selected-b' :
-                                option === 'C' ? 'question-option-selected-c' :
-                                option === 'D' ? 'question-option-selected-d' :
-                                'bg-secondary/10 border-secondary text-secondary-foreground'
-                              : option === 'A' ? 'question-option-a' :
-                                option === 'B' ? 'question-option-b' :
-                                option === 'C' ? 'question-option-c' :
-                                option === 'D' ? 'question-option-d' :
-                                'hover:bg-muted/30'
+                              ? 'question-option-selected'
+                              : 'question-option-neutral'
                           }`}
                           onClick={() => handleAnswerSelect(answerKey)}
                         >
                           <div className="flex items-center gap-2 md:gap-3">
                             <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
                               isSelected 
-                                ? option === 'A' ? 'bg-primary text-primary-foreground' :
-                                  option === 'B' ? 'bg-info text-info-foreground' :
-                                  option === 'C' ? 'bg-warning text-warning-foreground' :
-                                  option === 'D' ? 'bg-accent text-accent-foreground' :
-                                  'bg-info text-info-foreground'
-                                : option === 'A' ? 'bg-primary/20 text-primary' :
-                                  option === 'B' ? 'bg-info/20 text-info' :
-                                  option === 'C' ? 'bg-warning/20 text-warning' :
-                                  option === 'D' ? 'bg-accent/20 text-accent' :
-                                  'bg-muted text-muted-foreground'
+                                ? 'bg-[#eab308] text-black'
+                                : 'bg-muted text-muted-foreground'
                             }`}>
                               {option}
                             </div>
