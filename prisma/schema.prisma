@@ -10,6 +10,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ProgressStatus {
+  not_seen
+  learning
+  to_review
+  mastered
+}
+
+enum DifficultyTag {
+  easy
+  medium
+  hard
+}
+
 model Question {
   id            String   @id
   questionnaire Int
@@ -26,6 +39,7 @@ model Question {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   attempts      Attempt[]
+  progresses    QuestionProgress[]
 }
 
 model Attempt {
@@ -36,4 +50,23 @@ model Attempt {
   correct   Boolean
   createdAt DateTime @default(now())
   question  Question @relation(fields: [questionId], references: [id])
+}
+
+model QuestionProgress {
+  id                 String          @id @default(cuid())
+  userId             String?
+  questionId         String
+  repetitions        Int             @default(0)
+  consecutiveCorrect Int             @default(0)
+  accuracy           Float           @default(0)
+  easiness           Float           @default(2.5)
+  intervalDays       Int             @default(0)
+  nextDueAt          DateTime?
+  lastAttemptAt      DateTime?
+  status             ProgressStatus  @default(not_seen)
+  difficultyTag      DifficultyTag?
+
+  question           Question        @relation(fields: [questionId], references: [id])
+
+  @@unique([userId, questionId])
 }

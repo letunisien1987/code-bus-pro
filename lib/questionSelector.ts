@@ -1,4 +1,5 @@
-import { Question, Attempt } from '@prisma/client'
+import { Question, Attempt, QuestionProgress, ProgressStatus, DifficultyTag } from '@prisma/client'
+import { computeAccuracy } from './learningMetrics'
 
 export interface QuestionWithScore extends Question {
   score: number
@@ -26,6 +27,8 @@ export interface SelectionOptions {
     timeSinceLastAttempt: number
     categoryBalance: number
   }
+  userId?: string | null
+  avoidRecentN?: number
 }
 
 // Paramètres de pondération par défaut
@@ -161,12 +164,22 @@ export function selectQuestionsForExam(
     selected.push(...remaining)
   }
   
-  // Mélanger légèrement pour éviter un ordre trop prévisible
+  // Mélanger légèrement pour éviter un ordre trop prévisible et limiter au count
   return selected
     .sort((a, b) => b.score - a.score)
     .slice(0, count)
     .sort(() => Math.random() - 0.5)
 }
+
+export function computeDifficultyTag(questionId: string, attempts: Attempt[]): DifficultyTag {
+  const recent = attempts.filter(a => a.questionId === questionId).slice(-5)
+  const acc = computeAccuracy(recent)
+  if (recent.length < 3) return 'medium'
+  if (acc < 0.6) return 'hard'
+  if (acc < 0.8) return 'medium'
+  return 'easy'
+}
+
 
 /**
  * Trie les questions pour l'entraînement avec priorité intelligente

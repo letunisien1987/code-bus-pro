@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '../../../lib/prisma'
+import { computeAccuracy, computeConsecutiveCorrect, updateSM2 } from '../../../lib/learningMetrics'
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,6 +12,64 @@ export async function POST(request: NextRequest) {
         choix,
         correct,
         userId: null // Pour l'instant, pas d'utilisateur
+      }
+    })
+
+    // Mettre à jour QuestionProgress (userId null pour l'instant)
+    const userId: string | null = null
+    const allAttempts = await prisma.attempt.findMany({
+      where: { questionId, userId },
+      orderBy: { createdAt: 'asc' }
+    })
+
+    const recent = allAttempts.slice(-5)
+    const accuracy = computeAccuracy(recent)
+    const consecutiveCorrect = computeConsecutiveCorrect(allAttempts)
+
+    // Récupérer ou créer le progress
+    const existing = await prisma.questionProgress.findUnique({
+      where: { userId_questionId: { userId, questionId } }
+    }).catch(() => null)
+
+    const prev = existing ?? { repetitions: 0, intervalDays: 0, easiness: 2.5 }
+    const sm2 = updateSM2({
+      repetitions: prev.repetitions,
+      intervalDays: prev.intervalDays,
+      easiness: prev.easiness
+    }, correct)
+
+    const now = new Date()
+    const nextDueAt = new Date(now)
+    nextDueAt.setDate(now.getDate() + sm2.intervalDays)
+
+    // Statut
+    let status: 'not_seen' | 'learning' | 'to_review' | 'mastered' = 'learning'
+    if (consecutiveCorrect >= 3 || accuracy >= 0.85) status = 'mastered'
+    else if (sm2.intervalDays <= 1) status = 'to_review'
+
+    await prisma.questionProgress.upsert({
+      where: { userId_questionId: { userId, questionId } },
+      update: {
+        repetitions: sm2.repetitions,
+        intervalDays: sm2.intervalDays,
+        easiness: sm2.easiness,
+        accuracy,
+        consecutiveCorrect,
+        lastAttemptAt: now,
+        nextDueAt,
+        status
+      },
+      create: {
+        userId,
+        questionId,
+        repetitions: sm2.repetitions,
+        intervalDays: sm2.intervalDays,
+        easiness: sm2.easiness,
+        accuracy,
+        consecutiveCorrect,
+        lastAttemptAt: now,
+        nextDueAt,
+        status
       }
     })
 
