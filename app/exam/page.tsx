@@ -434,34 +434,34 @@ export default function ExamPage() {
                       return (
                         <div
                           key={option}
-                          className={`p-2 md:p-3 rounded-lg ${
+                          className={`p-2 md:p-3 rounded-lg border-2 ${
                             isCorrect 
-                              ? 'bg-success/15 border-2 border-success text-green-800 font-semibold' 
+                              ? 'question-option-correct' 
                               : isWrong 
-                              ? 'bg-destructive/15 border-2 border-destructive text-red-800 font-semibold' 
-                              : 'bg-muted/30 border-2 border-border text-foreground font-medium hover:bg-muted/50 hover:border-accent transition-all duration-200'
+                              ? 'question-option-incorrect' 
+                              : 'bg-muted border-border'
                           }`}
                         >
                           <div className="flex items-center gap-2 md:gap-3">
                             <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
                               isCorrect 
-                                ? 'bg-success text-success-foreground font-bold' 
-                                : isWrong 
-                                ? 'bg-destructive text-destructive-foreground font-bold' 
-                                : 'bg-muted text-muted-foreground font-semibold'
+                            ? 'bg-emerald text-emerald-foreground'
+                            : isWrong
+                            ? 'bg-rose text-rose-foreground'
+                            : 'bg-muted text-muted-foreground'
                             }`}>
                               {option}
                             </div>
                             <span className="text-left flex-1 break-words whitespace-pre-wrap text-sm md:text-base">{optionValue}</span>
                             <div className="flex items-center gap-1 md:gap-2">
                               {isCorrect && (
-                                <div className="flex items-center gap-1 text-success">
+                                <div className="flex items-center gap-1 text-emerald">
                                   <CheckCircle className="h-3 w-3 md:h-4 md:w-4" />
                                   <span className="text-xs font-medium">Correcte</span>
                                 </div>
                               )}
                               {isWrong && (
-                                <div className="flex items-center gap-1 text-destructive">
+                                <div className="flex items-center gap-1 text-rose">
                                   <XCircle className="h-3 w-3 md:h-4 md:w-4" />
                                   <span className="text-xs font-medium">Votre réponse</span>
                                 </div>
@@ -479,9 +479,9 @@ export default function ExamPage() {
                       <div>
                         <p className="text-xs md:text-sm font-medium">
                           {currentAnswer?.correct ? (
-                            <span className="text-success">✓ Réponse correcte</span>
+                            <span className="text-emerald">✓ Réponse correcte</span>
                           ) : (
-                            <span className="text-destructive">✗ Réponse incorrecte</span>
+                            <span className="text-rose">✗ Réponse incorrecte</span>
                           )}
                         </p>
                         <p className="text-xs text-muted-foreground mt-1">
@@ -607,7 +607,7 @@ export default function ExamPage() {
                           isMarked
                             ? 'bg-accent text-accent-foreground hover:bg-accent/80'
                             : isAnswered
-                            ? 'bg-success text-success-foreground hover:bg-success/80'
+                            ? 'bg-emerald text-emerald-foreground hover:bg-emerald/80'
                             : 'bg-muted text-muted-foreground hover:bg-muted/80'
                         }`}
                       >
@@ -620,7 +620,7 @@ export default function ExamPage() {
                 {/* Légende masquée sur mobile */}
                 <div className="hidden md:flex gap-4 mt-3 text-xs text-muted-foreground">
                   <div className="flex items-center gap-1">
-                    <div className="w-4 h-4 rounded-full bg-success"></div>
+                    <div className="w-4 h-4 rounded-full bg-emerald"></div>
                     <span>Répondue</span>
                   </div>
                   <div className="flex items-center gap-1">
@@ -700,7 +700,7 @@ export default function ExamPage() {
                         >
                           <div className="flex items-center gap-2 md:gap-3">
                             <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
-                              isSelected ? 'bg-accent text-accent-foreground font-bold shadow-lg' : 'bg-muted text-muted-foreground font-semibold'
+                              isSelected ? 'bg-purple text-purple-foreground' : 'bg-muted text-muted-foreground'
                             }`}>
                               {option}
                             </div>
