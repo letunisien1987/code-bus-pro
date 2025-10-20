@@ -435,10 +435,10 @@ export default function DashboardPage() {
                         {/* Score principal */}
                         <div className="text-center">
                           <div className="relative inline-block">
-                            <p className="text-3xl md:text-5xl font-bold text-blue-600 mb-1 md:mb-2">{category.percentage}%</p>
-                            <div className="w-16 md:w-24 h-1 md:h-2 bg-gray-200 rounded-full mx-auto">
+                            <p className="text-3xl md:text-5xl font-bold text-primary mb-1 md:mb-2">{category.percentage}%</p>
+                            <div className="w-16 md:w-24 h-1 md:h-2 bg-muted rounded-full mx-auto">
                               <div 
-                                className="h-1 md:h-2 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-500"
+                                className="h-1 md:h-2 bg-primary rounded-full transition-all duration-500"
                                 style={{ width: `${category.percentage}%` }}
                               ></div>
                             </div>
@@ -509,13 +509,13 @@ export default function DashboardPage() {
                     onClick={() => window.open(`/train?questionnaire=${questionnaire.number}`, '_blank')}
                   >
                     <CardHeader>
-                      <CardTitle className="text-base md:text-lg group-hover:text-blue-600 transition-colors">
+                      <CardTitle className="text-base md:text-lg group-hover:text-primary transition-colors">
                         Questionnaire {questionnaire.number}
                       </CardTitle>
                       <CardDescription className="text-xs md:text-sm">
                         {questionnaire.attempted} sur {questionnaire.total} questions
                       </CardDescription>
-                      <div className="mt-1 md:mt-2 text-xs text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="mt-1 md:mt-2 text-xs text-primary opacity-0 group-hover:opacity-100 transition-opacity">
                         <span className="hidden md:inline">Cliquez pour vous entraîner sur ce questionnaire →</span>
                         <span className="md:hidden">Cliquez pour entraîner →</span>
                       </div>
@@ -523,19 +523,19 @@ export default function DashboardPage() {
                     <CardContent>
                       <div className="space-y-4">
                         <div className="text-center">
-                          <p className="text-3xl md:text-4xl font-bold text-purple-600">{questionnaire.percentage}%</p>
+                          <p className="text-3xl md:text-4xl font-bold text-primary">{questionnaire.percentage}%</p>
                           <Progress value={questionnaire.percentage} className="mt-1 md:mt-2" />
                         </div>
                         <div className="flex justify-between text-xs md:text-sm">
-                          <span className="text-gray-600">Total: {questionnaire.total}</span>
-                          <span className="text-blue-600">Vues: {questionnaire.attempted}</span>
+                          <span className="text-muted-foreground">Total: {questionnaire.total}</span>
+                          <span className="text-primary">Vues: {questionnaire.attempted}</span>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
                 ))
               ) : (
-                <div className="col-span-4 text-center py-12 text-gray-500">
+                <div className="col-span-4 text-center py-12 text-muted-foreground">
                   <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <p>Aucun questionnaire disponible</p>
                   <p className="text-sm mt-2">Commencez à vous entraîner pour voir vos statistiques par questionnaire</p>
@@ -564,10 +564,10 @@ export default function DashboardPage() {
                       const isExpanded = expandedQuestionnaires.has(qNum)
                       
                       return (
-                        <div key={qNum} className="border border-gray-200 rounded-lg overflow-hidden">
+                        <div key={qNum} className="border border-border rounded-lg overflow-hidden">
                           {/* En-tête Questionnaire */}
                           <div 
-                            className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 cursor-pointer hover:from-purple-100 hover:to-blue-100 transition-all"
+                            className="bg-secondary/10 p-4 cursor-pointer hover:bg-secondary/20 transition-all"
                             onClick={() => {
                               const newExpanded = new Set(expandedQuestionnaires)
                               if (isExpanded) {
@@ -581,12 +581,12 @@ export default function DashboardPage() {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-3">
                                 <ChevronRight className={`h-5 w-5 transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
-                                <FileText className="h-5 w-5 text-purple-600" />
+                                <FileText className="h-5 w-5 text-primary" />
                                 <div>
-                                  <h3 className="font-semibold text-gray-900">
+                                  <h3 className="font-semibold text-foreground">
                                     Questionnaire {qNum}
                                   </h3>
-                                  <p className="text-sm text-gray-600">
+                                  <p className="text-sm text-muted-foreground">
                                     {qStats.total} questions • {qStats.attempted} étudiées • {qStats.averageRate}% réussite
                                   </p>
                                 </div>
@@ -613,10 +613,10 @@ export default function DashboardPage() {
                                 const catStats = getCategoryStats(qNum, category)
                                 
                                 return (
-                                  <div key={catKey} className="border-t border-gray-200">
+                                  <div key={catKey} className="border-t border-border">
                                     {/* En-tête Catégorie */}
                                     <div
-                                      className="bg-gray-50 p-3 pl-12 cursor-pointer hover:bg-gray-100 transition-colors"
+                                      className="bg-muted/50 p-3 pl-12 cursor-pointer hover:bg-muted transition-colors"
                                       onClick={() => {
                                         const newExpanded = new Set(expandedCategories)
                                         if (isCatExpanded) {
@@ -630,10 +630,10 @@ export default function DashboardPage() {
                                       <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-3">
                                           <ChevronRight className={`h-4 w-4 transition-transform ${isCatExpanded ? 'rotate-90' : ''}`} />
-                                          <Folder className="h-4 w-4 text-blue-600" />
+                                          <Folder className="h-4 w-4 text-primary" />
                                           <div>
-                                            <h4 className="font-medium text-gray-900">{category}</h4>
-                                            <p className="text-xs text-gray-600">
+                                            <h4 className="font-medium text-foreground">{category}</h4>
+                                            <p className="text-xs text-muted-foreground">
                                               {catStats.total} questions • {catStats.averageRate}% réussite
                                             </p>
                                           </div>
@@ -657,24 +657,24 @@ export default function DashboardPage() {
                                         {questions.map((question) => (
                                           <div
                                             key={question.id}
-                                            className="p-3 pl-20 hover:bg-gray-50 cursor-pointer transition-colors border-t border-gray-100 group"
+                                            className="p-3 pl-20 hover:bg-muted/30 cursor-pointer transition-colors border-t border-border/50 group"
                                             onClick={() => window.open(`/train?questionId=${question.id}`, '_blank')}
                                           >
                                             {/* Même structure que l'ancien design mais plus compact */}
                                             <div className="flex items-start gap-3">
                                               <div className={`h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
-                                                question.status === 'mastered' ? 'bg-green-100 text-green-700' :
-                                                question.status === 'to_review' ? 'bg-orange-100 text-orange-700' :
-                                                'bg-gray-100 text-gray-700'
+                                                question.status === 'mastered' ? 'bg-primary/10 text-primary' :
+                                                question.status === 'to_review' ? 'bg-secondary/10 text-secondary-foreground' :
+                                                'bg-muted text-muted-foreground'
                                               }`}>
                                                 {question.status === 'mastered' ? '✓' :
                                                  question.status === 'to_review' ? '!' : '?'}
                                               </div>
                                               <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+                                                <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
                                                   {question.enonce || 'Pas d\'énoncé'}
                                                 </p>
-                                                <div className="flex gap-4 mt-1 text-xs text-gray-600">
+                                                <div className="flex gap-4 mt-1 text-xs text-muted-foreground">
                                                   <span>{question.attempts} tentatives</span>
                                                   <span>{question.successRate}% réussite</span>
                                                   {question.lastAttempt && (
@@ -683,9 +683,9 @@ export default function DashboardPage() {
                                                 </div>
                                               </div>
                                               <Badge className={
-                                                question.status === 'mastered' ? 'bg-green-100 text-green-700' :
-                                                question.status === 'to_review' ? 'bg-orange-100 text-orange-700' :
-                                                'bg-gray-100 text-gray-700'
+                                                question.status === 'mastered' ? 'bg-primary/10 text-primary' :
+                                                question.status === 'to_review' ? 'bg-secondary/10 text-secondary-foreground' :
+                                                'bg-muted text-muted-foreground'
                                               }>
                                                 {question.status === 'mastered' ? 'Maîtrisée' :
                                                  question.status === 'to_review' ? 'À revoir' : 'Non vue'}
@@ -705,7 +705,7 @@ export default function DashboardPage() {
                     })}
                   </div>
                 ) : (
-                  <div className="text-center py-12 text-gray-500">
+                  <div className="text-center py-12 text-muted-foreground">
                     <Target className="h-12 w-12 mx-auto mb-4 opacity-50" />
                     <p>Aucune question disponible</p>
                   </div>
@@ -728,24 +728,24 @@ export default function DashboardPage() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-600" />
+                        <CheckCircle className="h-4 w-4 text-primary" />
                         <span className="text-sm">Correctes</span>
                       </div>
-                      <span className="font-bold text-green-600">{stats.global.correctAnswers}</span>
+                      <span className="font-bold text-primary">{stats.global.correctAnswers}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <XCircle className="h-4 w-4 text-red-600" />
+                        <XCircle className="h-4 w-4 text-destructive" />
                         <span className="text-sm">Incorrectes</span>
                       </div>
-                      <span className="font-bold text-red-600">{stats.global.incorrectAnswers}</span>
+                      <span className="font-bold text-destructive">{stats.global.incorrectAnswers}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <AlertCircle className="h-4 w-4 text-gray-600" />
+                        <AlertCircle className="h-4 w-4 text-muted-foreground" />
                         <span className="text-sm">Non étudiées</span>
                       </div>
-                      <span className="font-bold text-gray-600">{stats.global.totalQuestions - stats.global.completedQuestions}</span>
+                      <span className="font-bold text-muted-foreground">{stats.global.totalQuestions - stats.global.completedQuestions}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -760,21 +760,21 @@ export default function DashboardPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
+                    <div className="flex justify-between items-center p-3 bg-primary/10 rounded-lg">
                       <span className="text-sm">Total tentatives</span>
-                      <span className="font-bold text-blue-600">{stats.global.totalAttempts}</span>
+                      <span className="font-bold text-primary">{stats.global.totalAttempts}</span>
                     </div>
-                    <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+                    <div className="flex justify-between items-center p-3 bg-secondary/10 rounded-lg">
                       <span className="text-sm">Taux de réussite global</span>
-                      <span className="font-bold text-green-600">{stats.global.averageScore}%</span>
+                      <span className="font-bold text-secondary-foreground">{stats.global.averageScore}%</span>
                     </div>
-                    <div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
+                    <div className="flex justify-between items-center p-3 bg-accent/10 rounded-lg">
                       <span className="text-sm">Temps d&apos;étude total</span>
-                      <span className="font-bold text-purple-600">{stats.global.studyTime}h</span>
+                      <span className="font-bold text-accent-foreground">{stats.global.studyTime}h</span>
                     </div>
-                    <div className="flex justify-between items-center p-3 bg-orange-50 rounded-lg">
+                    <div className="flex justify-between items-center p-3 bg-muted rounded-lg">
                       <span className="text-sm">Série actuelle</span>
-                      <span className="font-bold text-orange-600">{stats.global.streak} jours</span>
+                      <span className="font-bold text-muted-foreground">{stats.global.streak} jours</span>
                     </div>
                   </div>
                 </CardContent>
@@ -785,7 +785,7 @@ export default function DashboardPage() {
             <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <AlertCircle className="h-5 w-5 text-red-600" />
+                  <AlertCircle className="h-5 w-5 text-destructive" />
                   Questions à travailler
                 </CardTitle>
                 <CardDescription>
@@ -796,9 +796,9 @@ export default function DashboardPage() {
                 {stats.problematicQuestions.length > 0 ? (
                   <div className="space-y-3">
                     {stats.problematicQuestions.map((question, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-red-50 rounded-lg border border-red-100">
+                      <div key={index} className="flex items-center justify-between p-3 bg-destructive/10 rounded-lg border border-destructive/20">
                         <div className="flex items-center gap-3 flex-1">
-                          <div className="h-8 w-8 bg-red-200 rounded-full flex items-center justify-center text-xs font-bold text-red-700">
+                          <div className="h-8 w-8 bg-destructive/20 rounded-full flex items-center justify-center text-xs font-bold text-destructive">
                             {index + 1}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -811,16 +811,16 @@ export default function DashboardPage() {
                         </div>
                         <div className="flex items-center gap-4 ml-4">
                           <div className="text-right">
-                            <p className="text-sm font-bold text-red-600">{question.successRate}%</p>
-                            <p className="text-xs text-gray-500">{question.attempts} tentatives</p>
+                            <p className="text-sm font-bold text-destructive">{question.successRate}%</p>
+                            <p className="text-xs text-muted-foreground">{question.attempts} tentatives</p>
                           </div>
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-gray-500">
-                    <CheckCircle className="h-12 w-12 mx-auto mb-4 text-green-500 opacity-50" />
+                  <div className="text-center py-8 text-muted-foreground">
+                    <CheckCircle className="h-12 w-12 mx-auto mb-4 text-primary opacity-50" />
                     <p>Aucune question problématique</p>
                     <p className="text-sm mt-2">Continuez votre excellent travail !</p>
                   </div>
@@ -832,24 +832,24 @@ export default function DashboardPage() {
 
         {/* Actions rapides */}
         <div className="mt-12">
-          <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 shadow-xl">
+          <Card className="bg-primary text-primary-foreground border-0 shadow-xl">
             <CardContent className="p-8">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-2xl font-bold mb-2">Prêt pour la suite ?</h3>
-                  <p className="text-blue-100">
+                  <p className="text-primary-foreground/80">
                     Continuez votre apprentissage avec des exercices personnalisés
                   </p>
                 </div>
                 <div className="flex gap-4">
                   <Link href="/train">
-                    <Button variant="secondary" size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+                    <Button variant="secondary" size="lg" className="bg-background text-foreground hover:bg-muted">
                       <BookOpen className="h-5 w-5 mr-2" />
                       Entraînement
                     </Button>
                   </Link>
                   <Link href="/exam">
-                    <Button variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
+                    <Button variant="outline" size="lg" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10">
                       <FileText className="h-5 w-5 mr-2" />
                       Examen
                     </Button>

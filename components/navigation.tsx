@@ -36,11 +36,11 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="h-8 w-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">CB</span>
+            <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
+              <span className="text-primary-foreground font-bold text-sm">CB</span>
             </div>
             <span className="font-bold text-foreground">Code Bus</span>
-            <Badge variant="secondary" className="bg-green-100 text-green-700 text-xs">
+            <Badge variant="secondary" className="text-xs">
               Pro
             </Badge>
           </Link>
@@ -56,7 +56,7 @@ export default function Navigation() {
                     size="sm"
                     className={`${
                       isActive 
-                        ? 'bg-blue-600 text-white' 
+                             ? 'bg-primary text-primary-foreground'
                         : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                     }`}
                   >
@@ -101,7 +101,7 @@ export default function Navigation() {
                       size="sm"
                       className={`w-full justify-start ${
                         isActive 
-                          ? 'bg-blue-600 text-white' 
+                             ? 'bg-primary text-primary-foreground'
                           : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                       }`}
                       onClick={() => setMobileMenuOpen(false)}

@@ -200,7 +200,7 @@ export default function TrainPage() {
 
   if (loading) {
     return (
-      <div className="h-screen bg-gray-50 flex items-center justify-center">
+      <div className="h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Chargement des questions...</p>
@@ -211,7 +211,7 @@ export default function TrainPage() {
 
   if (filteredQuestions.length === 0) {
     return (
-      <div className="h-screen bg-gray-50 flex items-center justify-center">
+      <div className="h-screen bg-background flex items-center justify-center">
         <Card>
           <CardContent className="p-8">
             <p className="text-gray-600 mb-4">Aucune question trouvée avec ces filtres.</p>
@@ -227,9 +227,9 @@ export default function TrainPage() {
   const currentQuestion = filteredQuestions[currentIndex]
 
   return (
-    <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
+    <div className="h-screen bg-background flex flex-col overflow-hidden">
       {/* Header épuré - Fixe en haut */}
-      <div className="bg-white border-b border-gray-200 px-2 md:px-4 py-2 md:py-3 flex-shrink-0">
+      <div className="bg-background border-b border-border px-2 md:px-4 py-2 md:py-3 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 md:gap-3">
             <Button 
@@ -261,9 +261,9 @@ export default function TrainPage() {
 
         {/* Menu et filtres dépliables */}
         {(showMenu || showFilters) && (
-          <div className="px-4 py-2 bg-gray-50 border-b border-gray-200 flex-shrink-0">
+          <div className="px-4 py-2 bg-muted/50 border-b border-border flex-shrink-0">
             {showMenu && (
-              <div className="mb-3 p-3 bg-white rounded-lg border">
+              <div className="mb-3 p-3 bg-background rounded-lg border">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium">Menu</h3>
                   <Button variant="ghost" size="sm" onClick={() => setShowMenu(false)}>
@@ -291,7 +291,7 @@ export default function TrainPage() {
             )}
 
             {showFilters && (
-              <div className="p-3 bg-white rounded-lg border">
+              <div className="p-3 bg-background rounded-lg border">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium">Filtres</h3>
                   <Button variant="ghost" size="sm" onClick={() => setShowFilters(false)}>
@@ -412,10 +412,10 @@ export default function TrainPage() {
                         key={option}
                         variant={isSelected ? "default" : "outline"}
                         className={`w-full justify-start h-auto p-2 md:p-3 ${
-                          showCorrect ? 'bg-green-100 border-green-500 text-green-700' :
-                          showIncorrect ? 'bg-red-100 border-red-500 text-red-700' :
-                          isSelected ? 'bg-blue-100 border-blue-500 text-blue-700' :
-                          'hover:bg-gray-50'
+                          showCorrect ? 'bg-primary/10 border-primary text-primary' :
+                          showIncorrect ? 'bg-destructive/10 border-destructive text-destructive' :
+                          isSelected ? 'bg-secondary/10 border-secondary text-secondary-foreground' :
+                          'hover:bg-muted/30'
                         }`}
                         onClick={() => handleAnswerSelect(answerKey)}
                         disabled={showFeedback}
@@ -443,12 +443,12 @@ export default function TrainPage() {
                 </div>
 
                 {showFeedback && (
-                  <div className="mt-2 md:mt-4 p-2 md:p-3 bg-gray-50 rounded-lg">
-                    <p className="text-xs md:text-sm text-gray-600">
+                  <div className="mt-2 md:mt-4 p-2 md:p-3 bg-muted/30 rounded-lg">
+                    <p className="text-xs md:text-sm text-muted-foreground">
                       {selectedAnswer === currentQuestion.bonneReponse ? (
-                        <span className="text-green-600 font-medium">✓ Correct !</span>
+                        <span className="text-primary font-medium">✓ Correct !</span>
                       ) : (
-                        <span className="text-red-600 font-medium">
+                        <span className="text-destructive font-medium">
                           ✗ Incorrect. La bonne réponse était {currentQuestion.bonneReponse.toUpperCase()}.
                         </span>
                       )}
@@ -483,7 +483,7 @@ export default function TrainPage() {
         </div>
 
         {/* Navigation fixe mobile */}
-        <div className="fixed md:hidden bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-50">
+        <div className="fixed md:hidden bottom-0 left-0 right-0 bg-background border-t border-border p-3 z-50">
           <div className="flex justify-between gap-2">
             <Button 
               variant="outline" 

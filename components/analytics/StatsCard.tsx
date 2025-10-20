@@ -29,22 +29,22 @@ export default function StatsCard({
   const getChangeIcon = () => {
     switch (changeType) {
       case 'increase':
-        return <TrendingUp className="h-4 w-4 text-green-600" />
+        return <TrendingUp className="h-4 w-4 text-primary" />
       case 'decrease':
-        return <TrendingDown className="h-4 w-4 text-red-600" />
+        return <TrendingDown className="h-4 w-4 text-destructive" />
       default:
-        return <Minus className="h-4 w-4 text-gray-600" />
+        return <Minus className="h-4 w-4 text-muted-foreground" />
     }
   }
 
   const getChangeColor = () => {
     switch (changeType) {
       case 'increase':
-        return 'text-green-600'
+        return 'text-primary'
       case 'decrease':
-        return 'text-red-600'
+        return 'text-destructive'
       default:
-        return 'text-gray-600'
+        return 'text-muted-foreground'
     }
   }
 

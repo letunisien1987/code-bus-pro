@@ -254,7 +254,7 @@ export default function ExamPage() {
 
   if (loading) {
     return (
-      <div className="h-screen bg-gray-50 flex items-center justify-center">
+      <div className="h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Chargement des questions...</p>
@@ -265,7 +265,7 @@ export default function ExamPage() {
 
   if (state === 'setup') {
     return (
-      <div className="h-screen bg-gray-50 flex items-center justify-center">
+      <div className="h-screen bg-background flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle className="text-center">Configuration de l&apos;examen</CardTitle>
@@ -307,7 +307,7 @@ export default function ExamPage() {
     const currentAnswer = result.answers.find(a => a.questionId === currentReviewQuestion.id)
 
     return (
-      <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
+      <div className="h-screen bg-background flex flex-col overflow-hidden">
         <div className="flex-1 flex flex-col">
           {/* Header avec score et navigation */}
           <Card className="m-2 md:m-4 mb-2">
@@ -474,17 +474,17 @@ export default function ExamPage() {
                   </div>
 
                   {/* Résumé de la réponse */}
-                  <div className="mt-2 md:mt-4 p-2 md:p-3 bg-gray-50 rounded-lg">
+                  <div className="mt-2 md:mt-4 p-2 md:p-3 bg-muted/30 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-xs md:text-sm font-medium">
                           {currentAnswer?.correct ? (
-                            <span className="text-green-600">✓ Réponse correcte</span>
+                            <span className="text-primary">✓ Réponse correcte</span>
                           ) : (
-                            <span className="text-red-600">✗ Réponse incorrecte</span>
+                            <span className="text-destructive">✗ Réponse incorrecte</span>
                           )}
                         </p>
-                        <p className="text-xs text-gray-600 mt-1">
+                        <p className="text-xs text-muted-foreground mt-1">
                           Votre réponse : <span className="font-medium">{currentAnswer?.answer.toUpperCase() || 'Non répondue'}</span>
                           {!currentAnswer?.correct && (
                             <span className="ml-2">
@@ -513,7 +513,7 @@ export default function ExamPage() {
           </div>
 
           {/* Navigation fixe mobile */}
-          <div className="fixed md:hidden bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-50">
+          <div className="fixed md:hidden bottom-0 left-0 right-0 bg-background border-t border-border p-3 z-50">
             <div className="flex justify-between gap-2">
               <Button
                 variant="outline"
@@ -561,15 +561,15 @@ export default function ExamPage() {
     const allAnswered = answeredCount === examQuestions.length
 
     return (
-      <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
+      <div className="h-screen bg-background flex flex-col overflow-hidden">
         <div className="flex-1 flex flex-col">
           {/* Header avec timer et navigation par numéros */}
-          <Card className="sticky top-0 z-40 bg-white shadow-md m-2 md:m-4 mb-2">
+          <Card className="sticky top-0 z-40 bg-background shadow-md m-2 md:m-4 mb-2">
             <CardContent className="p-2 md:p-4">
               <div className="flex items-center justify-between">
                 {/* Timer à gauche */}
                 <div className="flex items-center gap-1">
-                  <Clock className="h-4 w-4 text-orange-600" />
+                  <Clock className="h-4 w-4 text-accent-foreground" />
                   <span className="font-mono text-sm font-semibold">
                     {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
                   </span>
@@ -694,7 +694,7 @@ export default function ExamPage() {
                           key={option}
                           variant={isSelected ? "default" : "outline"}
                           className={`w-full justify-start h-auto p-2 md:p-3 ${
-                            isSelected ? 'bg-blue-100 border-blue-500 text-blue-700' : 'hover:bg-gray-50'
+                            isSelected ? 'bg-secondary/10 border-secondary text-secondary-foreground' : 'hover:bg-muted/30'
                           }`}
                           onClick={() => handleAnswerSelect(answerKey)}
                         >
@@ -720,8 +720,8 @@ export default function ExamPage() {
                   onClick={() => toggleMarkForReview(currentQuestion.id)}
                   className={`w-full text-xs md:text-sm ${
                     markedForReview.has(currentQuestion.id)
-                      ? 'bg-orange-100 border-orange-500 text-orange-700 hover:bg-orange-200'
-                      : 'hover:bg-gray-50'
+                      ? 'bg-accent/10 border-accent text-accent-foreground hover:bg-accent/20'
+                      : 'hover:bg-muted/30'
                   }`}
                 >
                   {markedForReview.has(currentQuestion.id) ? (
@@ -776,7 +776,7 @@ export default function ExamPage() {
           </div>
 
           {/* Navigation fixe mobile */}
-          <div className="fixed md:hidden bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-50">
+          <div className="fixed md:hidden bottom-0 left-0 right-0 bg-background border-t border-border p-3 z-50">
             <div className="flex justify-between gap-2">
               <Button 
                 variant="outline" 
@@ -817,8 +817,8 @@ export default function ExamPage() {
             onClick={() => toggleMarkForReview(currentQuestion.id)}
             className={`md:hidden fixed bottom-20 right-4 z-30 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all ${
               markedForReview.has(currentQuestion.id)
-                ? 'bg-orange-500 text-white'
-                : 'bg-white text-orange-500 border-2 border-orange-500'
+                ? 'bg-accent text-accent-foreground'
+                : 'bg-background text-accent-foreground border-2 border-accent'
             }`}
             aria-label="Marquer pour révision"
           >
