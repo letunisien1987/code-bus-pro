@@ -6,7 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { Button } from '../../components/ui/button'
 import { Badge } from '../../components/ui/badge'
 import { Progress } from '../../components/ui/progress'
-import { ArrowLeft, ArrowRight, CheckCircle, XCircle, Clock, RotateCcw } from 'lucide-react'
+import { ThemeToggle } from '../../components/theme-toggle'
+import { ArrowLeft, ArrowRight, CheckCircle, XCircle, Clock, RotateCcw, LogOut, Sun, Moon } from 'lucide-react'
 
 interface Question {
   id: string
@@ -49,6 +50,8 @@ export default function ExamPage() {
   const [loading, setLoading] = useState(true)
   const [reviewIndex, setReviewIndex] = useState(0)
   const [markedForReview, setMarkedForReview] = useState<Set<string>>(new Set())
+  const [showExitConfirm, setShowExitConfirm] = useState(false)
+  const [showScrollIndicator, setShowScrollIndicator] = useState(false)
 
   useEffect(() => {
     fetchQuestions()
@@ -225,6 +228,54 @@ export default function ExamPage() {
     setMarkedForReview(new Set())
   }
 
+  const handleExitExam = () => {
+    setShowExitConfirm(true)
+  }
+
+  const confirmExitExam = () => {
+    resetExam()
+    setShowExitConfirm(false)
+    router.push('/')
+  }
+
+  const cancelExitExam = () => {
+    setShowExitConfirm(false)
+  }
+
+  // Fonction pour détecter si le contenu est scrollable
+  const checkScrollable = () => {
+    const mainContent = document.querySelector('.exam-main-content')
+    const questionImage = document.querySelector('.question-image img')
+    
+    let isScrollable = false
+    
+    // Vérifier le contenu principal
+    if (mainContent) {
+      isScrollable = mainContent.scrollHeight > mainContent.clientHeight
+    }
+    
+    // Vérifier si l'image est plus grande que son conteneur
+    if (questionImage) {
+      const imageContainer = questionImage.parentElement
+      if (imageContainer) {
+        const imageHeight = questionImage.scrollHeight
+        const containerHeight = imageContainer.clientHeight
+        if (imageHeight > containerHeight) {
+          isScrollable = true
+        }
+      }
+    }
+    
+    setShowScrollIndicator(isScrollable)
+  }
+
+  // Vérifier le scroll au chargement et au redimensionnement
+  useEffect(() => {
+    checkScrollable()
+    window.addEventListener('resize', checkScrollable)
+    return () => window.removeEventListener('resize', checkScrollable)
+  }, [examQuestions, currentIndex, reviewIndex])
+
   // Raccourcis clavier
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -352,32 +403,12 @@ export default function ExamPage() {
                     ))}
                   </div>
                 </div>
-                {/* Navigation masquée sur mobile (sera fixe en bas) */}
-                <div className="hidden md:flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setReviewIndex(Math.max(0, reviewIndex - 1))}
-                    disabled={reviewIndex === 0}
-                  >
-                    <ArrowLeft className="h-4 w-4 mr-1" />
-                    Précédent
-                  </Button>
-                  <Button
-                    size="sm"
-                    onClick={() => setReviewIndex(Math.min(examQuestions.length - 1, reviewIndex + 1))}
-                    disabled={reviewIndex === examQuestions.length - 1}
-                  >
-                    Suivant
-                    <ArrowRight className="h-4 w-4 ml-1" />
-                  </Button>
-                </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Contenu principal - Layout responsive */}
-          <div className="flex-1 flex flex-col md:flex-row mx-2 md:mx-4 mb-20 md:mb-4 gap-4">
+          <div className="flex-1 flex flex-col md:flex-row mx-2 md:mx-4 mb-32 gap-4">
             {/* Image - responsive */}
             <div className="w-full md:w-1/2">
               <Card className="h-48 md:h-full">
@@ -439,16 +470,16 @@ export default function ExamPage() {
                               ? 'question-option-correct' 
                               : isWrong 
                               ? 'question-option-incorrect' 
-                              : 'question-option-neutral'
+                              : 'bg-muted border-border'
                           }`}
                         >
                           <div className="flex items-center gap-2 md:gap-3">
                             <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
                               isCorrect 
-                            ? 'bg-[#10b981] text-black'
-                            : isWrong
-                            ? 'bg-[#f87171] text-black'
-                            : 'bg-muted text-muted-foreground'
+                                ? 'bg-success text-success-foreground' 
+                                : isWrong 
+                                ? 'bg-destructive text-destructive-foreground' 
+                                : 'bg-muted text-muted-foreground'
                             }`}>
                               {option}
                             </div>
@@ -512,8 +543,17 @@ export default function ExamPage() {
             </div>
           </div>
 
-          {/* Navigation fixe mobile */}
-          <div className="fixed md:hidden bottom-0 left-0 right-0 bg-background border-t border-border p-3 z-50">
+          {/* Indicateur de scroll intelligent */}
+          {showScrollIndicator && (
+            <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-40">
+              <div className="bg-primary/90 text-primary-foreground px-3 py-1 rounded-full text-xs font-medium shadow-lg animate-bounce">
+                ↑ Plus de contenu en dessous
+              </div>
+            </div>
+          )}
+
+          {/* Navigation fixe - visible sur toutes les tailles d'écran */}
+          <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border p-3 z-50">
             <div className="flex justify-between gap-2">
               <Button
                 variant="outline"
@@ -535,7 +575,7 @@ export default function ExamPage() {
               </Button>
             </div>
             
-            {/* Actions mobile */}
+            {/* Actions */}
             <div className="flex gap-2 mt-2">
               <Button onClick={resetExam} variant="outline" className="flex-1 text-xs">
                 <RotateCcw className="h-3 w-3 mr-1" />
@@ -562,26 +602,40 @@ export default function ExamPage() {
 
     return (
       <div className="h-screen bg-background flex flex-col overflow-hidden">
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col exam-main-content">
           {/* Header avec timer et navigation par numéros */}
           <Card className="sticky top-0 z-40 bg-background shadow-md m-2 md:m-4 mb-2">
             <CardContent className="p-2 md:p-4">
               <div className="flex items-center justify-between">
-                {/* Timer à gauche */}
-                <div className="flex items-center gap-1">
-                  <Clock className="h-4 w-4 text-accent-foreground" />
-                  <span className="font-mono text-sm font-semibold">
-                    {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
-                  </span>
+                {/* Boutons de contrôle à gauche */}
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleExitExam}
+                    className="text-muted-foreground hover:text-destructive"
+                  >
+                    <LogOut className="h-4 w-4 mr-1" />
+                    <span className="hidden md:inline">Sortir</span>
+                  </Button>
+                  <ThemeToggle />
                 </div>
                 
-                {/* Compteur au centre */}
+                {/* Chrono valorisé au centre */}
+                <div className="flex flex-col items-center">
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-6 w-6 md:h-8 md:w-8 text-primary" />
+                    <span className="font-mono text-2xl md:text-3xl font-bold text-primary">
+                      {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
+                    </span>
+                  </div>
+                  <h1 className="text-xs md:text-sm text-muted-foreground font-medium">Examen en cours</h1>
+                </div>
+                
+                {/* Compteur à droite */}
                 <Badge variant={allAnswered ? "default" : "secondary"} className="text-xs font-semibold">
                   {answeredCount} / {examQuestions.length}
                 </Badge>
-                
-                {/* Titre masqué sur mobile, visible desktop */}
-                <h1 className="hidden md:block text-base md:text-xl font-bold">Examen en cours</h1>
               </div>
 
               {/* Navigation par numéros de questions */}
@@ -637,7 +691,7 @@ export default function ExamPage() {
           </Card>
 
           {/* Contenu principal - Layout responsive */}
-          <div className="flex-1 flex flex-col md:flex-row mx-2 md:mx-4 mb-20 md:mb-4 gap-4">
+          <div className="flex-1 flex flex-col md:flex-row mx-2 md:mx-4 mb-32 gap-4">
             {/* Image - responsive */}
             <div className="w-full md:w-1/2">
               <Card className="h-48 md:h-full">
@@ -690,27 +744,22 @@ export default function ExamPage() {
                       const isSelected = selectedAnswer === answerKey
 
                       return (
-                        <Button
+                        <div
                           key={option}
-                          variant={isSelected ? "default" : "outline"}
-                          className={`w-full justify-start h-auto p-2 md:p-3 ${
-                            isSelected 
-                              ? 'question-option-selected'
-                              : 'question-option-neutral'
+                          className={`p-2 md:p-3 rounded-lg border-2 cursor-pointer question-option ${
+                            isSelected ? 'question-option-selected' : 'bg-muted border-border'
                           }`}
                           onClick={() => handleAnswerSelect(answerKey)}
                         >
                           <div className="flex items-center gap-2 md:gap-3">
                             <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
-                              isSelected 
-                                ? 'bg-[#eab308] text-black'
-                                : 'bg-muted text-muted-foreground'
+                              isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
                             }`}>
                               {option}
                             </div>
                             <span className="text-xs md:text-sm text-left break-words whitespace-pre-wrap">{optionValue}</span>
                           </div>
-                        </Button>
+                        </div>
                       )
                     })}
                   </div>
@@ -724,7 +773,7 @@ export default function ExamPage() {
                   onClick={() => toggleMarkForReview(currentQuestion.id)}
                   className={`w-full text-xs md:text-sm ${
                     markedForReview.has(currentQuestion.id)
-                      ? 'bg-accent/10 border-accent text-accent-foreground hover:bg-accent/20'
+                      ? 'mark-for-review-button'
                       : 'hover:bg-muted/30'
                   }`}
                 >
@@ -742,27 +791,6 @@ export default function ExamPage() {
                 </Button>
               </div>
 
-              {/* Navigation - masquée sur mobile (sera fixe en bas) */}
-              <div className="hidden md:flex justify-between mt-4">
-                <Button 
-                  variant="outline" 
-                  onClick={handlePrevious}
-                  disabled={currentIndex === 0}
-                  className="flex items-center gap-2"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  Précédent
-                </Button>
-                
-                <Button 
-                  onClick={handleNext}
-                  disabled={currentIndex === examQuestions.length - 1}
-                  className="flex items-center gap-2"
-                >
-                  Suivant
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </div>
 
               {/* Bouton finir l'examen - Visible seulement si toutes les questions sont répondues */}
               {allAnswered && (
@@ -779,8 +807,17 @@ export default function ExamPage() {
             </div>
           </div>
 
-          {/* Navigation fixe mobile */}
-          <div className="fixed md:hidden bottom-0 left-0 right-0 bg-background border-t border-border p-3 z-50">
+          {/* Indicateur de scroll intelligent */}
+          {showScrollIndicator && (
+            <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-40">
+              <div className="bg-primary/90 text-primary-foreground px-3 py-1 rounded-full text-xs font-medium shadow-lg animate-bounce">
+                ↑ Plus de contenu en dessous
+              </div>
+            </div>
+          )}
+
+          {/* Navigation fixe - visible sur toutes les tailles d'écran */}
+          <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border p-3 z-50">
             <div className="flex justify-between gap-2">
               <Button 
                 variant="outline" 
@@ -819,9 +856,9 @@ export default function ExamPage() {
           {/* Version mobile - bouton flottant pour marquer les questions */}
           <button
             onClick={() => toggleMarkForReview(currentQuestion.id)}
-            className={`md:hidden fixed bottom-20 right-4 z-30 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all ${
+            className={`fixed bottom-20 right-4 z-30 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all ${
               markedForReview.has(currentQuestion.id)
-                ? 'bg-accent text-accent-foreground'
+                ? 'mark-for-review-button'
                 : 'bg-background text-accent-foreground border-2 border-accent'
             }`}
             aria-label="Marquer pour révision"
@@ -832,6 +869,38 @@ export default function ExamPage() {
               <span className="text-2xl">⚠️</span>
             )}
           </button>
+
+          {/* Modal de confirmation pour sortir de l'examen */}
+          {showExitConfirm && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+              <Card className="w-full max-w-md">
+                <CardHeader>
+                  <CardTitle className="text-center">Confirmer la sortie</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-center text-muted-foreground">
+                    Êtes-vous sûr de vouloir quitter l'examen ? Vos réponses ne seront pas sauvegardées.
+                  </p>
+                  <div className="flex gap-3">
+                    <Button 
+                      variant="outline" 
+                      onClick={cancelExitExam}
+                      className="flex-1"
+                    >
+                      Annuler
+                    </Button>
+                    <Button 
+                      variant="destructive" 
+                      onClick={confirmExitExam}
+                      className="flex-1"
+                    >
+                      Quitter
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </div>
       </div>
     )

@@ -2,73 +2,111 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ========================================
+   🎨 VARIABLES CSS PRINCIPALES (THÈME)
+   ======================================== */
+
 @layer base {
+  /* Mode clair - Variables de couleurs principales */
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 45.4 93.4% 47.5%;
-    --primary-foreground: 26 83.3% 14.1%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 45.4 93.4% 47.5%;
-    --accent-foreground: 26 83.3% 14.1%;
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 98%;
-    --warning: 38 92% 50%;
-    --warning-foreground: 48 96% 89%;
-    --success: 142.1 76.2% 36.3%;
-    --success-foreground: 355.7 100% 97.3%;
-    --info: 221.2 83.2% 53.3%;
-    --info-foreground: 210 40% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 45.4 93.4% 47.5%;
-    --radius: 0.5rem;
+    /* Couleurs de base */
+    --background: 0 0% 100%;           /* Fond principal (blanc) */
+    --foreground: 240 10% 3.9%;       /* Texte principal (gris foncé) */
+    --card: 0 0% 100%;                /* Fond des cartes (blanc) */
+    --card-foreground: 240 10% 3.9%;  /* Texte des cartes */
+    --popover: 0 0% 100%;             /* Fond des popovers */
+    --popover-foreground: 240 10% 3.9%; /* Texte des popovers */
+    
+    /* Couleurs principales */
+    --primary: 47 100% 50%;           /* 🟡 JAUNE VIF #fec800 - Actions principales */
+    --primary-foreground: 26 83.3% 14.1%; /* Texte sur fond jaune */
+    --secondary: 47 100% 50%;         /* 🟡 JAUNE VIF #fec800 - Sélections */
+    --secondary-foreground: 26 83.3% 14.1%; /* Texte sur fond jaune */
+    
+    /* Couleurs neutres */
+    --muted: 240 4.8% 95.9%;          /* Fond neutre (gris très clair) */
+    --muted-foreground: 240 3.8% 46.1%; /* Texte neutre (gris moyen) */
+    
+    /* Couleurs d'accent */
+    --accent: 47 100% 50%;            /* 🟡 JAUNE VIF #fec800 - Sélections, focus */
+    --accent-foreground: 26 83.3% 14.1%; /* Texte sur fond accent */
+    
+    /* Couleurs sémantiques */
+    --destructive: 0 72% 51%;         /* 🔴 ROUGE - Erreurs, échecs */
+    --destructive-foreground: 0 0% 98%; /* Texte sur fond rouge (blanc) */
+    --warning: 38 92% 50%;            /* 🟠 ORANGE - Avertissements */
+    --warning-foreground: 48 96% 89%; /* Texte sur fond orange */
+    --success: 142.1 76.2% 36.3%;     /* 🟢 VERT - Succès, bonnes réponses */
+    --success-foreground: 355.7 100% 97.3%; /* Texte sur fond vert (blanc) */
+    --info: 221.2 83.2% 53.3%;       /* 🔵 BLEU - Informations */
+    --info-foreground: 210 40% 98%;   /* Texte sur fond bleu (blanc) */
+    
+    /* Bordures et éléments */
+    --border: 240 5.9% 90%;           /* Couleur des bordures */
+    --input: 240 5.9% 90%;            /* Couleur des inputs */
+    --ring: 47 100% 50%;              /* Couleur du ring de focus (jaune vif) */
+    --radius: 0.5rem;                 /* Rayon des bordures arrondies */
   }
 
+  /* Mode sombre - Variables de couleurs principales */
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 45.4 93.4% 47.5%;
-    --primary-foreground: 26 83.3% 14.1%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 45.4 93.4% 47.5%;
-    --accent-foreground: 26 83.3% 14.1%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --warning: 38 92% 50%;
-    --warning-foreground: 48 96% 89%;
-    --success: 142.1 70.6% 45.3%;
-    --success-foreground: 144.9 80.4% 10%;
-    --info: 217.2 91.2% 59.8%;
-    --info-foreground: 222.2 84% 4.9%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 45.4 93.4% 47.5%;
+    /* Couleurs de base */
+    --background: 240 10% 3.9%;       /* Fond principal (gris très foncé) */
+    --foreground: 0 0% 98%;           /* Texte principal (blanc) */
+    --card: 240 10% 3.9%;             /* Fond des cartes (gris très foncé) */
+    --card-foreground: 0 0% 98%;      /* Texte des cartes (blanc) */
+    --popover: 240 10% 3.9%;          /* Fond des popovers */
+    --popover-foreground: 0 0% 98%;   /* Texte des popovers */
+    
+    /* Couleurs principales */
+    --primary: 47 100% 50%;           /* 🟡 JAUNE VIF #fec800 - Actions principales */
+    --primary-foreground: 26 83.3% 14.1%; /* Texte sur fond jaune */
+    --secondary: 47 100% 50%;         /* 🟡 JAUNE VIF #fec800 - Sélections */
+    --secondary-foreground: 26 83.3% 14.1%; /* Texte sur fond jaune */
+    
+    /* Couleurs neutres */
+    --muted: 240 3.7% 15.9%;          /* Fond neutre (gris foncé) */
+    --muted-foreground: 240 5% 64.9%; /* Texte neutre (gris moyen) */
+    
+    /* Couleurs d'accent */
+    --accent: 47 100% 50%;            /* 🟡 JAUNE VIF #fec800 - Sélections, focus */
+    --accent-foreground: 26 83.3% 14.1%; /* Texte sur fond accent */
+    
+    /* Couleurs sémantiques */
+    --destructive: 0 84.2% 60.2%;     /* 🔴 ROUGE - Erreurs, échecs (plus clair) */
+    --destructive-foreground: 0 0% 98%; /* Texte sur fond rouge (blanc) */
+    --warning: 38 92% 50%;            /* 🟠 ORANGE - Avertissements */
+    --warning-foreground: 48 96% 89%; /* Texte sur fond orange */
+    --success: 142.1 70.6% 45.3%;     /* 🟢 VERT - Succès, bonnes réponses (plus clair) */
+    --success-foreground: 144.9 80.4% 10%; /* Texte sur fond vert (gris foncé) */
+    --info: 217.2 91.2% 59.8%;       /* 🔵 BLEU - Informations (plus clair) */
+    --info-foreground: 222.2 84% 4.9%; /* Texte sur fond bleu (gris foncé) */
+    
+    /* Bordures et éléments */
+    --border: 240 3.7% 15.9%;         /* Couleur des bordures (gris foncé) */
+    --input: 240 3.7% 15.9%;          /* Couleur des inputs (gris foncé) */
+    --ring: 47 100% 50%;             /* Couleur du ring de focus (jaune vif) */
   }
 }
 
+/* ========================================
+   🎯 STYLES DE BASE ET BORDURES
+   ======================================== */
+
 @layer base {
+  /* Applique la couleur de bordure par défaut à tous les éléments */
   * {
     @apply border-border;
   }
+  /* Styles de base pour le body */
   body {
     @apply bg-background text-foreground;
   }
 }
+
+/* ========================================
+   🎭 COMPOSANTS ET ANIMATIONS
+   ======================================== */
 
 @layer components {
   /* Animations personnalisées */
@@ -90,6 +128,10 @@
     @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
   }
 }
+
+/* ========================================
+   📱 UTILITAIRES ET RESPONSIVE
+   ======================================== */
 
 @layer utilities {
   /* Styles pour mobile responsive */
@@ -212,53 +254,61 @@
     background-color: hsl(var(--info) / 0.2);
   }
 
-  /* Classes pour survols jaunes */
+  /* ========================================
+     🟡 CLASSES POUR SURVOLS JAUNES
+     ======================================== */
+  
+  /* Survol standard avec opacité 0.5 */
   .hover\:bg-yellow:hover {
-    background-color: hsl(45.4 93.4% 47.5%);
+    background-color: hsl(47 100% 50% / 0.5);
   }
   
   .hover\:text-yellow:hover {
-    color: hsl(45.4 93.4% 47.5%);
+    color: hsl(47 100% 50%);
   }
   
   .hover\:border-yellow:hover {
-    border-color: hsl(45.4 93.4% 47.5%);
+    border-color: hsl(47 100% 50%);
   }
   
+  /* Classes de survol avec différentes opacités */
   .hover\:bg-yellow\/10:hover {
-    background-color: hsl(45.4 93.4% 47.5% / 0.1);
+    background-color: hsl(47 100% 50% / 0.1);
   }
   
   .hover\:bg-yellow\/20:hover {
-    background-color: hsl(45.4 93.4% 47.5% / 0.2);
+    background-color: hsl(47 100% 50% / 0.2);
+  }
+  
+  .hover\:bg-yellow\/50:hover {
+    background-color: hsl(47 100% 50% / 0.5);
+  }
+  
+  /* Classes pour survols sur éléments interactifs */
+  .hover\:bg-primary\/50:hover {
+    background-color: hsl(var(--primary) / 0.5);
+  }
+  
+  .hover\:bg-secondary\/50:hover {
+    background-color: hsl(var(--secondary) / 0.5);
+  }
+  
+  .hover\:bg-accent\/50:hover {
+    background-color: hsl(var(--accent) / 0.5);
   }
 
-  /* Classes pour vert (success) avec bon contraste */
-  .text-success {
-    color: hsl(var(--success));
-  }
+  /* ========================================
+     🟢 CLASSES POUR VERT (SUCCESS)
+     ======================================== */
   
-  .bg-success {
-    background-color: hsl(var(--success));
-  }
-  
-  .border-success {
-    border-color: hsl(var(--success));
-  }
-  
-  .bg-success\/10 {
-    background-color: hsl(var(--success) / 0.1);
-  }
-  
-  .bg-success\/20 {
-    background-color: hsl(var(--success) / 0.2);
-  }
-  
-  .hover\:bg-success\/20:hover {
-    background-color: hsl(var(--success) / 0.2);
-  }
+  .text-success { color: hsl(var(--success)); }
+  .bg-success { background-color: hsl(var(--success)); }
+  .border-success { border-color: hsl(var(--success)); }
+  .bg-success\/10 { background-color: hsl(var(--success) / 0.1); }
+  .bg-success\/20 { background-color: hsl(var(--success) / 0.2); }
+  .hover\:bg-success\/20:hover { background-color: hsl(var(--success) / 0.2); }
 
-  /* Amélioration du contraste pour les textes sur fonds colorés */
+  /* Amélioration du contraste pour les textes sur fonds verts */
   .bg-success\/10 .text-success,
   .bg-success\/20 .text-success {
     color: hsl(142.1 76.2% 25%);
@@ -271,32 +321,18 @@
     font-weight: 600;
   }
 
-  /* Classes pour rouge (destructive) avec bon contraste */
-  .text-destructive {
-    color: hsl(var(--destructive));
-  }
+  /* ========================================
+     🔴 CLASSES POUR ROUGE (DESTRUCTIVE)
+     ======================================== */
   
-  .bg-destructive {
-    background-color: hsl(var(--destructive));
-  }
-  
-  .border-destructive {
-    border-color: hsl(var(--destructive));
-  }
-  
-  .bg-destructive\/10 {
-    background-color: hsl(var(--destructive) / 0.1);
-  }
-  
-  .bg-destructive\/20 {
-    background-color: hsl(var(--destructive) / 0.2);
-  }
-  
-  .hover\:bg-destructive\/20:hover {
-    background-color: hsl(var(--destructive) / 0.2);
-  }
+  .text-destructive { color: hsl(var(--destructive)); }
+  .bg-destructive { background-color: hsl(var(--destructive)); }
+  .border-destructive { border-color: hsl(var(--destructive)); }
+  .bg-destructive\/10 { background-color: hsl(var(--destructive) / 0.1); }
+  .bg-destructive\/20 { background-color: hsl(var(--destructive) / 0.2); }
+  .hover\:bg-destructive\/20:hover { background-color: hsl(var(--destructive) / 0.2); }
 
-  /* Amélioration du contraste pour les textes destructifs sur fonds colorés */
+  /* Amélioration du contraste pour les textes sur fonds rouges */
   .bg-destructive\/10 .text-destructive,
   .bg-destructive\/20 .text-destructive {
     color: hsl(0 72% 35%);
@@ -309,30 +345,77 @@
     font-weight: 600;
   }
 
-  /* Classes spécifiques pour les options de questions avec contraste optimisé */
+  /* ========================================
+     📝 CLASSES SPÉCIFIQUES AUX QUESTIONS
+     ======================================== */
+  
+  /* Options correctes - Fond vert opaque avec texte blanc */
   .question-option-correct {
-    background-color: hsl(var(--success));
-    border-color: hsl(var(--success));
-    color: hsl(var(--success-foreground));
-    font-weight: 600;
+    background-color: hsl(var(--success));           /* Fond vert opaque */
+    border-color: hsl(var(--success));               /* Bordure verte */
+    color: hsl(var(--success-foreground));           /* Texte blanc */
+    font-weight: 600;                                /* Texte semi-gras */
   }
   
+  /* Options incorrectes - Fond rouge opaque avec texte blanc */
   .question-option-incorrect {
-    background-color: hsl(var(--destructive));
-    border-color: hsl(var(--destructive));
-    color: hsl(var(--destructive-foreground));
-    font-weight: 600;
+    background-color: hsl(var(--destructive));       /* Fond rouge opaque */
+    border-color: hsl(var(--destructive));           /* Bordure rouge */
+    color: hsl(var(--destructive-foreground));       /* Texte blanc */
+    font-weight: 600;                                /* Texte semi-gras */
+  }
+
+  /* Options sélectionnées - Fond jaune vif avec texte sombre */
+  .question-option-selected {
+    background-color: hsl(var(--primary));           /* Fond jaune vif #fec800 */
+    border-color: hsl(var(--primary));               /* Bordure jaune */
+    color: hsl(var(--primary-foreground));           /* Texte sombre */
+    font-weight: 600;                                /* Texte semi-gras */
+  }
+
+  /* Survol des options avec opacité 0.5 */
+  .question-option:hover {
+    background-color: hsl(var(--primary) / 0.5);     /* Survol jaune 50% */
+  }
+
+  /* Bouton "Marquée pour révision" avec bon contraste */
+  .mark-for-review-button {
+    background-color: hsl(var(--warning) / 0.1);     /* Fond orange transparent */
+    border-color: hsl(var(--warning));               /* Bordure orange */
+    color: hsl(var(--warning));                      /* Texte orange */
+    font-weight: 600;                                /* Texte semi-gras */
   }
   
+  .mark-for-review-button:hover {
+    background-color: hsl(var(--warning) / 0.2);     /* Survol orange plus opaque */
+    color: hsl(var(--warning));                      /* Texte orange maintenu au survol */
+  }
+  
+  /* Mode sombre - meilleur contraste */
+  .dark .mark-for-review-button {
+    background-color: hsl(var(--warning) / 0.2);     /* Fond orange plus opaque en mode sombre */
+    color: hsl(38 92% 70%);                         /* Texte orange plus clair et visible */
+  }
+  
+  .dark .mark-for-review-button:hover {
+    background-color: hsl(var(--warning) / 0.3);     /* Survol encore plus opaque en mode sombre */
+    color: hsl(38 92% 80%);                         /* Texte orange encore plus clair au survol */
+  }
 
-  /* Amélioration du contraste pour les textes dans les options */
+  /* Héritage des styles pour les éléments enfants */
   .question-option-correct span,
-  .question-option-incorrect span {
-    color: inherit;
-    font-weight: inherit;
+  .question-option-incorrect span,
+  .question-option-selected span {
+    color: inherit;                                  /* Hérite la couleur du parent */
+    font-weight: inherit;                            /* Hérite l'épaisseur du parent */
   }
 }
 
+/* ========================================
+   🎬 ANIMATIONS PERSONNALISÉES
+   ======================================== */
+
+/* Animation d'apparition en fondu */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -344,6 +427,7 @@
   }
 }
 
+/* Animation de glissement latéral */
 @keyframes slideIn {
   from {
     opacity: 0;
@@ -352,5 +436,21 @@
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+/* Animation de rebond pour l'indicateur de scroll */
+@keyframes bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40%, 43% {
+    transform: translateY(-10px);
+  }
+  70% {
+    transform: translateY(-5px);
+  }
+  90% {
+    transform: translateY(-2px);
   }
 }
