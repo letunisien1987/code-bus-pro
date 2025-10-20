@@ -832,25 +832,25 @@ export default function DashboardPage() {
 
         {/* Actions rapides */}
         <div className="mt-12">
-          <Card className="bg-primary text-primary-foreground border-0 shadow-xl">
-            <CardContent className="p-8">
-              <div className="flex items-center justify-between">
+          <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
+            <CardContent className="p-6 md:p-8">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div>
-                  <h3 className="text-2xl font-bold mb-2">Prêt pour la suite ?</h3>
-                  <p className="text-primary-foreground/80">
+                  <h3 className="text-xl md:text-2xl font-bold mb-2 text-foreground">Prêt pour la suite ?</h3>
+                  <p className="text-muted-foreground">
                     Continuez votre apprentissage avec des exercices personnalisés
                   </p>
                 </div>
-                <div className="flex gap-4">
-                  <Link href="/train">
-                    <Button variant="secondary" size="lg" className="bg-background text-foreground hover:bg-muted">
-                      <BookOpen className="h-5 w-5 mr-2" />
+                <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                  <Link href="/train" className="w-full sm:w-auto">
+                    <Button variant="default" size="lg" className="w-full sm:w-auto">
+                      <BookOpen className="h-4 w-4 md:h-5 md:w-5 mr-2" />
                       Entraînement
                     </Button>
                   </Link>
-                  <Link href="/exam">
-                    <Button variant="outline" size="lg" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10">
-                      <FileText className="h-5 w-5 mr-2" />
+                  <Link href="/exam" className="w-full sm:w-auto">
+                    <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                      <FileText className="h-4 w-4 md:h-5 md:w-5 mr-2" />
                       Examen
                     </Button>
                   </Link>
