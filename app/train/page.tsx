@@ -390,7 +390,7 @@ export default function TrainPage() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-2 md:space-y-4 p-2 md:p-6">
-                <p className="text-sm md:text-base text-gray-700 font-medium break-words whitespace-pre-wrap">
+                <p className="text-sm md:text-base text-foreground font-medium break-words whitespace-pre-wrap">
                   {currentQuestion.enonce}
                 </p>
 
