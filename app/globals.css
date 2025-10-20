@@ -16,9 +16,9 @@
     --secondary-foreground: 240 5.9% 10%;
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
-    --accent: 38 92% 50%;
-    --accent-foreground: 48 96% 89%;
-    --destructive: 0 84.2% 60.2%;
+    --accent: 45.4 93.4% 47.5%;
+    --accent-foreground: 26 83.3% 14.1%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
     --warning: 38 92% 50%;
     --warning-foreground: 48 96% 89%;
@@ -45,8 +45,8 @@
     --secondary-foreground: 0 0% 98%;
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
-    --accent: 38 92% 50%;
-    --accent-foreground: 48 96% 89%;
+    --accent: 45.4 93.4% 47.5%;
+    --accent-foreground: 26 83.3% 14.1%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --warning: 38 92% 50%;
@@ -212,21 +212,75 @@
     background-color: hsl(var(--info) / 0.2);
   }
 
-  /* Amélioration de la lisibilité des textes destructifs */
-  .text-destructive {
-    color: hsl(var(--destructive));
+  /* Classes pour survols jaunes */
+  .hover\:bg-yellow:hover {
+    background-color: hsl(45.4 93.4% 47.5%);
   }
   
-  .dark .text-destructive {
-    color: hsl(0 84.2% 65%);
+  .hover\:text-yellow:hover {
+    color: hsl(45.4 93.4% 47.5%);
+  }
+  
+  .hover\:border-yellow:hover {
+    border-color: hsl(45.4 93.4% 47.5%);
+  }
+  
+  .hover\:bg-yellow\/10:hover {
+    background-color: hsl(45.4 93.4% 47.5% / 0.1);
+  }
+  
+  .hover\:bg-yellow\/20:hover {
+    background-color: hsl(45.4 93.4% 47.5% / 0.2);
+  }
+
+  /* Classes pour vert (success) avec bon contraste */
+  .text-success {
+    color: hsl(var(--success));
+  }
+  
+  .bg-success {
+    background-color: hsl(var(--success));
+  }
+  
+  .border-success {
+    border-color: hsl(var(--success));
+  }
+  
+  .bg-success\/10 {
+    background-color: hsl(var(--success) / 0.1);
+  }
+  
+  .bg-success\/20 {
+    background-color: hsl(var(--success) / 0.2);
+  }
+  
+  .hover\:bg-success\/20:hover {
+    background-color: hsl(var(--success) / 0.2);
+  }
+
+  /* Classes pour rouge (destructive) avec bon contraste */
+  .text-destructive {
+    color: hsl(var(--destructive));
   }
   
   .bg-destructive {
     background-color: hsl(var(--destructive));
   }
   
-  .dark .bg-destructive {
-    background-color: hsl(0 84.2% 65%);
+  .border-destructive {
+    border-color: hsl(var(--destructive));
+  }
+  
+  .bg-destructive\/10 {
+    background-color: hsl(var(--destructive) / 0.1);
+  }
+  
+  .bg-destructive\/20 {
+    background-color: hsl(var(--destructive) / 0.2);
+  }
+  
+  .hover\:bg-destructive\/20:hover {
+    background-color: hsl(var(--destructive) / 0.2);
   }
 }
 
