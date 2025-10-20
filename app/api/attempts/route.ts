@@ -27,8 +27,9 @@ export async function POST(request: NextRequest) {
     const consecutiveCorrect = computeConsecutiveCorrect(allAttempts)
 
     // Récupérer ou créer le progress
-    const existing = await prisma.questionProgress.findUnique({
-      where: { userId_questionId: { userId, questionId } }
+    // Avec userId nullable, on ne peut pas utiliser un unique composite
+    const existing = await prisma.questionProgress.findFirst({
+      where: { userId, questionId }
     }).catch(() => null)
 
     const prev = existing ?? { repetitions: 0, intervalDays: 0, easiness: 2.5 }
@@ -47,31 +48,36 @@ export async function POST(request: NextRequest) {
     if (consecutiveCorrect >= 3 || accuracy >= 0.85) status = 'mastered'
     else if (sm2.intervalDays <= 1) status = 'to_review'
 
-    await prisma.questionProgress.upsert({
-      where: { userId_questionId: { userId, questionId } },
-      update: {
-        repetitions: sm2.repetitions,
-        intervalDays: sm2.intervalDays,
-        easiness: sm2.easiness,
-        accuracy,
-        consecutiveCorrect,
-        lastAttemptAt: now,
-        nextDueAt,
-        status
-      },
-      create: {
-        userId,
-        questionId,
-        repetitions: sm2.repetitions,
-        intervalDays: sm2.intervalDays,
-        easiness: sm2.easiness,
-        accuracy,
-        consecutiveCorrect,
-        lastAttemptAt: now,
-        nextDueAt,
-        status
-      }
-    })
+    if (existing) {
+      await prisma.questionProgress.update({
+        where: { id: existing.id },
+        data: {
+          repetitions: sm2.repetitions,
+          intervalDays: sm2.intervalDays,
+          easiness: sm2.easiness,
+          accuracy,
+          consecutiveCorrect,
+          lastAttemptAt: now,
+          nextDueAt,
+          status
+        }
+      })
+    } else {
+      await prisma.questionProgress.create({
+        data: {
+          userId,
+          questionId,
+          repetitions: sm2.repetitions,
+          intervalDays: sm2.intervalDays,
+          easiness: sm2.easiness,
+          accuracy,
+          consecutiveCorrect,
+          lastAttemptAt: now,
+          nextDueAt,
+          status
+        }
+      })
+    }
 
     return NextResponse.json(attempt)
   } catch (error) {
