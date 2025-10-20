@@ -434,21 +434,21 @@ export default function ExamPage() {
                       return (
                         <div
                           key={option}
-                          className={`p-2 md:p-3 rounded-lg border-2 ${
+                          className={`p-2 md:p-3 rounded-lg ${
                             isCorrect 
                               ? 'question-option-correct' 
                               : isWrong 
                               ? 'question-option-incorrect' 
-                              : 'bg-muted border-border'
+                              : 'question-option-neutral'
                           }`}
                         >
                           <div className="flex items-center gap-2 md:gap-3">
                             <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
                               isCorrect 
-                                ? 'bg-success text-success-foreground' 
+                                ? 'question-option-circle-correct' 
                                 : isWrong 
-                                ? 'bg-destructive text-destructive-foreground' 
-                                : 'bg-muted text-muted-foreground'
+                                ? 'question-option-circle-incorrect' 
+                                : 'question-option-circle-neutral'
                             }`}>
                               {option}
                             </div>
@@ -700,7 +700,7 @@ export default function ExamPage() {
                         >
                           <div className="flex items-center gap-2 md:gap-3">
                             <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
-                              isSelected ? 'bg-accent text-accent-foreground' : 'bg-muted text-muted-foreground'
+                              isSelected ? 'question-option-circle-selected' : 'question-option-circle-neutral'
                             }`}>
                               {option}
                             </div>

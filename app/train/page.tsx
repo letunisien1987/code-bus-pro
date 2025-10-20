@@ -414,18 +414,18 @@ export default function TrainPage() {
                         className={`w-full justify-start h-auto p-2 md:p-3 ${
                           showCorrect ? 'question-option-correct' :
                           showIncorrect ? 'question-option-incorrect' :
-                          isSelected ? 'bg-secondary/10 border-secondary text-secondary-foreground' :
-                          'hover:bg-muted/30'
+                          isSelected ? 'question-option-neutral' :
+                          'question-option-neutral'
                         }`}
                         onClick={() => handleAnswerSelect(answerKey)}
                         disabled={showFeedback}
                       >
                         <div className="flex items-center gap-2 md:gap-3 w-full">
                           <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
-                            showCorrect ? 'bg-success text-success-foreground' :
-                            showIncorrect ? 'bg-destructive text-destructive-foreground' :
-                            isSelected ? 'bg-secondary text-secondary-foreground' :
-                            'bg-muted text-muted-foreground'
+                            showCorrect ? 'question-option-circle-correct' :
+                            showIncorrect ? 'question-option-circle-incorrect' :
+                            isSelected ? 'question-option-circle-selected' :
+                            'question-option-circle-neutral'
                           }`}>
                             {option}
                           </div>
