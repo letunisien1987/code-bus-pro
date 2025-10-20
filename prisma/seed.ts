@@ -25,7 +25,7 @@ async function main() {
         optionC: questionData.options.c,
         optionD: (questionData.options as any).d || null,
         bonneReponse: questionData.bonne_reponse,
-        imagePath: questionData.image_path,
+        imagePath: questionData.image_path.startsWith('/') ? questionData.image_path : `/${questionData.image_path}`,
       },
     })
   }

@@ -1,5 +1,47 @@
 import { Question, Attempt } from '@prisma/client'
 
+export type SuperMemoRating = 0 | 1 | 2 | 3 | 4 | 5
+
+export function updateSM2(
+  prev: { repetitions: number; intervalDays: number; easiness: number },
+  correct: boolean
+) {
+  // SM2 simplifié: on considère 5 si correct, 2 sinon
+  const q: SuperMemoRating = correct ? 5 : 2
+  let easiness = prev.easiness + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02))
+  if (easiness < 1.3) easiness = 1.3
+
+  let repetitions = prev.repetitions
+  let intervalDays = prev.intervalDays
+
+  if (!correct) {
+    repetitions = 0
+    intervalDays = 1
+  } else {
+    repetitions += 1
+    if (repetitions === 1) intervalDays = 1
+    else if (repetitions === 2) intervalDays = 3
+    else intervalDays = Math.round(intervalDays * easiness)
+  }
+
+  return { repetitions, intervalDays, easiness }
+}
+
+export function computeAccuracy(recentAttempts: Attempt[]): number {
+  if (recentAttempts.length === 0) return 0
+  const correct = recentAttempts.filter(a => a.correct).length
+  return correct / recentAttempts.length
+}
+
+export function computeConsecutiveCorrect(recentAttempts: Attempt[]): number {
+  let count = 0
+  for (let i = recentAttempts.length - 1; i >= 0; i--) {
+    if (recentAttempts[i].correct) count++
+    else break
+  }
+  return count
+}
+
 /**
  * Calcule le taux de réussite d'une question
  */

@@ -178,103 +178,106 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
+      <div className="h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Chargement de votre tableau de bord...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Chargement de votre tableau de bord...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen bg-background">
       {/* Header Hero */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10"></div>
+        <div className="absolute inset-0 bg-primary/5"></div>
         <div className="relative container mx-auto px-4 py-12">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 mb-6 shadow-lg">
-              <Trophy className="h-5 w-5 text-yellow-500" />
-              <span className="text-sm font-medium">Tableau de bord d&apos;apprentissage</span>
+          <div className="text-center mb-8 md:mb-12">
+            <div className="inline-flex items-center gap-2 bg-card/80 backdrop-blur-sm rounded-full px-3 md:px-4 py-2 mb-4 md:mb-6 shadow-lg">
+              <Trophy className="h-4 w-4 md:h-5 md:w-5 text-accent-foreground" />
+              <span className="text-xs md:text-sm font-medium">
+                <span className="hidden md:inline">Tableau de bord d&apos;apprentissage</span>
+                <span className="md:hidden">Dashboard</span>
+              </span>
             </div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">
-              Votre parcours <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Code Bus</span>
+            <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-2 md:mb-4">
+              Votre parcours <span className="text-primary">Code Bus</span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-base md:text-xl text-muted-foreground max-w-3xl mx-auto px-4 md:px-0">
               Analysez vos progrès, identifiez vos points forts et optimisez votre préparation 
               au code de la route avec des insights personnalisés.
             </p>
           </div>
 
           {/* Stats principales */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
-              <CardContent className="p-6">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-8 md:mb-12">
+            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
+              <CardContent className="p-3 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Score moyen</p>
-                    <p className="text-3xl font-bold text-green-600">{stats.global.averageScore}%</p>
+                    <p className="text-xs md:text-sm font-medium text-muted-foreground">Score moyen</p>
+                    <p className="text-2xl md:text-3xl font-bold text-primary">{stats.global.averageScore}%</p>
                   </div>
-                  <div className="h-12 w-12 bg-green-100 rounded-full flex items-center justify-center">
-                    <TrendingUp className="h-6 w-6 text-green-600" />
+                  <div className="h-8 w-8 md:h-12 md:w-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <TrendingUp className="h-4 w-4 md:h-6 md:w-6 text-primary" />
                   </div>
                 </div>
-                <div className="mt-4">
+                <div className="mt-2 md:mt-4">
                   <Progress value={stats.global.averageScore} size="sm" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
-              <CardContent className="p-6">
+            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
+              <CardContent className="p-3 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Questions étudiées</p>
-                    <p className="text-3xl font-bold text-blue-600">{stats.global.completedQuestions}</p>
+                    <p className="text-xs md:text-sm font-medium text-muted-foreground">Questions étudiées</p>
+                    <p className="text-2xl md:text-3xl font-bold text-secondary-foreground">{stats.global.completedQuestions}</p>
                   </div>
-                  <div className="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <BookOpen className="h-6 w-6 text-blue-600" />
+                  <div className="h-8 w-8 md:h-12 md:w-12 bg-secondary/10 rounded-full flex items-center justify-center">
+                    <BookOpen className="h-4 w-4 md:h-6 md:w-6 text-secondary-foreground" />
                   </div>
                 </div>
-                <div className="mt-4">
-                  <p className="text-sm text-gray-500">
+                <div className="mt-2 md:mt-4">
+                  <p className="text-xs md:text-sm text-muted-foreground">
                     {stats.global.totalQuestions > 0 ? Math.round((stats.global.completedQuestions / stats.global.totalQuestions) * 100) : 0}% du programme
                   </p>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
-              <CardContent className="p-6">
+            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
+              <CardContent className="p-3 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Série actuelle</p>
-                    <p className="text-3xl font-bold text-orange-600">{stats.global.streak} jours</p>
+                    <p className="text-xs md:text-sm font-medium text-muted-foreground">Série actuelle</p>
+                    <p className="text-2xl md:text-3xl font-bold text-accent-foreground">{stats.global.streak} jours</p>
                   </div>
-                  <div className="h-12 w-12 bg-orange-100 rounded-full flex items-center justify-center">
-                    <Zap className="h-6 w-6 text-orange-600" />
+                  <div className="h-8 w-8 md:h-12 md:w-12 bg-accent/10 rounded-full flex items-center justify-center">
+                    <Zap className="h-4 w-4 md:h-6 md:w-6 text-accent-foreground" />
                   </div>
                 </div>
-                <div className="mt-4">
-                  <p className="text-sm text-gray-500">Continuez votre série !</p>
+                <div className="mt-2 md:mt-4">
+                  <p className="text-xs md:text-sm text-muted-foreground">Continuez votre série !</p>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
-              <CardContent className="p-6">
+            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
+              <CardContent className="p-3 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Temps d&apos;étude</p>
-                    <p className="text-3xl font-bold text-purple-600">{stats.global.studyTime}h</p>
+                    <p className="text-xs md:text-sm font-medium text-muted-foreground">Temps d&apos;étude</p>
+                    <p className="text-2xl md:text-3xl font-bold text-muted-foreground">{stats.global.studyTime}h</p>
                   </div>
-                  <div className="h-12 w-12 bg-purple-100 rounded-full flex items-center justify-center">
-                    <Clock className="h-6 w-6 text-purple-600" />
+                  <div className="h-8 w-8 md:h-12 md:w-12 bg-muted rounded-full flex items-center justify-center">
+                    <Clock className="h-4 w-4 md:h-6 md:w-6 text-muted-foreground" />
                   </div>
                 </div>
-                <div className="mt-4">
-                  <p className="text-sm text-gray-500">Total</p>
+                <div className="mt-2 md:mt-4">
+                  <p className="text-xs md:text-sm text-muted-foreground">Total</p>
                 </div>
               </CardContent>
             </Card>
@@ -283,19 +286,34 @@ export default function DashboardPage() {
       </div>
 
       {/* Contenu principal */}
-      <div className="container mx-auto px-4 pb-12">
+      <div className="container mx-auto px-2 md:px-4 pb-8 md:pb-12">
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8">
-            <TabsTrigger value="overview">Vue d&apos;ensemble</TabsTrigger>
-            <TabsTrigger value="categories">Catégories</TabsTrigger>
-            <TabsTrigger value="questionnaires">Questionnaires</TabsTrigger>
-            <TabsTrigger value="questions">Questions</TabsTrigger>
-            <TabsTrigger value="analytics">Analyses</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-4 md:mb-8 gap-1 md:gap-2">
+            <TabsTrigger value="overview" className="text-xs md:text-sm px-2 md:px-4 py-2 md:py-3">
+              <span className="hidden md:inline">Vue d&apos;ensemble</span>
+              <span className="md:hidden">Vue</span>
+            </TabsTrigger>
+            <TabsTrigger value="categories" className="text-xs md:text-sm px-2 md:px-4 py-2 md:py-3">
+              <span className="hidden md:inline">Catégories</span>
+              <span className="md:hidden">Cat.</span>
+            </TabsTrigger>
+            <TabsTrigger value="questionnaires" className="text-xs md:text-sm px-2 md:px-4 py-2 md:py-3">
+              <span className="hidden md:inline">Questionnaires</span>
+              <span className="md:hidden">Quest.</span>
+            </TabsTrigger>
+            <TabsTrigger value="questions" className="text-xs md:text-sm px-2 md:px-4 py-2 md:py-3">
+              <span className="hidden md:inline">Questions</span>
+              <span className="md:hidden">Q.</span>
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="text-xs md:text-sm px-2 md:px-4 py-2 md:py-3 col-span-2 md:col-span-1">
+              <span className="hidden md:inline">Analyses</span>
+              <span className="md:hidden">Anal.</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-8">
             {/* Performance par catégorie */}
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <BarChart3 className="h-5 w-5" />
@@ -309,37 +327,37 @@ export default function DashboardPage() {
                 <div className="space-y-4">
                   {stats.byCategory.length > 0 ? (
                     stats.byCategory.map((category, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                      <div key={index} className="flex items-center justify-between p-4 bg-muted rounded-lg">
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
-                            <span className="text-sm font-bold text-blue-600">{category.name[0]}</span>
+                          <div className="h-10 w-10 bg-primary/10 rounded-full flex items-center justify-center">
+                            <span className="text-sm font-bold text-primary">{category.name[0]}</span>
                           </div>
                           <div>
-                            <p className="font-medium">{category.name}</p>
-                            <p className="text-sm text-gray-500">
+                            <p className="font-medium text-foreground">{category.name}</p>
+                            <p className="text-sm text-muted-foreground">
                               {category.attempted}/{category.total} étudiées
                             </p>
                             <div className="flex gap-2 mt-1">
-                              <Badge variant="outline" className="text-xs bg-green-50 text-green-700">
+                              <Badge variant="outline" className="text-xs bg-primary/10 text-primary">
                                 {category.mastered} maîtrisées
                               </Badge>
-                              <Badge variant="outline" className="text-xs bg-orange-50 text-orange-700">
+                              <Badge variant="outline" className="text-xs bg-secondary/10 text-secondary-foreground">
                                 {category.toReview} à revoir
                               </Badge>
-                              <Badge variant="outline" className="text-xs bg-gray-50 text-gray-700">
+                              <Badge variant="outline" className="text-xs bg-muted text-muted-foreground">
                                 {category.notSeen} non vues
                               </Badge>
                             </div>
                           </div>
                         </div>
                         <div className="text-right">
-                          <p className="text-2xl font-bold text-blue-600">{category.percentage}%</p>
+                          <p className="text-2xl font-bold text-primary">{category.percentage}%</p>
                           <Progress value={category.percentage} size="sm" className="w-24" />
                         </div>
                       </div>
                     ))
                   ) : (
-                    <div className="text-center py-8 text-gray-500">
+                    <div className="text-center py-8 text-muted-foreground">
                       <p>Aucune donnée disponible</p>
                       <p className="text-sm mt-2">Commencez à vous entraîner pour voir vos statistiques</p>
                     </div>
@@ -349,7 +367,7 @@ export default function DashboardPage() {
             </Card>
 
             {/* Activité récente */}
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Calendar className="h-5 w-5" />
@@ -362,27 +380,27 @@ export default function DashboardPage() {
               <CardContent>
                 <div className="space-y-4">
                   {stats.recentActivity.map((activity, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div key={index} className="flex items-center justify-between p-4 bg-muted rounded-lg">
                       <div className="flex items-center gap-3">
                         <div className={`h-10 w-10 rounded-full flex items-center justify-center ${
-                          activity.type === 'exam' ? 'bg-purple-100' : 'bg-blue-100'
+                          activity.type === 'exam' ? 'bg-accent/10' : 'bg-primary/10'
                         }`}>
                           {activity.type === 'exam' ? (
-                            <FileText className="h-5 w-5 text-purple-600" />
+                            <FileText className="h-5 w-5 text-accent-foreground" />
                           ) : (
-                            <BookOpen className="h-5 w-5 text-blue-600" />
+                            <BookOpen className="h-5 w-5 text-primary" />
                           )}
                         </div>
                         <div>
                           <p className="font-medium">
                             {activity.type === 'exam' ? 'Examen' : 'Entraînement'}
                           </p>
-                          <p className="text-sm text-gray-500">{activity.questions} questions</p>
+                          <p className="text-sm text-muted-foreground">{activity.questions} questions</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="text-2xl font-bold text-green-600">{activity.score}%</p>
-                        <p className="text-sm text-gray-500">{activity.date}</p>
+                        <p className="text-2xl font-bold text-primary">{activity.score}%</p>
+                        <p className="text-sm text-muted-foreground">{activity.date}</p>
                       </div>
                     </div>
                   ))}
@@ -391,24 +409,25 @@ export default function DashboardPage() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="categories" className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <TabsContent value="categories" className="space-y-4 md:space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {stats.byCategory.length > 0 ? (
                 stats.byCategory.map((category, index) => (
                   <Card 
                     key={index} 
-                    className="bg-white/80 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer group"
+                    className="bg-card/80 backdrop-blur-sm border border-border shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer group"
                     onClick={() => window.open(`/train?categorie=${encodeURIComponent(category.name)}`, '_blank')}
                   >
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-lg font-semibold text-gray-900 break-words group-hover:text-blue-600 transition-colors">
+                    <CardHeader className="pb-2 md:pb-3">
+                      <CardTitle className="text-base md:text-lg font-semibold text-foreground break-words group-hover:text-primary transition-colors">
                         {category.name}
                       </CardTitle>
-                      <CardDescription className="text-sm text-gray-600">
+                      <CardDescription className="text-xs md:text-sm text-muted-foreground">
                         {category.attempted} sur {category.total} questions étudiées
                       </CardDescription>
-                      <div className="mt-2 text-xs text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
-                        Cliquez pour vous entraîner sur cette catégorie →
+                      <div className="mt-1 md:mt-2 text-xs text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="hidden md:inline">Cliquez pour vous entraîner sur cette catégorie →</span>
+                        <span className="md:hidden">Cliquez pour entraîner →</span>
                       </div>
                     </CardHeader>
                     <CardContent className="pt-0">
@@ -416,10 +435,10 @@ export default function DashboardPage() {
                         {/* Score principal */}
                         <div className="text-center">
                           <div className="relative inline-block">
-                            <p className="text-5xl font-bold text-blue-600 mb-2">{category.percentage}%</p>
-                            <div className="w-24 h-2 bg-gray-200 rounded-full mx-auto">
+                            <p className="text-3xl md:text-5xl font-bold text-primary mb-1 md:mb-2">{category.percentage}%</p>
+                            <div className="w-16 md:w-24 h-1 md:h-2 bg-muted rounded-full mx-auto">
                               <div 
-                                className="h-2 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-500"
+                                className="h-1 md:h-2 bg-primary rounded-full transition-all duration-500"
                                 style={{ width: `${category.percentage}%` }}
                               ></div>
                             </div>
@@ -427,41 +446,41 @@ export default function DashboardPage() {
                         </div>
                         
                         {/* Statistiques détaillées */}
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
+                        <div className="space-y-2 md:space-y-3">
+                          <div className="flex items-center justify-between p-2 md:p-3 bg-primary/10 rounded-lg border border-primary/20">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                              <span className="text-sm font-medium text-green-800">Maîtrisées</span>
+                              <div className="w-2 h-2 md:w-3 md:h-3 bg-primary rounded-full"></div>
+                              <span className="text-xs md:text-sm font-medium text-primary">Maîtrisées</span>
                             </div>
-                            <span className="text-lg font-bold text-green-700">{category.mastered}</span>
+                            <span className="text-base md:text-lg font-bold text-primary">{category.mastered}</span>
                           </div>
                           
-                          <div className="flex items-center justify-between p-3 bg-orange-50 rounded-lg border border-orange-200">
+                          <div className="flex items-center justify-between p-2 md:p-3 bg-secondary/10 rounded-lg border border-secondary/20">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                              <span className="text-sm font-medium text-orange-800">À revoir</span>
+                              <div className="w-2 h-2 md:w-3 md:h-3 bg-secondary rounded-full"></div>
+                              <span className="text-xs md:text-sm font-medium text-secondary-foreground">À revoir</span>
                             </div>
-                            <span className="text-lg font-bold text-orange-700">{category.toReview}</span>
+                            <span className="text-base md:text-lg font-bold text-secondary-foreground">{category.toReview}</span>
                           </div>
                           
-                          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200">
+                          <div className="flex items-center justify-between p-2 md:p-3 bg-muted rounded-lg border border-border">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 bg-gray-400 rounded-full"></div>
-                              <span className="text-sm font-medium text-gray-700">Non vues</span>
+                              <div className="w-2 h-2 md:w-3 md:h-3 bg-muted-foreground rounded-full"></div>
+                              <span className="text-xs md:text-sm font-medium text-muted-foreground">Non vues</span>
                             </div>
-                            <span className="text-lg font-bold text-gray-600">{category.notSeen}</span>
+                            <span className="text-base md:text-lg font-bold text-muted-foreground">{category.notSeen}</span>
                           </div>
                         </div>
                         
                         {/* Progression */}
                         <div className="pt-2">
-                          <div className="flex justify-between text-xs text-gray-500 mb-1">
+                          <div className="flex justify-between text-xs text-muted-foreground mb-1">
                             <span>Progression</span>
                             <span>{category.attempted}/{category.total}</span>
                           </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div className="w-full bg-muted rounded-full h-2">
                             <div 
-                              className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-500"
+                              className="bg-primary h-2 rounded-full transition-all duration-500"
                               style={{ width: `${(category.attempted / category.total) * 100}%` }}
                             ></div>
                           </div>
@@ -471,7 +490,7 @@ export default function DashboardPage() {
                   </Card>
                 ))
               ) : (
-                <div className="col-span-3 text-center py-12 text-gray-500">
+                <div className="col-span-3 text-center py-12 text-muted-foreground">
                   <BookOpen className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <p>Aucune catégorie disponible</p>
                   <p className="text-sm mt-2">Commencez à vous entraîner pour voir vos statistiques par catégorie</p>
@@ -480,42 +499,43 @@ export default function DashboardPage() {
             </div>
           </TabsContent>
 
-          <TabsContent value="questionnaires" className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <TabsContent value="questionnaires" className="space-y-4 md:space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               {stats.byQuestionnaire.length > 0 ? (
                 stats.byQuestionnaire.map((questionnaire, index) => (
                   <Card 
                     key={index} 
-                    className="bg-white/80 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer group"
+                    className="bg-card/80 backdrop-blur-sm border border-border shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer group"
                     onClick={() => window.open(`/train?questionnaire=${questionnaire.number}`, '_blank')}
                   >
                     <CardHeader>
-                      <CardTitle className="text-lg group-hover:text-blue-600 transition-colors">
+                      <CardTitle className="text-base md:text-lg group-hover:text-primary transition-colors">
                         Questionnaire {questionnaire.number}
                       </CardTitle>
-                      <CardDescription>
+                      <CardDescription className="text-xs md:text-sm">
                         {questionnaire.attempted} sur {questionnaire.total} questions
                       </CardDescription>
-                      <div className="mt-2 text-xs text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
-                        Cliquez pour vous entraîner sur ce questionnaire →
+                      <div className="mt-1 md:mt-2 text-xs text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="hidden md:inline">Cliquez pour vous entraîner sur ce questionnaire →</span>
+                        <span className="md:hidden">Cliquez pour entraîner →</span>
                       </div>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
                         <div className="text-center">
-                          <p className="text-4xl font-bold text-purple-600">{questionnaire.percentage}%</p>
-                          <Progress value={questionnaire.percentage} className="mt-2" />
+                          <p className="text-3xl md:text-4xl font-bold text-primary">{questionnaire.percentage}%</p>
+                          <Progress value={questionnaire.percentage} className="mt-1 md:mt-2" />
                         </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Total: {questionnaire.total}</span>
-                          <span className="text-blue-600">Vues: {questionnaire.attempted}</span>
+                        <div className="flex justify-between text-xs md:text-sm">
+                          <span className="text-muted-foreground">Total: {questionnaire.total}</span>
+                          <span className="text-primary">Vues: {questionnaire.attempted}</span>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
                 ))
               ) : (
-                <div className="col-span-4 text-center py-12 text-gray-500">
+                <div className="col-span-4 text-center py-12 text-muted-foreground">
                   <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <p>Aucun questionnaire disponible</p>
                   <p className="text-sm mt-2">Commencez à vous entraîner pour voir vos statistiques par questionnaire</p>
@@ -525,7 +545,7 @@ export default function DashboardPage() {
           </TabsContent>
 
           <TabsContent value="questions" className="space-y-8">
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="h-5 w-5" />
@@ -544,10 +564,10 @@ export default function DashboardPage() {
                       const isExpanded = expandedQuestionnaires.has(qNum)
                       
                       return (
-                        <div key={qNum} className="border border-gray-200 rounded-lg overflow-hidden">
+                        <div key={qNum} className="border border-border rounded-lg overflow-hidden">
                           {/* En-tête Questionnaire */}
                           <div 
-                            className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 cursor-pointer hover:from-purple-100 hover:to-blue-100 transition-all"
+                            className="bg-secondary/10 p-4 cursor-pointer hover:bg-secondary/20 transition-all"
                             onClick={() => {
                               const newExpanded = new Set(expandedQuestionnaires)
                               if (isExpanded) {
@@ -561,12 +581,12 @@ export default function DashboardPage() {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-3">
                                 <ChevronRight className={`h-5 w-5 transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
-                                <FileText className="h-5 w-5 text-purple-600" />
+                                <FileText className="h-5 w-5 text-primary" />
                                 <div>
-                                  <h3 className="font-semibold text-gray-900">
+                                  <h3 className="font-semibold text-foreground">
                                     Questionnaire {qNum}
                                   </h3>
-                                  <p className="text-sm text-gray-600">
+                                  <p className="text-sm text-muted-foreground">
                                     {qStats.total} questions • {qStats.attempted} étudiées • {qStats.averageRate}% réussite
                                   </p>
                                 </div>
@@ -593,10 +613,10 @@ export default function DashboardPage() {
                                 const catStats = getCategoryStats(qNum, category)
                                 
                                 return (
-                                  <div key={catKey} className="border-t border-gray-200">
+                                  <div key={catKey} className="border-t border-border">
                                     {/* En-tête Catégorie */}
                                     <div
-                                      className="bg-gray-50 p-3 pl-12 cursor-pointer hover:bg-gray-100 transition-colors"
+                                      className="bg-muted/50 p-3 pl-12 cursor-pointer hover:bg-muted transition-colors"
                                       onClick={() => {
                                         const newExpanded = new Set(expandedCategories)
                                         if (isCatExpanded) {
@@ -610,10 +630,10 @@ export default function DashboardPage() {
                                       <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-3">
                                           <ChevronRight className={`h-4 w-4 transition-transform ${isCatExpanded ? 'rotate-90' : ''}`} />
-                                          <Folder className="h-4 w-4 text-blue-600" />
+                                          <Folder className="h-4 w-4 text-primary" />
                                           <div>
-                                            <h4 className="font-medium text-gray-900">{category}</h4>
-                                            <p className="text-xs text-gray-600">
+                                            <h4 className="font-medium text-foreground">{category}</h4>
+                                            <p className="text-xs text-muted-foreground">
                                               {catStats.total} questions • {catStats.averageRate}% réussite
                                             </p>
                                           </div>
@@ -637,24 +657,24 @@ export default function DashboardPage() {
                                         {questions.map((question) => (
                                           <div
                                             key={question.id}
-                                            className="p-3 pl-20 hover:bg-gray-50 cursor-pointer transition-colors border-t border-gray-100 group"
+                                            className="p-3 pl-20 hover:bg-muted/30 cursor-pointer transition-colors border-t border-border/50 group"
                                             onClick={() => window.open(`/train?questionId=${question.id}`, '_blank')}
                                           >
                                             {/* Même structure que l'ancien design mais plus compact */}
                                             <div className="flex items-start gap-3">
                                               <div className={`h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
-                                                question.status === 'mastered' ? 'bg-green-100 text-green-700' :
-                                                question.status === 'to_review' ? 'bg-orange-100 text-orange-700' :
-                                                'bg-gray-100 text-gray-700'
+                                                question.status === 'mastered' ? 'bg-primary/10 text-primary' :
+                                                question.status === 'to_review' ? 'bg-secondary/10 text-secondary-foreground' :
+                                                'bg-muted text-muted-foreground'
                                               }`}>
                                                 {question.status === 'mastered' ? '✓' :
                                                  question.status === 'to_review' ? '!' : '?'}
                                               </div>
                                               <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+                                                <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
                                                   {question.enonce || 'Pas d\'énoncé'}
                                                 </p>
-                                                <div className="flex gap-4 mt-1 text-xs text-gray-600">
+                                                <div className="flex gap-4 mt-1 text-xs text-muted-foreground">
                                                   <span>{question.attempts} tentatives</span>
                                                   <span>{question.successRate}% réussite</span>
                                                   {question.lastAttempt && (
@@ -663,9 +683,9 @@ export default function DashboardPage() {
                                                 </div>
                                               </div>
                                               <Badge className={
-                                                question.status === 'mastered' ? 'bg-green-100 text-green-700' :
-                                                question.status === 'to_review' ? 'bg-orange-100 text-orange-700' :
-                                                'bg-gray-100 text-gray-700'
+                                                question.status === 'mastered' ? 'bg-primary/10 text-primary' :
+                                                question.status === 'to_review' ? 'bg-secondary/10 text-secondary-foreground' :
+                                                'bg-muted text-muted-foreground'
                                               }>
                                                 {question.status === 'mastered' ? 'Maîtrisée' :
                                                  question.status === 'to_review' ? 'À revoir' : 'Non vue'}
@@ -685,7 +705,7 @@ export default function DashboardPage() {
                     })}
                   </div>
                 ) : (
-                  <div className="text-center py-12 text-gray-500">
+                  <div className="text-center py-12 text-muted-foreground">
                     <Target className="h-12 w-12 mx-auto mb-4 opacity-50" />
                     <p>Aucune question disponible</p>
                   </div>
@@ -697,7 +717,7 @@ export default function DashboardPage() {
 
           <TabsContent value="analytics" className="space-y-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+              <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <PieChart className="h-5 w-5" />
@@ -708,30 +728,30 @@ export default function DashboardPage() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-600" />
+                        <CheckCircle className="h-4 w-4 text-primary" />
                         <span className="text-sm">Correctes</span>
                       </div>
-                      <span className="font-bold text-green-600">{stats.global.correctAnswers}</span>
+                      <span className="font-bold text-primary">{stats.global.correctAnswers}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <XCircle className="h-4 w-4 text-red-600" />
+                        <XCircle className="h-4 w-4 text-destructive" />
                         <span className="text-sm">Incorrectes</span>
                       </div>
-                      <span className="font-bold text-red-600">{stats.global.incorrectAnswers}</span>
+                      <span className="font-bold text-destructive">{stats.global.incorrectAnswers}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <AlertCircle className="h-4 w-4 text-gray-600" />
+                        <AlertCircle className="h-4 w-4 text-muted-foreground" />
                         <span className="text-sm">Non étudiées</span>
                       </div>
-                      <span className="font-bold text-gray-600">{stats.global.totalQuestions - stats.global.completedQuestions}</span>
+                      <span className="font-bold text-muted-foreground">{stats.global.totalQuestions - stats.global.completedQuestions}</span>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+              <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <TrendingUp className="h-5 w-5" />
@@ -740,21 +760,21 @@ export default function DashboardPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
+                    <div className="flex justify-between items-center p-3 bg-primary/10 rounded-lg">
                       <span className="text-sm">Total tentatives</span>
-                      <span className="font-bold text-blue-600">{stats.global.totalAttempts}</span>
+                      <span className="font-bold text-primary">{stats.global.totalAttempts}</span>
                     </div>
-                    <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+                    <div className="flex justify-between items-center p-3 bg-secondary/10 rounded-lg">
                       <span className="text-sm">Taux de réussite global</span>
-                      <span className="font-bold text-green-600">{stats.global.averageScore}%</span>
+                      <span className="font-bold text-secondary-foreground">{stats.global.averageScore}%</span>
                     </div>
-                    <div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
+                    <div className="flex justify-between items-center p-3 bg-accent/10 rounded-lg">
                       <span className="text-sm">Temps d&apos;étude total</span>
-                      <span className="font-bold text-purple-600">{stats.global.studyTime}h</span>
+                      <span className="font-bold text-accent-foreground">{stats.global.studyTime}h</span>
                     </div>
-                    <div className="flex justify-between items-center p-3 bg-orange-50 rounded-lg">
+                    <div className="flex justify-between items-center p-3 bg-muted rounded-lg">
                       <span className="text-sm">Série actuelle</span>
-                      <span className="font-bold text-orange-600">{stats.global.streak} jours</span>
+                      <span className="font-bold text-muted-foreground">{stats.global.streak} jours</span>
                     </div>
                   </div>
                 </CardContent>
@@ -762,10 +782,10 @@ export default function DashboardPage() {
             </div>
 
             {/* Questions problématiques */}
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <AlertCircle className="h-5 w-5 text-red-600" />
+                  <AlertCircle className="h-5 w-5 text-destructive" />
                   Questions à travailler
                 </CardTitle>
                 <CardDescription>
@@ -776,9 +796,9 @@ export default function DashboardPage() {
                 {stats.problematicQuestions.length > 0 ? (
                   <div className="space-y-3">
                     {stats.problematicQuestions.map((question, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-red-50 rounded-lg border border-red-100">
+                      <div key={index} className="flex items-center justify-between p-3 bg-destructive/10 rounded-lg border border-destructive/20">
                         <div className="flex items-center gap-3 flex-1">
-                          <div className="h-8 w-8 bg-red-200 rounded-full flex items-center justify-center text-xs font-bold text-red-700">
+                          <div className="h-8 w-8 bg-destructive/20 rounded-full flex items-center justify-center text-xs font-bold text-destructive">
                             {index + 1}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -791,16 +811,16 @@ export default function DashboardPage() {
                         </div>
                         <div className="flex items-center gap-4 ml-4">
                           <div className="text-right">
-                            <p className="text-sm font-bold text-red-600">{question.successRate}%</p>
-                            <p className="text-xs text-gray-500">{question.attempts} tentatives</p>
+                            <p className="text-sm font-bold text-destructive">{question.successRate}%</p>
+                            <p className="text-xs text-muted-foreground">{question.attempts} tentatives</p>
                           </div>
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-gray-500">
-                    <CheckCircle className="h-12 w-12 mx-auto mb-4 text-green-500 opacity-50" />
+                  <div className="text-center py-8 text-muted-foreground">
+                    <CheckCircle className="h-12 w-12 mx-auto mb-4 text-primary opacity-50" />
                     <p>Aucune question problématique</p>
                     <p className="text-sm mt-2">Continuez votre excellent travail !</p>
                   </div>
@@ -812,25 +832,25 @@ export default function DashboardPage() {
 
         {/* Actions rapides */}
         <div className="mt-12">
-          <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 shadow-xl">
-            <CardContent className="p-8">
-              <div className="flex items-center justify-between">
+          <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
+            <CardContent className="p-6 md:p-8">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div>
-                  <h3 className="text-2xl font-bold mb-2">Prêt pour la suite ?</h3>
-                  <p className="text-blue-100">
+                  <h3 className="text-xl md:text-2xl font-bold mb-2 text-foreground">Prêt pour la suite ?</h3>
+                  <p className="text-muted-foreground">
                     Continuez votre apprentissage avec des exercices personnalisés
                   </p>
                 </div>
-                <div className="flex gap-4">
-                  <Link href="/train">
-                    <Button variant="secondary" size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
-                      <BookOpen className="h-5 w-5 mr-2" />
+                <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                  <Link href="/train" className="w-full sm:w-auto">
+                    <Button variant="default" size="lg" className="w-full sm:w-auto">
+                      <BookOpen className="h-4 w-4 md:h-5 md:w-5 mr-2" />
                       Entraînement
                     </Button>
                   </Link>
-                  <Link href="/exam">
-                    <Button variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
-                      <FileText className="h-5 w-5 mr-2" />
+                  <Link href="/exam" className="w-full sm:w-auto">
+                    <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                      <FileText className="h-4 w-4 md:h-5 md:w-5 mr-2" />
                       Examen
                     </Button>
                   </Link>

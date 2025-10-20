@@ -21,9 +21,9 @@ export const Toast: React.FC<ToastProps> = ({ message, type, isVisible, onClose 
   if (!isVisible) return null
 
   const typeStyles = {
-    success: 'bg-green-50 border-green-200 text-green-800',
-    error: 'bg-red-50 border-red-200 text-red-800',
-    info: 'bg-blue-50 border-blue-200 text-blue-800'
+    success: 'bg-primary/10 border-primary/20 text-primary',
+    error: 'bg-destructive/10 border-destructive/20 text-destructive',
+    info: 'bg-secondary/10 border-secondary/20 text-secondary-foreground'
   }
 
   return (
@@ -36,7 +36,7 @@ export const Toast: React.FC<ToastProps> = ({ message, type, isVisible, onClose 
           <span className="text-sm font-medium">{message}</span>
           <button
             onClick={onClose}
-            className="ml-3 text-gray-400 hover:text-gray-600"
+            className="ml-3 text-muted-foreground hover:text-foreground"
           >
             ×
           </button>

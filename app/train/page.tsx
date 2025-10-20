@@ -85,22 +85,24 @@ export default function TrainPage() {
 
   // Initialiser les filtres depuis les paramètres URL
   useEffect(() => {
-    const questionnaire = searchParams.get('questionnaire')
-    const categorie = searchParams.get('categorie')
+    const qParam = searchParams.get('questionnaire')
+    const cParam = searchParams.get('categorie')
     const questionId = searchParams.get('questionId')
+
+    const questionnaire = qParam && qParam.trim() !== '' ? qParam : 'all'
+    const categorie = cParam && cParam.trim() !== '' ? cParam : 'all'
     
-    if (questionnaire || categorie || questionId) {
+    if (qParam !== null || cParam !== null || questionId) {
       setFilters(prev => ({
         ...prev,
-        questionnaire: questionnaire || 'all',
-        categorie: categorie || 'all'
+        questionnaire,
+        categorie
       }))
       
       if (questionId) {
         setSmartMode(false)
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
 
   useEffect(() => {
@@ -186,12 +188,22 @@ export default function TrainPage() {
     fetchQuestions()
   }
 
+  const resetFilters = useCallback(() => {
+    setFilters({
+      questionnaire: 'all',
+      categorie: 'all',
+      astag: 'all',
+      statut: 'all'
+    })
+    router.replace('/train')
+  }, [router])
+
   if (loading) {
     return (
-      <div className="h-screen bg-gray-50 flex items-center justify-center">
+      <div className="h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Chargement des questions...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Chargement des questions...</p>
         </div>
       </div>
     )
@@ -199,16 +211,11 @@ export default function TrainPage() {
 
   if (filteredQuestions.length === 0) {
     return (
-      <div className="h-screen bg-gray-50 flex items-center justify-center">
+      <div className="h-screen bg-background flex items-center justify-center">
         <Card>
           <CardContent className="p-8">
-            <p className="text-gray-600 mb-4">Aucune question trouvée avec ces filtres.</p>
-            <Button onClick={() => setFilters({
-              questionnaire: 'all',
-              categorie: 'all',
-              astag: 'all',
-              statut: 'all'
-            })}>
+            <p className="text-muted-foreground mb-4">Aucune question trouvée avec ces filtres.</p>
+            <Button onClick={resetFilters}>
               Réinitialiser les filtres
             </Button>
           </CardContent>
@@ -220,31 +227,31 @@ export default function TrainPage() {
   const currentQuestion = filteredQuestions[currentIndex]
 
   return (
-    <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
+    <div className="h-screen bg-background flex flex-col overflow-hidden">
       {/* Header épuré - Fixe en haut */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3 flex-shrink-0">
+      <div className="bg-background border-b border-border px-2 md:px-4 py-2 md:py-3 flex-shrink-0">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3">
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={() => setShowMenu(!showMenu)}
-              className="text-gray-600"
+              className="text-muted-foreground"
             >
               <Menu className="h-4 w-4" />
             </Button>
-            <h1 className="text-lg font-semibold">Entraînement</h1>
+            <h1 className="text-base md:text-lg font-semibold">Entraînement</h1>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 md:gap-2">
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={() => setShowFilters(!showFilters)}
-              className="text-gray-600"
+              className="text-muted-foreground"
             >
               <Filter className="h-4 w-4 mr-1" />
-              Filtres
+              <span className="hidden md:inline">Filtres</span>
             </Button>
             <Badge variant="outline" className="text-xs">
               {currentIndex + 1} / {filteredQuestions.length}
@@ -254,9 +261,9 @@ export default function TrainPage() {
 
         {/* Menu et filtres dépliables */}
         {(showMenu || showFilters) && (
-          <div className="px-4 py-2 bg-gray-50 border-b border-gray-200 flex-shrink-0">
+          <div className="px-4 py-2 bg-muted/50 border-b border-border flex-shrink-0">
             {showMenu && (
-              <div className="mb-3 p-3 bg-white rounded-lg border">
+              <div className="mb-3 p-3 bg-background rounded-lg border">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium">Menu</h3>
                   <Button variant="ghost" size="sm" onClick={() => setShowMenu(false)}>
@@ -284,7 +291,7 @@ export default function TrainPage() {
             )}
 
             {showFilters && (
-              <div className="p-3 bg-white rounded-lg border">
+              <div className="p-3 bg-background rounded-lg border">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium">Filtres</h3>
                   <Button variant="ghost" size="sm" onClick={() => setShowFilters(false)}>
@@ -345,30 +352,30 @@ export default function TrainPage() {
           </div>
         )}
 
-        {/* Contenu principal - Layout côte à côte sans scroll */}
-        <div className="flex-1 flex gap-4 p-4 min-h-0">
-          {/* Image - 50% */}
-          <div className="w-1/2">
-            <Card className="h-full">
-              <CardContent className="p-4 h-full flex items-center justify-center">
+        {/* Contenu principal - Layout responsive */}
+        <div className="flex-1 flex flex-col md:flex-row gap-4 p-2 md:p-4 min-h-0 pb-20 md:pb-4">
+          {/* Image - responsive */}
+          <div className="w-full md:w-1/2">
+            <Card className="h-48 md:h-full">
+              <CardContent className="p-2 md:p-4 h-full flex items-center justify-center">
                 <img 
                   src={currentQuestion.imagePath} 
                   alt={`Question ${currentQuestion.question}`}
-                  className="max-w-full max-h-full object-contain"
+                  className="max-w-full max-h-48 md:max-h-full object-contain"
                 />
               </CardContent>
             </Card>
           </div>
 
-          {/* Question et options - 50% */}
-          <div className="w-1/2 flex flex-col">
+          {/* Question et options - responsive */}
+          <div className="w-full md:w-1/2 flex flex-col">
             <Card className="flex-1">
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-2 md:pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">
+                  <CardTitle className="text-base md:text-lg">
                     Question {currentQuestion.question}
                   </CardTitle>
-                  <div className="flex gap-2">
+                  <div className="flex gap-1 md:gap-2">
                     {currentQuestion.categorie && (
                       <Badge variant="secondary" className="text-xs">
                         {currentQuestion.categorie}
@@ -382,12 +389,12 @@ export default function TrainPage() {
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-gray-700 font-medium break-words whitespace-pre-wrap">
+              <CardContent className="space-y-2 md:space-y-4 p-2 md:p-6">
+                <p className="text-sm md:text-base text-foreground font-medium break-words whitespace-pre-wrap">
                   {currentQuestion.enonce}
                 </p>
 
-                <div className="space-y-2">
+                <div className="space-y-1 md:space-y-2">
                   {['A', 'B', 'C', 'D'].map((option, index) => {
                     const optionKey = `option${option}` as keyof Question
                     const optionValue = currentQuestion[optionKey] as string
@@ -401,58 +408,74 @@ export default function TrainPage() {
                     const showIncorrect = showFeedback && isSelected && !isCorrect
 
                     return (
-                      <Button
+                      <div
                         key={option}
-                        variant={isSelected ? "default" : "outline"}
-                        className={`w-full justify-start h-auto p-3 ${
-                          showCorrect ? 'bg-green-100 border-green-500 text-green-700' :
-                          showIncorrect ? 'bg-red-100 border-red-500 text-red-700' :
-                          isSelected ? 'bg-blue-100 border-blue-500 text-blue-700' :
-                          'hover:bg-gray-50'
+                        className={`p-2 md:p-3 rounded-lg border-2 cursor-pointer question-option ${
+                          showCorrect 
+                            ? 'question-option-correct' 
+                            : showIncorrect 
+                            ? 'question-option-incorrect' 
+                            : isSelected 
+                            ? 'question-option-selected' 
+                            : 'bg-muted border-border'
                         }`}
-                        onClick={() => handleAnswerSelect(answerKey)}
-                        disabled={showFeedback}
+                        onClick={() => !showFeedback && handleAnswerSelect(answerKey)}
                       >
-                        <div className="flex items-center gap-3 w-full">
-                          <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold ${
-                            showCorrect ? 'bg-green-500 text-white' :
-                            showIncorrect ? 'bg-red-500 text-white' :
-                            isSelected ? 'bg-blue-500 text-white' :
-                            'bg-gray-200 text-gray-700'
+                        <div className="flex items-center gap-2 md:gap-3">
+                          <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
+                            showCorrect 
+                              ? 'bg-success text-success-foreground' 
+                              : showIncorrect 
+                              ? 'bg-destructive text-destructive-foreground' 
+                              : isSelected 
+                              ? 'bg-primary text-primary-foreground' 
+                              : 'bg-muted text-muted-foreground'
                           }`}>
                             {option}
                           </div>
-                          <span className="text-left break-words whitespace-pre-wrap flex-1">{optionValue}</span>
+                          <span className="text-left flex-1 break-words whitespace-pre-wrap text-xs md:text-sm">{optionValue}</span>
                           {showFeedback && (
-                            <div className="ml-auto">
-                              {showCorrect && <CheckCircle className="h-5 w-5 text-green-600" />}
-                              {showIncorrect && <XCircle className="h-5 w-5 text-red-600" />}
+                            <div className="flex items-center gap-1 md:gap-2">
+                              {showCorrect && (
+                                <div className="flex items-center gap-1 text-success">
+                                  <CheckCircle className="h-3 w-3 md:h-4 md:w-4" />
+                                  <span className="text-xs font-medium">Correcte</span>
+                                </div>
+                              )}
+                              {showIncorrect && (
+                                <div className="flex items-center gap-1 text-destructive">
+                                  <XCircle className="h-3 w-3 md:h-4 md:w-4" />
+                                  <span className="text-xs font-medium">Votre réponse</span>
+                                </div>
+                              )}
                             </div>
                           )}
                         </div>
-                      </Button>
+                      </div>
                     )
                   })}
                 </div>
 
                 {showFeedback && (
-                  <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                    <p className="text-sm text-gray-600">
-                      {selectedAnswer === currentQuestion.bonneReponse ? (
-                        <span className="text-green-600 font-medium">✓ Correct !</span>
-                      ) : (
-                        <span className="text-red-600 font-medium">
-                          ✗ Incorrect. La bonne réponse était {currentQuestion.bonneReponse.toUpperCase()}.
-                        </span>
-                      )}
-                    </p>
+                  <div className="mt-2 md:mt-4 p-2 md:p-3 bg-muted/30 rounded-lg">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        {selectedAnswer === currentQuestion.bonneReponse ? (
+                          <span className="text-success font-medium">✓ Réponse correcte</span>
+                        ) : (
+                          <span className="text-destructive font-medium">
+                            ✗ Réponse incorrecte. La bonne réponse était {currentQuestion.bonneReponse.toUpperCase()}.
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 )}
               </CardContent>
             </Card>
 
-            {/* Navigation */}
-            <div className="flex justify-between mt-4">
+            {/* Navigation - masquée sur mobile (sera fixe en bas) */}
+            <div className="hidden md:flex justify-between mt-4">
               <Button 
                 variant="outline" 
                 onClick={handlePrevious}
@@ -472,6 +495,30 @@ export default function TrainPage() {
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
+          </div>
+        </div>
+
+        {/* Navigation fixe mobile */}
+        <div className="fixed md:hidden bottom-0 left-0 right-0 bg-background border-t border-border p-3 z-50">
+          <div className="flex justify-between gap-2">
+            <Button 
+              variant="outline" 
+              onClick={handlePrevious}
+              disabled={currentIndex === 0}
+              className="flex items-center gap-2 flex-1"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Précédent
+            </Button>
+            
+            <Button 
+              onClick={handleNext}
+              disabled={currentIndex === filteredQuestions.length - 1}
+              className="flex items-center gap-2 flex-1"
+            >
+              Suivant
+              <ArrowRight className="h-4 w-4" />
+            </Button>
           </div>
         </div>
       </div>
