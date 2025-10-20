@@ -5,75 +5,59 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
+    --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
+    --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
-    --primary: 262.1 83.3% 57.8%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
-    --accent: 188.7 94.5% 42.7%;
-    --accent-foreground: 188 96% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 20% 98%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 45.4 93.4% 47.5%;
+    --primary-foreground: 26 83.3% 14.1%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 45.4 93.4% 47.5%;
+    --accent-foreground: 26 83.3% 14.1%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
     --warning: 38 92% 50%;
     --warning-foreground: 48 96% 89%;
     --success: 142.1 76.2% 36.3%;
     --success-foreground: 355.7 100% 97.3%;
     --info: 221.2 83.2% 53.3%;
     --info-foreground: 210 40% 98%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 262.1 83.3% 57.8%;
-    --radius: 0.75rem;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 45.4 93.4% 47.5%;
+    --radius: 0.5rem;
   }
 
   .dark {
-    --background: 224 71.4% 4.1%;
-    --foreground: 210 20% 98%;
-    --card: 224 71.4% 4.1%;
-    --card-foreground: 210 20% 98%;
-    --popover: 224 71.4% 4.1%;
-    --popover-foreground: 210 20% 98%;
-    --primary: 263.4 70% 50.4%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 215 27.9% 16.9%;
-    --secondary-foreground: 210 20% 98%;
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-    --accent: 188.7 94.5% 42.7%;
-    --accent-foreground: 188 96% 10%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 20% 98%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 45.4 93.4% 47.5%;
+    --primary-foreground: 26 83.3% 14.1%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 45.4 93.4% 47.5%;
+    --accent-foreground: 26 83.3% 14.1%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
     --warning: 38 92% 50%;
     --warning-foreground: 48 96% 89%;
     --success: 142.1 70.6% 45.3%;
     --success-foreground: 144.9 80.4% 10%;
     --info: 217.2 91.2% 59.8%;
     --info-foreground: 222.2 84% 4.9%;
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 263.4 70% 50.4%;
-    
-    /* Couleurs supplémentaires pour thème multicolore */
-    --purple: 262.1 83.3% 57.8%;
-    --purple-foreground: 210 20% 98%;
-    --blue: 221.2 83.2% 53.3%;
-    --blue-foreground: 210 40% 98%;
-    --cyan: 188.7 94.5% 42.7%;
-    --cyan-foreground: 188 96% 10%;
-    --emerald: 142.1 76.2% 36.3%;
-    --emerald-foreground: 355.7 100% 97.3%;
-    --lime: 84.4 81% 44.5%;
-    --lime-foreground: 355.7 100% 97.3%;
-    --rose: 346.8 77.2% 49.8%;
-    --rose-foreground: 355.7 100% 97.3%;
-    --indigo: 238.7 83.5% 66.7%;
-    --indigo-foreground: 210 40% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 45.4 93.4% 47.5%;
   }
 }
 
@@ -325,124 +309,27 @@
     font-weight: 600;
   }
 
-  /* Classes pour réponses correctes et incorrectes avec texte noir */
+  /* Classes spécifiques pour les options de questions avec contraste optimisé */
   .question-option-correct {
-    background-color: hsl(142.1 76.2% 36.3%);
-    border-color: hsl(142.1 76.2% 36.3%);
-    color: hsl(0 0% 0%);
+    background-color: hsl(var(--success));
+    border-color: hsl(var(--success));
+    color: hsl(var(--success-foreground));
     font-weight: 600;
   }
   
   .question-option-incorrect {
-    background-color: hsl(0 84.2% 60.2%);
-    border-color: hsl(0 84.2% 60.2%);
-    color: hsl(0 0% 0%);
+    background-color: hsl(var(--destructive));
+    border-color: hsl(var(--destructive));
+    color: hsl(var(--destructive-foreground));
     font-weight: 600;
   }
   
-  .dark .question-option-correct {
-    background-color: hsl(142.1 70.6% 45.3%);
-    color: hsl(0 0% 0%);
-  }
-  
-  .dark .question-option-incorrect {
-    background-color: hsl(0 84.2% 60.2%);
-    color: hsl(0 0% 0%);
-  }
 
   /* Amélioration du contraste pour les textes dans les options */
   .question-option-correct span,
   .question-option-incorrect span {
     color: inherit;
     font-weight: inherit;
-  }
-
-  /* Classes pour le thème multicolore professionnel */
-  .text-purple { color: hsl(var(--purple)); }
-  .text-blue { color: hsl(var(--blue)); }
-  .text-cyan { color: hsl(var(--cyan)); }
-  .text-emerald { color: hsl(var(--emerald)); }
-  .text-lime { color: hsl(var(--lime)); }
-  .text-rose { color: hsl(var(--rose)); }
-  .text-indigo { color: hsl(var(--indigo)); }
-
-  .bg-purple { background-color: hsl(var(--purple)); }
-  .bg-blue { background-color: hsl(var(--blue)); }
-  .bg-cyan { background-color: hsl(var(--cyan)); }
-  .bg-emerald { background-color: hsl(var(--emerald)); }
-  .bg-lime { background-color: hsl(var(--lime)); }
-  .bg-rose { background-color: hsl(var(--rose)); }
-  .bg-indigo { background-color: hsl(var(--indigo)); }
-
-  .border-purple { border-color: hsl(var(--purple)); }
-  .border-blue { border-color: hsl(var(--blue)); }
-  .border-cyan { border-color: hsl(var(--cyan)); }
-  .border-emerald { border-color: hsl(var(--emerald)); }
-  .border-lime { border-color: hsl(var(--lime)); }
-  .border-rose { border-color: hsl(var(--rose)); }
-  .border-indigo { border-color: hsl(var(--indigo)); }
-
-  .text-purple-foreground { color: hsl(var(--purple-foreground)); }
-  .text-blue-foreground { color: hsl(var(--blue-foreground)); }
-  .text-cyan-foreground { color: hsl(var(--cyan-foreground)); }
-  .text-emerald-foreground { color: hsl(var(--emerald-foreground)); }
-  .text-lime-foreground { color: hsl(var(--lime-foreground)); }
-  .text-rose-foreground { color: hsl(var(--rose-foreground)); }
-  .text-indigo-foreground { color: hsl(var(--indigo-foreground)); }
-
-  /* Transparences pour fonds colorés */
-  .bg-purple\/10 { background-color: hsl(var(--purple) / 0.1); }
-  .bg-blue\/10 { background-color: hsl(var(--blue) / 0.1); }
-  .bg-cyan\/10 { background-color: hsl(var(--cyan) / 0.1); }
-  .bg-emerald\/10 { background-color: hsl(var(--emerald) / 0.1); }
-  .bg-lime\/10 { background-color: hsl(var(--lime) / 0.1); }
-  .bg-rose\/10 { background-color: hsl(var(--rose) / 0.1); }
-  .bg-indigo\/10 { background-color: hsl(var(--indigo) / 0.1); }
-
-  .bg-purple\/20 { background-color: hsl(var(--purple) / 0.2); }
-  .bg-blue\/20 { background-color: hsl(var(--blue) / 0.2); }
-  .bg-cyan\/20 { background-color: hsl(var(--cyan) / 0.2); }
-  .bg-emerald\/20 { background-color: hsl(var(--emerald) / 0.2); }
-  .bg-lime\/20 { background-color: hsl(var(--lime) / 0.2); }
-  .bg-rose\/20 { background-color: hsl(var(--rose) / 0.2); }
-  .bg-indigo\/20 { background-color: hsl(var(--indigo) / 0.2); }
-
-  /* Survols colorés */
-  .hover\:bg-purple:hover { background-color: hsl(var(--purple)); }
-  .hover\:bg-blue:hover { background-color: hsl(var(--blue)); }
-  .hover\:bg-cyan:hover { background-color: hsl(var(--cyan)); }
-  .hover\:bg-emerald:hover { background-color: hsl(var(--emerald)); }
-  .hover\:bg-lime:hover { background-color: hsl(var(--lime)); }
-  .hover\:bg-rose:hover { background-color: hsl(var(--rose)); }
-  .hover\:bg-indigo:hover { background-color: hsl(var(--indigo)); }
-
-  .hover\:text-purple:hover { color: hsl(var(--purple)); }
-  .hover\:text-blue:hover { color: hsl(var(--blue)); }
-  .hover\:text-cyan:hover { color: hsl(var(--cyan)); }
-  .hover\:text-emerald:hover { color: hsl(var(--emerald)); }
-  .hover\:text-lime:hover { color: hsl(var(--lime)); }
-  .hover\:text-rose:hover { color: hsl(var(--rose)); }
-  .hover\:text-indigo:hover { color: hsl(var(--indigo)); }
-
-  /* Classes pour les options de questions avec jaune */
-  .question-option-neutral {
-    background-color: hsl(var(--background));
-    border-color: hsl(var(--border));
-    color: hsl(var(--foreground));
-    transition: all 0.2s ease;
-  }
-  
-  .question-option-neutral:hover {
-    background-color: hsl(45.4 93.4% 47.5% / 0.5);
-    border-color: hsl(45.4 93.4% 47.5%);
-  }
-  
-  /* Option sélectionnée avec jaune opacité 1 */
-  .question-option-selected {
-    background-color: hsl(45.4 93.4% 47.5%);
-    border-color: hsl(45.4 93.4% 47.5%);
-    color: hsl(26 83.3% 14.1%);
-    font-weight: 600;
   }
 }
 
