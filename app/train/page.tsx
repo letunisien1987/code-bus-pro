@@ -412,8 +412,8 @@ export default function TrainPage() {
                         key={option}
                         variant={isSelected ? "default" : "outline"}
                         className={`w-full justify-start h-auto p-2 md:p-3 ${
-                          showCorrect ? 'bg-success/10 border-success text-success' :
-                          showIncorrect ? 'bg-destructive/10 border-destructive text-destructive' :
+                          showCorrect ? 'question-option-correct' :
+                          showIncorrect ? 'question-option-incorrect' :
                           isSelected ? 'bg-secondary/10 border-secondary text-secondary-foreground' :
                           'hover:bg-muted/30'
                         }`}

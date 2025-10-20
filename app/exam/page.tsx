@@ -436,9 +436,9 @@ export default function ExamPage() {
                           key={option}
                           className={`p-2 md:p-3 rounded-lg border-2 ${
                             isCorrect 
-                              ? 'bg-success/10 border-success' 
+                              ? 'question-option-correct' 
                               : isWrong 
-                              ? 'bg-destructive/10 border-destructive' 
+                              ? 'question-option-incorrect' 
                               : 'bg-muted border-border'
                           }`}
                         >

@@ -258,6 +258,19 @@
     background-color: hsl(var(--success) / 0.2);
   }
 
+  /* Amélioration du contraste pour les textes sur fonds colorés */
+  .bg-success\/10 .text-success,
+  .bg-success\/20 .text-success {
+    color: hsl(142.1 76.2% 25%);
+    font-weight: 600;
+  }
+  
+  .dark .bg-success\/10 .text-success,
+  .dark .bg-success\/20 .text-success {
+    color: hsl(142.1 76.2% 30%);
+    font-weight: 600;
+  }
+
   /* Classes pour rouge (destructive) avec bon contraste */
   .text-destructive {
     color: hsl(var(--destructive));
@@ -281,6 +294,49 @@
   
   .hover\:bg-destructive\/20:hover {
     background-color: hsl(var(--destructive) / 0.2);
+  }
+
+  /* Amélioration du contraste pour les textes destructifs sur fonds colorés */
+  .bg-destructive\/10 .text-destructive,
+  .bg-destructive\/20 .text-destructive {
+    color: hsl(0 72% 35%);
+    font-weight: 600;
+  }
+  
+  .dark .bg-destructive\/10 .text-destructive,
+  .dark .bg-destructive\/20 .text-destructive {
+    color: hsl(0 84.2% 45%);
+    font-weight: 600;
+  }
+
+  /* Classes spécifiques pour les options de questions avec contraste optimisé */
+  .question-option-correct {
+    background-color: hsl(var(--success) / 0.1);
+    border-color: hsl(var(--success));
+    color: hsl(142.1 76.2% 25%);
+    font-weight: 600;
+  }
+  
+  .question-option-incorrect {
+    background-color: hsl(var(--destructive) / 0.1);
+    border-color: hsl(var(--destructive));
+    color: hsl(0 72% 35%);
+    font-weight: 600;
+  }
+  
+  .dark .question-option-correct {
+    color: hsl(142.1 76.2% 30%);
+  }
+  
+  .dark .question-option-incorrect {
+    color: hsl(0 84.2% 45%);
+  }
+
+  /* Amélioration du contraste pour les textes dans les options */
+  .question-option-correct span,
+  .question-option-incorrect span {
+    color: inherit;
+    font-weight: inherit;
   }
 }
 
