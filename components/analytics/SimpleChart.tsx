@@ -29,12 +29,12 @@ export default function SimpleChart({
         <div key={index} className="space-y-1">
           <div className="flex justify-between text-sm">
             <span className="font-medium">{item.label}</span>
-            <span className="text-gray-600">{item.value}%</span>
+            <span className="text-muted-foreground">{item.value}%</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-muted rounded-full h-2">
             <div
               className={`h-2 rounded-full transition-all duration-500 ${
-                item.color || 'bg-gradient-to-r from-blue-500 to-purple-500'
+                item.color || 'bg-primary'
               }`}
               style={{ width: `${item.value}%` }}
             />
@@ -51,11 +51,11 @@ export default function SimpleChart({
           <div key={index} className="flex flex-col items-center space-y-2">
             <div
               className={`w-8 rounded-t transition-all duration-500 ${
-                item.color || 'bg-gradient-to-t from-blue-500 to-purple-500'
+                item.color || 'bg-primary'
               }`}
               style={{ height: `${(item.value / maxValue) * 100}%` }}
             />
-            <span className="text-xs text-gray-600">{item.label}</span>
+            <span className="text-xs text-muted-foreground">{item.label}</span>
             <span className="text-xs font-medium">{item.value}%</span>
           </div>
         ))}
@@ -97,8 +97,8 @@ export default function SimpleChart({
           </svg>
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900">{total}%</div>
-              <div className="text-xs text-gray-600">Total</div>
+              <div className="text-2xl font-bold text-foreground">{total}%</div>
+              <div className="text-xs text-muted-foreground">Total</div>
             </div>
           </div>
         </div>
@@ -118,9 +118,9 @@ export default function SimpleChart({
   }
 
   return (
-    <Card className={`bg-white/80 backdrop-blur-sm border-0 shadow-xl ${className}`}>
+    <Card className={`bg-card/80 backdrop-blur-sm border border-border shadow-xl ${className}`}>
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-gray-900">{title}</CardTitle>
+        <CardTitle className="text-lg font-semibold text-card-foreground">{title}</CardTitle>
       </CardHeader>
       <CardContent>
         {renderChart()}

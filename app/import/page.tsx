@@ -48,7 +48,7 @@ export default function ImportPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -57,7 +57,7 @@ export default function ImportPage() {
               <ArrowLeft className="h-4 w-4 mr-2" />
               Retour
             </Button>
-            <h1 className="text-2xl font-bold">Importer des données</h1>
+            <h1 className="text-2xl font-bold text-foreground">Importer des données</h1>
           </div>
         </div>
 
@@ -76,21 +76,21 @@ export default function ImportPage() {
             <CardContent className="space-y-4">
               <div>
                 <h3 className="font-semibold mb-2">1. Préparer les données</h3>
-                <p className="text-sm text-gray-600 mb-2">
-                  Remplacez le fichier <code className="bg-gray-100 px-2 py-1 rounded">data/questions.json</code> 
+                <p className="text-sm text-muted-foreground mb-2">
+                  Remplacez le fichier <code className="bg-muted px-2 py-1 rounded">data/questions.json</code> 
                   par votre propre fichier de questions.
                 </p>
-                <p className="text-sm text-gray-600 mb-4">
-                  Ajoutez vos images dans le dossier <code className="bg-gray-100 px-2 py-1 rounded">public/images/</code>.
+                <p className="text-sm text-muted-foreground mb-4">
+                  Ajoutez vos images dans le dossier <code className="bg-muted px-2 py-1 rounded">public/images/</code>.
                 </p>
               </div>
 
               <div>
                 <h3 className="font-semibold mb-2">2. Format des questions</h3>
-                <p className="text-sm text-gray-600 mb-2">
+                <p className="text-sm text-muted-foreground mb-2">
                   Chaque question doit contenir :
                 </p>
-                <ul className="text-sm text-gray-600 space-y-1 ml-4">
+                <ul className="text-sm text-muted-foreground space-y-1 ml-4">
                   <li>• <code>id</code> : Identifiant unique</li>
                   <li>• <code>questionnaire</code> : Numéro du questionnaire</li>
                   <li>• <code>question</code> : Numéro de la question</li>
@@ -104,9 +104,9 @@ export default function ImportPage() {
 
               <div>
                 <h3 className="font-semibold mb-2">3. Images</h3>
-                <p className="text-sm text-gray-600">
-                  Placez vos images dans <code className="bg-gray-100 px-2 py-1 rounded">public/images/</code> 
-                  et référencez-les dans le champ <code className="bg-gray-100 px-2 py-1 rounded">image_path</code>.
+                <p className="text-sm text-muted-foreground">
+                  Placez vos images dans <code className="bg-muted px-2 py-1 rounded">public/images/</code> 
+                  et référencez-les dans le champ <code className="bg-muted px-2 py-1 rounded">image_path</code>.
                 </p>
               </div>
             </CardContent>
@@ -124,13 +124,13 @@ export default function ImportPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="p-4 bg-blue-50 rounded-lg">
+              <div className="p-4 bg-primary/10 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <CheckCircle className="h-5 w-5 text-blue-600" />
-                  <span className="font-medium text-blue-900">Prêt pour l&apos;import</span>
+                  <CheckCircle className="h-5 w-5 text-primary" />
+                  <span className="font-medium text-primary">Prêt pour l&apos;import</span>
                 </div>
-                <p className="text-sm text-blue-700">
-                  Le fichier <code className="bg-blue-100 px-2 py-1 rounded">data/questions.json</code> 
+                <p className="text-sm text-primary">
+                  Le fichier <code className="bg-primary/20 px-2 py-1 rounded">data/questions.json</code> 
                   est prêt à être importé dans la base de données.
                 </p>
               </div>
@@ -157,17 +157,17 @@ export default function ImportPage() {
               {result && (
                 <div className={`p-4 rounded-lg ${
                   result.success 
-                    ? 'bg-green-50 border border-green-200' 
-                    : 'bg-red-50 border border-red-200'
+                    ? 'bg-primary/10 border border-primary/20' 
+                    : 'bg-destructive/10 border border-destructive/20'
                 }`}>
                   <div className="flex items-center gap-2 mb-3">
                     {result.success ? (
-                      <CheckCircle className="h-5 w-5 text-green-600" />
+                      <CheckCircle className="h-5 w-5 text-primary" />
                     ) : (
-                      <AlertCircle className="h-5 w-5 text-red-600" />
+                      <AlertCircle className="h-5 w-5 text-destructive" />
                     )}
                     <span className={`font-medium ${
-                      result.success ? 'text-green-900' : 'text-red-900'
+                      result.success ? 'text-primary' : 'text-destructive'
                     }`}>
                       {result.success ? 'Import réussi !' : 'Erreur d\'import'}
                     </span>
@@ -177,27 +177,27 @@ export default function ImportPage() {
                     <div className="space-y-3">
                       {/* Statistiques d'import */}
                       <div className="grid grid-cols-3 gap-3">
-                        <div className="bg-white p-3 rounded border border-green-200">
-                          <div className="text-2xl font-bold text-green-600">{result.imported}</div>
-                          <div className="text-xs text-gray-600">Questions importées</div>
+                        <div className="bg-card p-3 rounded border border-border">
+                          <div className="text-2xl font-bold text-primary">{result.imported}</div>
+                          <div className="text-xs text-muted-foreground">Questions importées</div>
                         </div>
-                        <div className="bg-white p-3 rounded border border-green-200">
-                          <div className="text-2xl font-bold text-blue-600">{result.total}</div>
-                          <div className="text-xs text-gray-600">Questions dans le JSON</div>
+                        <div className="bg-card p-3 rounded border border-border">
+                          <div className="text-2xl font-bold text-secondary-foreground">{result.total}</div>
+                          <div className="text-xs text-muted-foreground">Questions dans le JSON</div>
                         </div>
-                        <div className="bg-white p-3 rounded border border-green-200">
-                          <div className="text-2xl font-bold text-purple-600">{result.imagesFound}</div>
-                          <div className="text-xs text-gray-600">Images trouvées</div>
+                        <div className="bg-card p-3 rounded border border-border">
+                          <div className="text-2xl font-bold text-accent-foreground">{result.imagesFound}</div>
+                          <div className="text-xs text-muted-foreground">Images trouvées</div>
                         </div>
                       </div>
 
                       {/* Message de succès */}
-                      <div className="bg-white p-3 rounded border border-green-200">
-                        <p className="text-sm text-green-700 font-medium">
+                      <div className="bg-card p-3 rounded border border-border">
+                        <p className="text-sm text-primary font-medium">
                           ✅ {result.message}
                         </p>
-                        <p className="text-xs text-gray-600 mt-1">
-                          Les données ont été importées depuis <code className="bg-gray-100 px-1 rounded">data/questions.json</code>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Les données ont été importées depuis <code className="bg-muted px-1 rounded">data/questions.json</code>
                         </p>
                       </div>
 
@@ -212,18 +212,18 @@ export default function ImportPage() {
                     </div>
                   ) : (
                     <div className="space-y-2">
-                      <p className="text-sm text-red-700">
+                      <p className="text-sm text-destructive">
                         {result.message}
                       </p>
                       {result.error && (
-                        <p className="text-xs text-red-600 bg-red-100 p-2 rounded">
+                        <p className="text-xs text-destructive bg-destructive/10 p-2 rounded">
                           {result.error}
                         </p>
                       )}
                       {result.errors && result.errors.length > 0 && (
                         <div className="mt-2">
-                          <p className="text-sm font-medium text-red-700 mb-1">Erreurs détaillées :</p>
-                          <ul className="text-xs text-red-700 space-y-1 bg-red-100 p-2 rounded">
+                          <p className="text-sm font-medium text-destructive mb-1">Erreurs détaillées :</p>
+                          <ul className="text-xs text-destructive space-y-1 bg-destructive/10 p-2 rounded">
                             {result.errors.map((error, index) => (
                               <li key={index}>• {error}</li>
                             ))}
