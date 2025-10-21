@@ -410,26 +410,26 @@ function TrainPageContent() {
                     return (
                       <div
                         key={option}
-                        className={`p-2 md:p-3 rounded-lg border-2 cursor-pointer question-option ${
+                        className={`p-2 md:p-3 rounded-lg border-2 cursor-pointer question-option transition-all ${
                           showCorrect 
                             ? 'question-option-correct' 
                             : showIncorrect 
                             ? 'question-option-incorrect' 
                             : isSelected 
                             ? 'question-option-selected' 
-                            : 'bg-muted border-border'
+                            : 'bg-muted border-border hover:bg-muted/50 hover:text-accent-foreground'
                         }`}
                         onClick={() => !showFeedback && handleAnswerSelect(answerKey)}
                       >
                         <div className="flex items-center gap-2 md:gap-3">
-                          <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
+                          <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold transition-all ${
                             showCorrect 
                               ? 'bg-success text-success-foreground' 
                               : showIncorrect 
                               ? 'bg-destructive text-destructive-foreground' 
                               : isSelected 
                               ? 'bg-primary text-primary-foreground' 
-                              : 'bg-muted text-muted-foreground'
+                              : 'bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground'
                           }`}>
                             {option}
                           </div>

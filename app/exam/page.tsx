@@ -362,7 +362,7 @@ export default function ExamPage() {
                 </div>
                 <div className="flex items-center gap-2 md:gap-4">
                   <div className="text-center">
-                    <div className="text-xl md:text-3xl font-bold text-accent">{result.score}%</div>
+                    <div className="text-xl md:text-3xl font-bold text-primary">{result.score}%</div>
                     <p className="text-xs text-muted-foreground">Score final</p>
                   </div>
                   <div className="text-center">
@@ -421,7 +421,7 @@ export default function ExamPage() {
                     </CardTitle>
                     <div className="flex gap-1 md:gap-2">
                       {currentReviewQuestion.categorie && (
-                        <Badge variant="secondary" className="text-xs">
+                        <Badge variant="secondary" className="text-xs text-black">
                           {currentReviewQuestion.categorie}
                         </Badge>
                       )}
@@ -564,17 +564,6 @@ export default function ExamPage() {
               </Button>
             </div>
             
-            {/* Actions */}
-            <div className="flex gap-2 mt-2">
-              <Button onClick={resetExam} variant="outline" className="flex-1 text-xs">
-                <RotateCcw className="h-3 w-3 mr-1" />
-                Nouvel examen
-              </Button>
-              <Button onClick={() => router.push('/')} className="flex-1 text-xs">
-                <ArrowLeft className="h-3 w-3 mr-1" />
-                Accueil
-              </Button>
-            </div>
           </div>
         </div>
       </div>
@@ -622,7 +611,7 @@ export default function ExamPage() {
                 </div>
                 
                 {/* Compteur à droite */}
-                <Badge variant={allAnswered ? "default" : "secondary"} className="text-xs font-semibold">
+                <Badge variant={allAnswered ? "default" : "secondary"} className="text-xs font-semibold text-primary-foreground">
                   {answeredCount} / {examQuestions.length}
                 </Badge>
               </div>
@@ -648,7 +637,7 @@ export default function ExamPage() {
                             : 'hover:scale-105'
                         } ${
                           isMarked
-                            ? 'bg-accent text-accent-foreground hover:bg-accent/80'
+                            ? 'bg-primary text-primary-foreground hover:bg-primary/80'
                             : isAnswered
                             ? 'bg-success text-success-foreground hover:bg-success/80'
                             : 'bg-muted text-muted-foreground hover:bg-muted/80'
@@ -667,7 +656,7 @@ export default function ExamPage() {
                     <span>Répondue</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <div className="w-4 h-4 rounded-full bg-accent"></div>
+                    <div className="w-4 h-4 rounded-full bg-primary"></div>
                     <span>À revoir</span>
                   </div>
                   <div className="flex items-center gap-1">
@@ -704,7 +693,7 @@ export default function ExamPage() {
                     </CardTitle>
                     <div className="flex gap-1 md:gap-2">
                       {currentQuestion.categorie && (
-                        <Badge variant="secondary" className="text-xs">
+                        <Badge variant="secondary" className="text-xs text-black">
                           {currentQuestion.categorie}
                         </Badge>
                       )}
@@ -736,13 +725,17 @@ export default function ExamPage() {
                         <div
                           key={option}
                           className={`p-3 md:p-4 rounded-lg border-2 cursor-pointer question-option transition-all hover:shadow-md ${
-                            isSelected ? 'question-option-selected shadow-lg' : 'bg-muted border-border hover:border-primary/50'
+                            isSelected 
+                              ? 'question-option-selected shadow-lg' 
+                              : 'bg-muted border-border hover:bg-muted/50 hover:text-primary'
                           }`}
                           onClick={() => handleAnswerSelect(answerKey)}
                         >
                           <div className="flex items-center gap-3 md:gap-4">
                             <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-sm md:text-base font-bold transition-all ${
-                              isSelected ? 'bg-primary text-primary-foreground scale-110' : 'bg-muted text-muted-foreground'
+                              isSelected 
+                                ? 'bg-primary text-primary-foreground scale-110' 
+                                : 'bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground'
                             }`}>
                               {option}
                             </div>
@@ -762,8 +755,8 @@ export default function ExamPage() {
                   onClick={() => toggleMarkForReview(currentQuestion.id)}
                   className={`w-full text-xs md:text-sm ${
                     markedForReview.has(currentQuestion.id)
-                      ? 'mark-for-review-button'
-                      : 'hover:bg-muted/30'
+                      ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                      : 'hover:bg-muted/50 hover:text-primary'
                   }`}
                 >
                   {markedForReview.has(currentQuestion.id) ? (
@@ -773,7 +766,7 @@ export default function ExamPage() {
                     </>
                   ) : (
                     <>
-                      <span className="text-accent-foreground mr-2">⚠️</span>
+                      <span className="mr-2">⚠️</span>
                       Marquer pour révision
                     </>
                   )}
@@ -786,7 +779,7 @@ export default function ExamPage() {
                 <div className="hidden md:block mt-4 text-center">
                   <Button 
                     onClick={finishExam}
-                    className="w-full bg-accent hover:bg-accent/80 text-accent-foreground"
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
                   >
                     <CheckCircle className="h-4 w-4 mr-2" />
                     Terminer l&apos;examen
@@ -828,18 +821,6 @@ export default function ExamPage() {
               </Button>
             </div>
             
-            {/* Bouton terminer l'examen mobile */}
-            {allAnswered && (
-              <div className="mt-2">
-                <Button 
-                  onClick={finishExam}
-                  className="w-full bg-primary hover:bg-primary/80 text-primary-foreground"
-                >
-                  <CheckCircle className="h-4 w-4 mr-2" />
-                  Terminer l&apos;examen
-                </Button>
-              </div>
-            )}
           </div>
 
           {/* Version mobile - bouton flottant pour marquer les questions */}
@@ -847,8 +828,8 @@ export default function ExamPage() {
             onClick={() => toggleMarkForReview(currentQuestion.id)}
             className={`fixed bottom-20 right-4 z-30 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all ${
               markedForReview.has(currentQuestion.id)
-                ? 'mark-for-review-button'
-                : 'bg-background text-accent-foreground border-2 border-accent'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-background text-primary border-2 border-primary'
             }`}
             aria-label="Marquer pour révision"
           >
