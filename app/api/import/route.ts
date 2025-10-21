@@ -7,9 +7,9 @@ export async function POST() {
   try {
     console.log('🔄 Import des questions via Prisma (compatible Vercel) - v3...')
 
-    const questionsPath = path.join(process.cwd(), 'data', 'questions.json')
+    const questionsPath = path.join(process.cwd(), 'config', 'data', 'questions.json')
     if (!fs.existsSync(questionsPath)) {
-      throw new Error('data/questions.json introuvable')
+      throw new Error('config/data/questions.json introuvable')
     }
     const questionsData = JSON.parse(fs.readFileSync(questionsPath, 'utf-8'))
     console.log(`📊 ${questionsData.length} questions trouvées dans questions.json`)
@@ -28,8 +28,9 @@ export async function POST() {
       }
     }
 
-    // Nettoyer l'ancienne donnée
+    // Nettoyer l'ancienne donnée (ordre important : d'abord les tables avec clés étrangères)
     await prisma.attempt.deleteMany()
+    await prisma.questionProgress.deleteMany()
     await prisma.question.deleteMany()
 
     // Importer les questions
