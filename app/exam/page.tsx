@@ -628,11 +628,11 @@ export default function ExamPage() {
               </div>
 
               {/* Navigation par numéros de questions */}
-              <div className="mt-2 md:mt-3">
-                <div className="text-[10px] md:text-xs text-muted-foreground mb-1">
+              <div className="mt-3 md:mt-4">
+                <div className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
                   Cliquez sur un numéro :
                 </div>
-                <div className="flex flex-wrap gap-0.5 md:gap-2">
+                <div className="flex flex-wrap justify-center gap-2 md:gap-3">
                   {examQuestions.map((q, index) => {
                     const isAnswered = !!answers[q.id]
                     const isMarked = markedForReview.has(q.id)
@@ -642,10 +642,10 @@ export default function ExamPage() {
                       <button
                         key={q.id}
                         onClick={() => goToQuestion(index)}
-                        className={`w-5 h-5 md:w-8 md:h-8 rounded-full flex items-center justify-center text-[10px] md:text-sm font-medium transition-all ${
+                        className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-sm md:text-base font-bold transition-all shadow-sm hover:shadow-md ${
                           isCurrent
-                            ? 'ring-1 ring-blue-500 ring-offset-1'
-                            : ''
+                            ? 'ring-2 ring-primary ring-offset-2 scale-105'
+                            : 'hover:scale-105'
                         } ${
                           isMarked
                             ? 'bg-accent text-accent-foreground hover:bg-accent/80'
@@ -716,12 +716,12 @@ export default function ExamPage() {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-2 md:space-y-4 p-2 md:p-6">
-                  <p className="text-sm md:text-base text-foreground font-medium break-words whitespace-pre-wrap">
+                <CardContent className="space-y-4 md:space-y-6 p-3 md:p-6">
+                  <p className="text-sm md:text-base text-foreground font-medium break-words whitespace-pre-wrap leading-relaxed">
                     {currentQuestion.enonce}
                   </p>
 
-                  <div className="space-y-1 md:space-y-2">
+                  <div className="space-y-3 md:space-y-4">
                     {['A', 'B', 'C', 'D'].map((option, index) => {
                       const optionKey = `option${option}` as keyof Question
                       const optionValue = currentQuestion[optionKey] as string
@@ -735,18 +735,18 @@ export default function ExamPage() {
                       return (
                         <div
                           key={option}
-                          className={`p-2 md:p-3 rounded-lg border-2 cursor-pointer question-option ${
-                            isSelected ? 'question-option-selected' : 'bg-muted border-border'
+                          className={`p-3 md:p-4 rounded-lg border-2 cursor-pointer question-option transition-all hover:shadow-md ${
+                            isSelected ? 'question-option-selected shadow-lg' : 'bg-muted border-border hover:border-primary/50'
                           }`}
                           onClick={() => handleAnswerSelect(answerKey)}
                         >
-                          <div className="flex items-center gap-2 md:gap-3">
-                            <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold ${
-                              isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                          <div className="flex items-center gap-3 md:gap-4">
+                            <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-sm md:text-base font-bold transition-all ${
+                              isSelected ? 'bg-primary text-primary-foreground scale-110' : 'bg-muted text-muted-foreground'
                             }`}>
                               {option}
                             </div>
-                            <span className="text-xs md:text-sm text-left break-words whitespace-pre-wrap">{optionValue}</span>
+                            <span className="text-sm md:text-base text-left break-words whitespace-pre-wrap leading-relaxed">{optionValue}</span>
                           </div>
                         </div>
                       )
