@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
+import { FixedBottomNavigation } from '@/components/fixed-bottom-navigation'
 import { 
   BookOpen, 
   FileText, 
@@ -62,7 +63,7 @@ export default function HomePage() {
 
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-20 md:pb-0">
       {/* Hero Section - 30vh avec image de fond */}
       <div className="relative h-[30vh] min-h-[300px] flex items-center justify-center overflow-hidden">
         {/* Image de fond */}
@@ -309,6 +310,8 @@ export default function HomePage() {
           </p>
         </div>
       </div>
+      
+      <FixedBottomNavigation />
     </div>
   )
 }

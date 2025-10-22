@@ -742,9 +742,9 @@
     "astag D/F/I ": "16/160",
     "enonce": "En position de travail, lequel de ces leviers de freins atteint la plus grande force de freinage ?",
     "options": {
-      "a": "",
-      "b": "",
-      "c": ""
+      "a": "Le levier de frein (A)",
+      "b": "Le levier de frein (B)", 
+      "c": "Le levier de frein (C)"
     },
     "bonne_reponse": "c",
     "image_path": "images/questionnaire_2/Question (11).jpg"

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card'
+import { FixedBottomNavigation } from '../../components/fixed-bottom-navigation'
 import { Button } from '../../components/ui/button'
 import { Badge } from '../../components/ui/badge'
 import { Progress } from '../../components/ui/progress'
@@ -188,7 +189,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-20 md:pb-0">
       {/* Header Hero */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-primary/5"></div>
@@ -890,6 +891,8 @@ export default function DashboardPage() {
           </Card>
         </div>
       </div>
+      
+      <FixedBottomNavigation />
     </div>
   )
 }
