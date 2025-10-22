@@ -9,8 +9,6 @@ import {
   BarChart3, 
   BookOpen, 
   FileText, 
-  Upload, 
-  Home,
   Menu,
   X,
   Settings
@@ -18,11 +16,9 @@ import {
 import { useState } from 'react'
 
 const navigation = [
-  { name: 'Accueil', href: '/', icon: Home },
   { name: 'Tableau de bord', href: '/dashboard', icon: BarChart3 },
   { name: 'Entraînement', href: '/train', icon: BookOpen },
   { name: 'Examens', href: '/exam', icon: FileText },
-  { name: 'Import', href: '/import', icon: Upload },
   { name: 'Paramètres', href: '/settings', icon: Settings },
 ]
 
@@ -31,18 +27,19 @@ export default function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <nav className="bg-background/80 backdrop-blur-sm border-b border-border sticky top-0 z-50">
+    <nav className="bg-background/80 backdrop-blur-sm border-b border-border sticky top-0 z-50 shadow-lg">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">CB</span>
-            </div>
-            <span className="font-bold text-foreground">Code Bus</span>
-            <Badge variant="secondary" className="text-xs">
-              Pro
-            </Badge>
+          <Link href="/" className="flex items-center gap-3">
+            <img 
+              src="/images/logo_codeBus_claire.png" 
+              alt="Code Bus Logo" 
+              className="h-16 w-16 object-contain"
+            />
+            <span className="hidden lg:block font-black text-foreground text-xl tracking-tight" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+              Code Bus
+            </span>
           </Link>
 
           {/* Navigation desktop */}

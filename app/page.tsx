@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
@@ -15,14 +15,12 @@ import {
   TrendingUp, 
   Target, 
   Clock, 
-  Award, 
-  CheckCircle,
+  Award,
   ArrowRight,
   Brain,
   Zap,
   Shield,
   Star,
-  Users,
   Trophy
 } from 'lucide-react'
 
@@ -62,160 +60,164 @@ export default function HomePage() {
     }
   }
 
-  const getProgressPercentage = () => {
-    if (!stats) return 0
-    return Math.round((stats.global.correctAnswers / stats.global.totalQuestions) * 100)
-  }
-
-  const getStreakColor = (streak: number) => {
-    if (streak >= 7) return 'text-success'
-    if (streak >= 3) return 'text-warning'
-    return 'text-muted-foreground'
-  }
 
   return (
-    <div className="min-h-screen relative">
-      {/* Image de fond fixe */}
-      <div 
-        className="fixed inset-0 bg-cover bg-center bg-no-repeat bg-fixed z-0"
-        style={{
-          backgroundImage: 'url(/images/bus1.jpg)',
-        }}
-      />
-      
-      {/* Overlay sombre pour la lisibilité */}
-      <div className="fixed inset-0 bg-black/40 dark:bg-black/60 z-10"></div>
-      
-      {/* Contenu principal */}
-      <div className="relative z-20 min-h-screen">
-        {/* Hero Section */}
-        <div className="container mx-auto px-4 py-16">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-background/90 backdrop-blur-sm rounded-full px-6 py-3 mb-8 shadow-lg border border-border/50">
-              <Bus className="h-6 w-6 text-primary" />
-              <span className="font-semibold text-foreground">Formation Professionnelle</span>
-              <Badge variant="secondary" className="bg-accent text-accent-foreground">
-                <Star className="h-3 w-3 mr-1" />
-                Nouveau
-              </Badge>
-            </div>
+    <div className="min-h-screen bg-background">
+      {/* Hero Section - 30vh avec image de fond */}
+      <div className="relative h-[30vh] min-h-[300px] flex items-center justify-center overflow-hidden">
+        {/* Image de fond */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: 'url(/images/bus1.jpg)',
+          }}
+        />
+        
+        {/* Overlay sombre pour la lisibilité */}
+        <div className="absolute inset-0 bg-black/50 dark:bg-black/70"></div>
+        
+        {/* Contenu Hero */}
+        <div className="relative z-10 container mx-auto px-4 text-center">
+          <div className="inline-flex items-center gap-2 bg-background/90 backdrop-blur-sm rounded-full px-6 py-2 mb-6 shadow-lg border border-border/50">
+            <Bus className="h-5 w-5 text-primary" />
+            <span className="font-semibold text-foreground">Formation Professionnelle</span>
             
-            <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-6 drop-shadow-lg">
-              Maîtrisez le <span className="text-primary">code de la route</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-foreground/90 max-w-4xl mx-auto mb-12 drop-shadow-md">
-              Plateforme d&apos;entraînement intelligente avec analyses avancées, 
-              examens chronométrés et suivi personnalisé de vos progrès.
-            </p>
+            <Badge variant="secondary" className="bg-primary/20 text-primary border border-primary/30 px-4 py-2 text-sm font-medium">
+          
+              <Star className="h-3 w-3 mr-1" />
+              Nouveau </Badge>
+
+          </div>
+          
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-2xl">
+            Maîtrisez le <span className="text-primary">code de la route</span>
+          </h1>
+          
+          {/* Catégories D */}
+          <div className="flex flex-wrap justify-center gap-2 mb-6">
+            <Badge variant="secondary" className="bg-primary/20 text-primary border border-primary/30 px-4 py-2 text-sm font-medium">
+              Permis D
+            </Badge>
+            <Badge variant="secondary" className="bg-primary/20 text-primary border border-primary/30 px-4 py-2 text-sm font-medium">
+              Transport de voyageurs
+            </Badge>
+            <Badge variant="secondary" className="bg-primary/20 text-primary border border-primary/30 px-4 py-2 text-sm font-medium">
+              Formation professionnelle
+            </Badge>
           </div>
         </div>
+      </div>
 
+      {/* Contenu principal */}
+      <div className="container mx-auto px-4 py-8">
         {/* Boutons principaux */}
-        <div className="container mx-auto px-4 py-8">
-          <div className="grid md:grid-cols-3 gap-6 mb-16">
-            {/* Entraînement - Bouton principal */}
-            <Link href="/train" className="md:col-span-1">
-              <Card className="h-full hover:shadow-2xl transition-all duration-300 border-2 border-primary/30 bg-background/90 backdrop-blur-sm hover:bg-primary/10 group">
-                <CardContent className="p-8 text-center">
-                  <div className="h-20 w-20 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
-                    <BookOpen className="h-10 w-10 text-primary-foreground" />
+        <div className="max-w-5xl mx-auto mb-12">
+          {/* 2 boutons principaux côte à côte */}
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* Entraînement */}
+            <Link href="/train">
+              <Card className="h-full card-elegant border-2 border-primary/50 hover:border-primary group cursor-pointer">
+                <CardContent className="p-6 text-center">
+                  <div className="h-16 w-16 bg-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                    <BookOpen className="h-8 w-8 text-primary-foreground" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 text-foreground">Entraînement</h3>
-                  <p className="text-muted-foreground mb-6">
-                    Pratiquez à votre rythme avec feedback immédiat et sélection intelligente des questions
+                  <h3 className="text-xl font-bold mb-3 text-foreground">Entraînement</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Pratiquez avec feedback immédiat et sélection intelligente
                   </p>
-                  <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg">
-                    Commencer l&apos;entraînement
-                    <ArrowRight className="h-5 w-5 ml-2" />
+                  <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                    Commencer
+                    <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
                 </CardContent>
               </Card>
             </Link>
 
-            {/* Examen - Bouton principal */}
-            <Link href="/exam" className="md:col-span-1">
-              <Card className="h-full hover:shadow-2xl transition-all duration-300 border-2 border-primary/30 bg-background/90 backdrop-blur-sm hover:bg-primary/10 group">
-                <CardContent className="p-8 text-center">
-                  <div className="h-20 w-20 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
-                    <FileText className="h-10 w-10 text-primary-foreground" />
+            {/* Examen */}
+            <Link href="/exam">
+              <Card className="h-full card-elegant border-2 border-primary/50 hover:border-primary group cursor-pointer">
+                <CardContent className="p-6 text-center">
+                  <div className="h-16 w-16 bg-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                    <FileText className="h-8 w-8 text-primary-foreground" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 text-foreground">Examen</h3>
-                  <p className="text-muted-foreground mb-6">
-                    Testez vos connaissances avec des examens chronométrés et un système de notation
+                  <h3 className="text-xl font-bold mb-3 text-foreground">Passer l&apos;Examen</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Conditions réelles avec timer et notation automatique
                   </p>
-                  <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg">
-                    Passer un examen
-                    <ArrowRight className="h-5 w-5 ml-2" />
-                  </Button>
-                </CardContent>
-              </Card>
-            </Link>
-
-            {/* Dashboard - Bouton secondaire */}
-            <Link href="/dashboard" className="md:col-span-1">
-              <Card className="h-full hover:shadow-2xl transition-all duration-300 border-2 border-border/50 bg-background/90 backdrop-blur-sm hover:bg-muted/50 group">
-                <CardContent className="p-8 text-center">
-                  <div className="h-20 w-20 bg-muted rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
-                    <BarChart3 className="h-10 w-10 text-muted-foreground" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4 text-foreground">Tableau de bord</h3>
-                  <p className="text-muted-foreground mb-6">
-                    Suivez vos progrès avec des statistiques détaillées et des analyses
-                  </p>
-                  <Button size="lg" variant="outline" className="w-full shadow-lg">
-                    Voir les statistiques
-                    <ArrowRight className="h-5 w-5 ml-2" />
+                  <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                    Commencer
+                    <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
                 </CardContent>
               </Card>
             </Link>
           </div>
 
-          {/* Statistiques dynamiques */}
-          {!loading && stats && (
-            <div className="grid md:grid-cols-3 gap-6 mb-16">
+          {/* Bouton Statistiques en dessous */}
+          <Link href="/dashboard">
+            <Card className="card-elegant hover:bg-muted/50 cursor-pointer">
+              <CardContent className="p-4 flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="h-12 w-12 bg-muted rounded-lg flex items-center justify-center">
+                    <BarChart3 className="h-6 w-6 text-muted-foreground" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-foreground">Tableau de bord</h3>
+                    <p className="text-sm text-muted-foreground">Consultez vos statistiques détaillées</p>
+                  </div>
+                </div>
+                <ArrowRight className="h-5 w-5 text-muted-foreground" />
+              </CardContent>
+            </Card>
+          </Link>
+        </div>
+
+        {/* Statistiques rapides */}
+        {!loading && stats && (
+          <div className="max-w-5xl mx-auto mb-12">
+            <h2 className="text-2xl font-bold text-foreground mb-6 text-center">Vos Statistiques</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Progression globale */}
-              <Card className="hover:shadow-xl transition-all duration-300 bg-background/90 backdrop-blur-sm border-border/50">
-                <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <TrendingUp className="h-5 w-5 text-primary" />
-                    Progression Globale
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
+              <Card className="card-elegant">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="h-10 w-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <TrendingUp className="h-5 w-5 text-primary" />
+                    </div>
+                    <h3 className="font-semibold text-foreground">Progression</h3>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-baseline">
                       <span className="text-sm text-muted-foreground">Score moyen</span>
-                      <span className="text-2xl font-bold text-primary">{stats.global.averageScore}%</span>
+                      <span className="text-3xl font-bold text-primary">{stats.global.averageScore}%</span>
                     </div>
-                    <Progress value={stats.global.averageScore} className="h-3" />
-                    <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>{stats.global.correctAnswers} bonnes réponses</span>
-                      <span>{stats.global.totalQuestions} questions</span>
-                    </div>
+                    <Progress value={stats.global.averageScore} className="h-2" />
+                    <p className="text-xs text-muted-foreground">
+                      {stats.global.correctAnswers} / {stats.global.totalQuestions} questions
+                    </p>
                   </div>
                 </CardContent>
               </Card>
 
               {/* Série actuelle */}
-              <Card className="hover:shadow-xl transition-all duration-300 bg-background/90 backdrop-blur-sm border-border/50">
-                <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Zap className="h-5 w-5 text-warning" />
-                    Série Actuelle
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
+              <Card className="card-elegant">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="h-10 w-10 bg-amber-500/10 rounded-lg flex items-center justify-center">
+                      <Zap className="h-5 w-5 text-amber-500" />
+                    </div>
+                    <h3 className="font-semibold text-foreground">Série</h3>
+                  </div>
+                  <div className="space-y-3">
                     <div className="text-center">
-                      <div className={`text-4xl font-bold ${getStreakColor(stats.global.streak)}`}>
+                      <div className="text-3xl font-bold text-amber-500">
                         {stats.global.streak}
                       </div>
-                      <p className="text-sm text-muted-foreground">réponses consécutives</p>
+                      <p className="text-xs text-muted-foreground">réponses consécutives</p>
                     </div>
-                    <div className="flex items-center justify-center gap-2">
-                      <Trophy className="h-4 w-4 text-warning" />
-                      <span className="text-sm text-muted-foreground">
+                    <div className="flex items-center justify-center gap-2 bg-amber-500/10 rounded-lg py-2">
+                      <Trophy className="h-4 w-4 text-amber-500" />
+                      <span className="text-sm font-medium text-amber-700 dark:text-amber-400">
                         {stats.global.streak >= 7 ? 'Excellent !' : 
                          stats.global.streak >= 3 ? 'Bien !' : 'Continuez !'}
                       </span>
@@ -225,24 +227,24 @@ export default function HomePage() {
               </Card>
 
               {/* Temps d'étude */}
-              <Card className="hover:shadow-xl transition-all duration-300 bg-background/90 backdrop-blur-sm border-border/50">
-                <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Clock className="h-5 w-5 text-info" />
-                    Temps d&apos;Étude
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
+              <Card className="card-elegant">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="h-10 w-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                      <Clock className="h-5 w-5 text-blue-500" />
+                    </div>
+                    <h3 className="font-semibold text-foreground">Temps d&apos;Étude</h3>
+                  </div>
+                  <div className="space-y-3">
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-info">
+                      <div className="text-3xl font-bold text-blue-500">
                         {stats.global.studyTime}h
                       </div>
-                      <p className="text-sm text-muted-foreground">total d&apos;étude</p>
+                      <p className="text-xs text-muted-foreground">temps total</p>
                     </div>
-                    <div className="flex items-center justify-center gap-2">
-                      <Brain className="h-4 w-4 text-info" />
-                      <span className="text-sm text-muted-foreground">
+                    <div className="flex items-center justify-center gap-2 bg-blue-500/10 rounded-lg py-2">
+                      <Brain className="h-4 w-4 text-blue-500" />
+                      <span className="text-sm font-medium text-blue-700 dark:text-blue-400">
                         {stats.global.studyTime >= 10 ? 'Expert !' : 
                          stats.global.studyTime >= 5 ? 'Avancé !' : 'Débutant'}
                       </span>
@@ -251,60 +253,60 @@ export default function HomePage() {
                 </CardContent>
               </Card>
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Section fonctionnalités */}
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 drop-shadow-lg">
-              Fonctionnalités Avancées
-            </h2>
-            <p className="text-lg text-foreground/90 mb-12 drop-shadow-md">
-              Une plateforme complète pour maîtriser le code de la route
+        {/* Section fonctionnalités */}
+        <div className="max-w-5xl mx-auto mb-12">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-foreground mb-2">Fonctionnalités</h2>
+            <p className="text-sm text-muted-foreground">
+              Tout ce dont vous avez besoin pour réussir
             </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="text-center p-6 rounded-lg bg-card border border-border hover:shadow-md transition-shadow">
+              <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <Target className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="font-semibold mb-2 text-foreground">Sélection Intelligente</h3>
+              <p className="text-sm text-muted-foreground">
+                Questions adaptées à vos besoins
+              </p>
+            </div>
             
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="h-16 w-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
-                  <Target className="h-8 w-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2 text-foreground">Sélection Intelligente</h3>
-                <p className="text-foreground/80">
-                  L&apos;IA adapte les questions selon vos faiblesses pour un apprentissage optimisé
-                </p>
+            <div className="text-center p-6 rounded-lg bg-card border border-border hover:shadow-md transition-shadow">
+              <div className="h-12 w-12 bg-purple-500/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <Shield className="h-6 w-6 text-purple-500" />
               </div>
-              
-              <div className="text-center">
-                <div className="h-16 w-16 bg-accent/20 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
-                  <Shield className="h-8 w-8 text-accent" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2 text-foreground">Examens Chronométrés</h3>
-                <p className="text-foreground/80">
-                  Conditions d&apos;examen réelles avec timer et évaluation automatique
-                </p>
+              <h3 className="font-semibold mb-2 text-foreground">Examens Chronométrés</h3>
+              <p className="text-sm text-muted-foreground">
+                Conditions réelles d&apos;examen
+              </p>
+            </div>
+            
+            <div className="text-center p-6 rounded-lg bg-card border border-border hover:shadow-md transition-shadow">
+              <div className="h-12 w-12 bg-green-500/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <Award className="h-6 w-6 text-green-500" />
               </div>
-              
-              <div className="text-center">
-                <div className="h-16 w-16 bg-success/20 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
-                  <Award className="h-8 w-8 text-success" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2 text-foreground">Suivi Personnalisé</h3>
-                <p className="text-foreground/80">
-                  Statistiques détaillées et recommandations pour améliorer vos performances
-                </p>
-              </div>
+              <h3 className="font-semibold mb-2 text-foreground">Suivi Personnalisé</h3>
+              <p className="text-sm text-muted-foreground">
+                Analysez vos performances
+              </p>
             </div>
           </div>
+        </div>
 
-          {/* Footer */}
-          <div className="text-center py-8 border-t border-border/50">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Bus className="h-6 w-6 text-primary" />
-              <span className="text-lg font-semibold text-foreground">Code Bus Pro</span>
-            </div>
-            <p className="text-foreground/80">
-              Plateforme d&apos;entraînement professionnelle pour le code de la route
-            </p>
+        {/* Footer */}
+        <div className="text-center py-8 mt-12 border-t border-border">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Bus className="h-5 w-5 text-primary" />
+            <span className="font-semibold text-foreground">Code Bus Pro</span>
           </div>
+          <p className="text-sm text-muted-foreground">
+            Plateforme d&apos;entraînement pour le code de la route
+          </p>
         </div>
       </div>
     </div>

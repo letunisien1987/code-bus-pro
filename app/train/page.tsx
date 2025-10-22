@@ -39,7 +39,27 @@ function TrainPageContent() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
   const [showFeedback, setShowFeedback] = useState(false)
+  const [isImageZoomed, setIsImageZoomed] = useState(false)
   const [loading, setLoading] = useState(true)
+
+  // Réinitialiser le zoom quand on change de question
+  useEffect(() => {
+    setIsImageZoomed(false)
+  }, [currentIndex])
+
+  // Gestion de la touche Échap pour fermer le zoom
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isImageZoomed) {
+        setIsImageZoomed(false)
+      }
+    }
+
+    if (isImageZoomed) {
+      document.addEventListener('keydown', handleKeyDown)
+      return () => document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isImageZoomed])
   const [filters, setFilters] = useState({
     questionnaire: 'all',
     categorie: 'all',
@@ -356,20 +376,49 @@ function TrainPageContent() {
         <div className="flex-1 flex flex-col md:flex-row gap-4 p-2 md:p-4 min-h-0 pb-20 md:pb-4">
           {/* Image - responsive */}
           <div className="w-full md:w-1/2">
-            <Card className="h-48 md:h-full">
+            <Card className="h-48 md:h-full card-elegant">
               <CardContent className="p-2 md:p-4 h-full flex items-center justify-center">
                 <img 
                   src={currentQuestion.imagePath} 
                   alt={`Question ${currentQuestion.question}`}
-                  className="max-w-full max-h-48 md:max-h-full object-contain"
+                  className="max-w-full max-h-48 md:max-h-full object-contain cursor-pointer transition-all duration-300"
+                  onClick={() => setIsImageZoomed(!isImageZoomed)}
                 />
               </CardContent>
             </Card>
+            
+            {/* Overlay de zoom séparé */}
+            {isImageZoomed && (
+              <div 
+                className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+                onClick={() => setIsImageZoomed(false)}
+              >
+                <div 
+                  className="max-w-[90vw] max-h-[90vh] flex items-center justify-center relative"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <img 
+                    src={currentQuestion.imagePath} 
+                    alt={`Question ${currentQuestion.question} - Zoom`}
+                    className="max-w-full max-h-full object-contain cursor-pointer"
+                    onClick={() => setIsImageZoomed(false)}
+                  />
+                  {/* Bouton de fermeture */}
+                  <button
+                    className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold transition-colors"
+                    onClick={() => setIsImageZoomed(false)}
+                    aria-label="Fermer le zoom"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Question et options - responsive */}
           <div className="w-full md:w-1/2 flex flex-col">
-            <Card className="flex-1">
+            <Card className="flex-1 card-elegant">
               <CardHeader className="pb-2 md:pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-base md:text-lg">
@@ -377,7 +426,7 @@ function TrainPageContent() {
                   </CardTitle>
                   <div className="flex gap-1 md:gap-2">
                     {currentQuestion.categorie && (
-                      <Badge variant="secondary" className="text-xs">
+                      <Badge variant="secondary" className="text-xs bg-primary text-primary-foreground">
                         {currentQuestion.categorie}
                       </Badge>
                     )}
@@ -410,7 +459,7 @@ function TrainPageContent() {
                     return (
                       <div
                         key={option}
-                        className={`p-2 md:p-3 rounded-lg border-2 cursor-pointer question-option transition-all ${
+                        className={`p-2 md:p-3 rounded-lg border-2 ${!showFeedback ? 'cursor-pointer' : ''} question-option transition-all ${
                           showCorrect 
                             ? 'question-option-correct' 
                             : showIncorrect 

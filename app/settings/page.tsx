@@ -3,7 +3,8 @@
 import { useTheme } from 'next-themes'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card'
 import { Button } from '../../components/ui/button'
-import { Sun, Moon, Monitor } from 'lucide-react'
+import { Sun, Moon, Monitor, Upload } from 'lucide-react'
+import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
 export default function SettingsPage() {
@@ -55,6 +56,28 @@ export default function SettingsPage() {
               )
             })}
           </div>
+        </CardContent>
+      </Card>
+
+      <Card className="mt-6 card-elegant">
+        <CardHeader>
+          <CardTitle>Gestion des données</CardTitle>
+          <CardDescription>
+            Importez et gérez les questions de l&apos;application
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Link href="/import">
+            <Button className="w-full h-16 flex items-center gap-3">
+              <Upload className="h-6 w-6" />
+              <div className="text-left">
+                <div className="font-semibold">Importer des questions</div>
+                <div className="text-sm text-muted-foreground">
+                  Ajoutez de nouvelles questions à la base de données
+                </div>
+              </div>
+            </Button>
+          </Link>
         </CardContent>
       </Card>
     </div>

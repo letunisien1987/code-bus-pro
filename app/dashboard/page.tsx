@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../..
 import { Button } from '../../components/ui/button'
 import { Badge } from '../../components/ui/badge'
 import { Progress } from '../../components/ui/progress'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs'
 import { 
   TrendingUp, 
   Target, 
@@ -89,6 +88,7 @@ interface Stats {
 }
 
 export default function DashboardPage() {
+  const [activeTab, setActiveTab] = useState<"overview" | "categories" | "questionnaires" | "questions" | "analytics">("overview")
   const [stats, setStats] = useState<Stats>({
     global: {
       totalQuestions: 0,
@@ -212,7 +212,7 @@ export default function DashboardPage() {
 
           {/* Stats principales */}
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-8 md:mb-12">
-            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
+            <Card className="card-elegant">
               <CardContent className="p-3 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -229,7 +229,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
+            <Card className="card-elegant">
               <CardContent className="p-3 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -248,7 +248,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
+            <Card className="card-elegant">
               <CardContent className="p-3 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -265,7 +265,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
+            <Card className="card-elegant">
               <CardContent className="p-3 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -287,33 +287,55 @@ export default function DashboardPage() {
 
       {/* Contenu principal */}
       <div className="container mx-auto px-2 md:px-4 pb-8 md:pb-12">
-        <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-4 md:mb-8 gap-1 md:gap-2">
-            <TabsTrigger value="overview" className="text-xs md:text-sm px-2 md:px-4 py-2 md:py-3">
-              <span className="hidden md:inline">Vue d&apos;ensemble</span>
-              <span className="md:hidden">Vue</span>
-            </TabsTrigger>
-            <TabsTrigger value="categories" className="text-xs md:text-sm px-2 md:px-4 py-2 md:py-3">
-              <span className="hidden md:inline">Catégories</span>
-              <span className="md:hidden">Cat.</span>
-            </TabsTrigger>
-            <TabsTrigger value="questionnaires" className="text-xs md:text-sm px-2 md:px-4 py-2 md:py-3">
-              <span className="hidden md:inline">Questionnaires</span>
-              <span className="md:hidden">Quest.</span>
-            </TabsTrigger>
-            <TabsTrigger value="questions" className="text-xs md:text-sm px-2 md:px-4 py-2 md:py-3">
-              <span className="hidden md:inline">Questions</span>
-              <span className="md:hidden">Q.</span>
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className="text-xs md:text-sm px-2 md:px-4 py-2 md:py-3 col-span-2 md:col-span-1">
-              <span className="hidden md:inline">Analyses</span>
-              <span className="md:hidden">Anal.</span>
-            </TabsTrigger>
-          </TabsList>
+        <div className="w-full">
+          {/* Menu de navigation avec boutons */}
+          <div className="flex flex-wrap justify-between gap-2 mb-6 md:mb-8">
+            <Button
+              variant={activeTab === "overview" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setActiveTab("overview")}
+              className="text-xs md:text-sm"
+            >
+              Vue d&apos;ensemble
+            </Button>
+            <Button
+              variant={activeTab === "categories" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setActiveTab("categories")}
+              className="text-xs md:text-sm"
+            >
+              Catégories
+            </Button>
+            <Button
+              variant={activeTab === "questionnaires" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setActiveTab("questionnaires")}
+              className="text-xs md:text-sm"
+            >
+              Questionnaires
+            </Button>
+            <Button
+              variant={activeTab === "questions" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setActiveTab("questions")}
+              className="text-xs md:text-sm"
+            >
+              Questions
+            </Button>
+            <Button
+              variant={activeTab === "analytics" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setActiveTab("analytics")}
+              className="text-xs md:text-sm"
+            >
+              Analyses
+            </Button>
+          </div>
 
-          <TabsContent value="overview" className="space-y-8">
+          {activeTab === "overview" && (
+            <div className="space-y-8">
             {/* Performance par catégorie */}
-            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
+            <Card className="card-elegant">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <BarChart3 className="h-5 w-5" />
@@ -367,7 +389,7 @@ export default function DashboardPage() {
             </Card>
 
             {/* Activité récente */}
-            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
+            <Card className="card-elegant">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Calendar className="h-5 w-5" />
@@ -407,15 +429,17 @@ export default function DashboardPage() {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
+            </div>
+          )}
 
-          <TabsContent value="categories" className="space-y-4 md:space-y-8">
+          {activeTab === "categories" && (
+            <div className="space-y-4 md:space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {stats.byCategory.length > 0 ? (
                 stats.byCategory.map((category, index) => (
                   <Card 
                     key={index} 
-                    className="bg-card/80 backdrop-blur-sm border border-border shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer group"
+                    className="card-elegant hover:shadow-2xl transition-all duration-300 cursor-pointer group"
                     onClick={() => window.open(`/train?categorie=${encodeURIComponent(category.name)}`, '_blank')}
                   >
                     <CardHeader className="pb-2 md:pb-3">
@@ -497,15 +521,17 @@ export default function DashboardPage() {
                 </div>
               )}
             </div>
-          </TabsContent>
+            </div>
+          )}
 
-          <TabsContent value="questionnaires" className="space-y-4 md:space-y-8">
+          {activeTab === "questionnaires" && (
+            <div className="space-y-4 md:space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               {stats.byQuestionnaire.length > 0 ? (
                 stats.byQuestionnaire.map((questionnaire, index) => (
                   <Card 
                     key={index} 
-                    className="bg-card/80 backdrop-blur-sm border border-border shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer group"
+                    className="card-elegant hover:shadow-2xl transition-all duration-300 cursor-pointer group"
                     onClick={() => window.open(`/train?questionnaire=${questionnaire.number}`, '_blank')}
                   >
                     <CardHeader>
@@ -542,10 +568,12 @@ export default function DashboardPage() {
                 </div>
               )}
             </div>
-          </TabsContent>
+            </div>
+          )}
 
-          <TabsContent value="questions" className="space-y-8">
-            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
+          {activeTab === "questions" && (
+            <div className="space-y-8">
+            <Card className="card-elegant">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="h-5 w-5" />
@@ -712,12 +740,13 @@ export default function DashboardPage() {
                 )}
               </CardContent>
             </Card>
-          </TabsContent>
+            </div>
+          )}
 
-
-          <TabsContent value="analytics" className="space-y-8">
+          {activeTab === "analytics" && (
+            <div className="space-y-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
+              <Card className="card-elegant">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <PieChart className="h-5 w-5" />
@@ -751,7 +780,7 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
+              <Card className="card-elegant">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <TrendingUp className="h-5 w-5" />
@@ -782,7 +811,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Questions problématiques */}
-            <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
+            <Card className="card-elegant">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <AlertCircle className="h-5 w-5 text-destructive" />
@@ -827,12 +856,13 @@ export default function DashboardPage() {
                 )}
               </CardContent>
             </Card>
-          </TabsContent>
-        </Tabs>
+            </div>
+          )}
+        </div>
 
         {/* Actions rapides */}
         <div className="mt-12">
-          <Card className="bg-card/80 backdrop-blur-sm border border-border shadow-xl">
+          <Card className="card-elegant">
             <CardContent className="p-6 md:p-8">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div>

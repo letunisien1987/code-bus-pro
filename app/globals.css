@@ -9,12 +9,12 @@
 @layer base {
   /* Mode clair - Variables de couleurs principales */
   :root {
-    /* Couleurs de base */
-    --background: 0 0% 100%;           /* Fond principal (blanc) */
+    /* Couleurs de base - Blanc cassé jaune */
+    --background: 47 15% 94%;   /* OPTION 1 - Jaune moyen */
     --foreground: 240 10% 3.9%;       /* Texte principal (gris foncé) */
-    --card: 0 0% 100%;                /* Fond des cartes (blanc) */
+    --card: 47 20% 92%;               /* OPTION 1 - Jaune moyen */
     --card-foreground: 240 10% 3.9%;  /* Texte des cartes */
-    --popover: 0 0% 100%;             /* Fond des popovers */
+    --popover: 47 20% 92%;            /* OPTION 1 - Jaune moyen */
     --popover-foreground: 240 10% 3.9%; /* Texte des popovers */
     
     /* Couleurs principales */
@@ -24,7 +24,7 @@
     --secondary-foreground: 26 83.3% 14.1%; /* Texte sur fond jaune */
     
     /* Couleurs neutres */
-    --muted: 240 4.8% 95.9%;          /* Fond neutre (gris très clair) */
+    --muted: 47 13% 91%;         /* Fond neutre (gris très clair avec teinte jaune plus visible) */
     --muted-foreground: 240 3.8% 46.1%; /* Texte neutre (gris moyen) */
     
     /* Couleurs d'accent */
@@ -109,6 +109,42 @@
    ======================================== */
 
 @layer components {
+  /* Effet élégant pour les cartes */
+  .card-elegant {
+    box-shadow: 
+      0 1px 3px 0 rgba(0, 0, 0, 0.05),
+      0 0 0 1px rgba(254, 200, 0, 0.08);
+    border: 1px solid rgba(254, 200, 0, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .card-elegant:hover {
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.08),
+      0 2px 4px -1px rgba(0, 0, 0, 0.04),
+      0 0 0 1px rgba(254, 200, 0, 0.12);
+    border-color: rgba(254, 200, 0, 0.25);
+    transform: translateY(-1px);
+  }
+
+  /* Effet d'ombre élégant pour la navbar */
+  nav.shadow-lg {
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.08),
+      0 2px 4px -1px rgba(0, 0, 0, 0.04),
+      0 0 20px 0 rgba(254, 200, 0, 0.1);
+  }
+
+  /* Masquer la scrollbar sur les onglets mobiles */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Animations personnalisées */
   .fade-in {
     animation: fadeIn 0.3s ease-in-out;
@@ -376,6 +412,15 @@
   /* Survol des options avec opacité 0.5 */
   .question-option:hover {
     background-color: hsl(var(--primary) / 0.5);     /* Survol jaune 50% */
+  }
+
+  /* Désactiver le hover pour les options avec feedback */
+  .question-option-correct:hover {
+    background-color: hsl(var(--success));           /* Maintenir le vert opaque */
+  }
+  
+  .question-option-incorrect:hover {
+    background-color: hsl(var(--destructive));       /* Maintenir le rouge opaque */
   }
 
   /* Bouton "Marquée pour révision" avec bon contraste */

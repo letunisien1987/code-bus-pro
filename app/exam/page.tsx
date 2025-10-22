@@ -6,8 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { Button } from '../../components/ui/button'
 import { Badge } from '../../components/ui/badge'
 import { Progress } from '../../components/ui/progress'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
 import { ThemeToggle } from '../../components/theme-toggle'
-import { ArrowLeft, ArrowRight, CheckCircle, XCircle, Clock, RotateCcw, LogOut } from 'lucide-react'
+import { ArrowLeft, ArrowRight, CheckCircle, XCircle, Clock, RotateCcw, LogOut, ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface Question {
   id: string
@@ -52,9 +53,119 @@ export default function ExamPage() {
   const [markedForReview, setMarkedForReview] = useState<Set<string>>(new Set())
   const [showExitConfirm, setShowExitConfirm] = useState(false)
   const [showScrollIndicator, setShowScrollIndicator] = useState(false)
+  const [currentPage, setCurrentPage] = useState(0)
+  const [isManualPageChange, setIsManualPageChange] = useState(false)
+  const [isImageZoomed, setIsImageZoomed] = useState(false)
+  const [examStartTime, setExamStartTime] = useState<number | null>(null)
+  const [showRestorePrompt, setShowRestorePrompt] = useState(false)
+  const [savedExamState, setSavedExamState] = useState<any>(null)
+  
+  // Réinitialiser le zoom quand on change de question
+  useEffect(() => {
+    setIsImageZoomed(false)
+  }, [currentIndex])
+
+  // Gestion de la touche Échap pour fermer le zoom
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isImageZoomed) {
+        setIsImageZoomed(false)
+      }
+    }
+
+    if (isImageZoomed) {
+      document.addEventListener('keydown', handleKeyDown)
+      return () => document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isImageZoomed])
+
+  // Sauvegarde automatique sur événements
+  useEffect(() => {
+    if (state === 'running' && Object.keys(answers).length > 0) {
+      saveExamState()
+    }
+  }, [answers])
 
   useEffect(() => {
-    fetchQuestions()
+    if (state === 'running' && markedForReview.size > 0) {
+      saveExamState()
+    }
+  }, [markedForReview])
+
+  useEffect(() => {
+    if (state === 'running') {
+      saveExamState()
+    }
+  }, [currentIndex])
+
+  useEffect(() => {
+    if (state === 'running') {
+      saveExamState()
+    }
+  }, [state])
+
+  // Protections contre les sorties accidentelles
+  useEffect(() => {
+    if (state === 'running') {
+      window.history.pushState(null, '', window.location.href)
+      
+      const handlePopState = () => {
+        window.history.pushState(null, '', window.location.href)
+        // Pas de confirmation, juste empêcher le retour
+        // L'examen est sauvegardé automatiquement
+      }
+      
+      window.addEventListener('popstate', handlePopState)
+      return () => window.removeEventListener('popstate', handlePopState)
+    }
+  }, [state])
+
+  useEffect(() => {
+    if (state === 'running') {
+      const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+        event.preventDefault()
+        event.returnValue = 'Votre examen sera automatiquement sauvegardé. Vous pourrez le reprendre à tout moment.'
+        return event.returnValue
+      }
+      
+      window.addEventListener('beforeunload', handleBeforeUnload)
+      return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+    }
+  }, [state])
+
+  useEffect(() => {
+    if (state === 'running') {
+      const handleKeyDown = (event: KeyboardEvent) => {
+        // Bloquer F5 et Ctrl+R mais permettre le rechargement
+        if (event.key === 'F5' || (event.ctrlKey && event.key === 'r')) {
+          // L'examen sera sauvegardé et rechargé
+          return true
+        }
+      }
+      
+      window.addEventListener('keydown', handleKeyDown)
+      return () => window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [state])
+  
+  // Type et état pour les filtres de questions
+  type QuestionFilter = 'all' | 'answered' | 'review' | 'unanswered'
+  const [questionFilter, setQuestionFilter] = useState<QuestionFilter>('all')
+
+  useEffect(() => {
+    const initializeExam = async () => {
+      await fetchQuestions()
+      
+      // Vérifier s'il y a un examen sauvegardé immédiatement au chargement
+      const saved = restoreExamState()
+      if (saved) {
+        setSavedExamState(saved)
+        setShowRestorePrompt(true)
+      }
+      setLoading(false)
+    }
+    
+    initializeExam()
   }, [])
 
   useEffect(() => {
@@ -69,6 +180,58 @@ export default function ExamPage() {
     return () => clearInterval(interval)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, timeLeft])
+
+  // Fonction utilitaire pour calculer la pagination - Toujours 10 par page
+  const getQuestionsPerPage = (totalQuestions: number, isMobile: boolean) => {
+    return 10 // Toujours 10 questions par page
+  }
+
+  // Naviguer automatiquement à la page contenant la question actuelle SEULEMENT quand currentIndex change
+  useEffect(() => {
+    if (examQuestions.length === 0 || isManualPageChange) return
+    
+    const answeredIds = new Set(Object.keys(answers))
+    const reviewIds = markedForReview
+
+    const filteredQuestions = examQuestions.filter((q) => {
+      if (questionFilter === 'all') return true
+      if (questionFilter === 'answered') return answeredIds.has(q.id)
+      if (questionFilter === 'review') return reviewIds.has(q.id)
+      return !answeredIds.has(q.id)
+    })
+
+    if (filteredQuestions.length === 0) return
+    
+    const currentQuestionId = examQuestions[currentIndex]?.id
+    const filteredIndex = filteredQuestions.findIndex(q => q.id === currentQuestionId)
+    
+    // Si la question courante n'est pas dans le filtre, ne rien faire
+    if (filteredIndex === -1) return
+    
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+    const perPage = getQuestionsPerPage(filteredQuestions.length, isMobile)
+    const questionPage = Math.floor(filteredIndex / perPage)
+    
+    // Changer de page seulement si nécessaire
+    if (questionPage !== currentPage && questionPage >= 0) {
+      setCurrentPage(questionPage)
+    }
+  }, [currentIndex]) // SEULEMENT currentIndex !
+
+  // Reset du flag de changement manuel après un délai
+  useEffect(() => {
+    if (isManualPageChange) {
+      const timer = setTimeout(() => setIsManualPageChange(false), 200)
+      return () => clearTimeout(timer)
+    }
+  }, [isManualPageChange])
+
+  // Réinitialiser la page quand le filtre change
+  useEffect(() => {
+    setCurrentPage(0)
+    setIsManualPageChange(false)
+  }, [questionFilter])
+
 
   const fetchQuestions = async () => {
     try {
@@ -109,6 +272,7 @@ export default function ExamPage() {
         setCurrentIndex(0)
         setAnswers({})
         setSelectedAnswer(null)
+        setExamStartTime(Date.now()) // Enregistrer l'heure de début
         
         // Log des métadonnées pour le debug (optionnel)
         console.log('Questions sélectionnées intelligemment:', data.metadata)
@@ -213,6 +377,7 @@ export default function ExamPage() {
     }
 
     setResult(examResult)
+    clearExamState() // Supprimer la sauvegarde
     setState('finished')
   }
 
@@ -226,6 +391,95 @@ export default function ExamPage() {
     setTimeLeft(0)
     setReviewIndex(0)
     setMarkedForReview(new Set())
+    setExamStartTime(null)
+  }
+
+  // Fonctions de sauvegarde et restauration
+  const saveExamState = () => {
+    if (state === 'running') {
+      const examState = {
+        examQuestions: examQuestions.map(q => ({
+          id: q.id,
+          questionnaire: q.questionnaire,
+          question: q.question,
+          categorie: q.categorie,
+          imagePath: q.imagePath,
+          optionA: q.optionA,
+          optionB: q.optionB,
+          optionC: q.optionC,
+          optionD: q.optionD,
+          bonneReponse: q.bonneReponse
+        })),
+        currentIndex,
+        answers,
+        timeLeft,
+        totalTime: examStartTime ? (Date.now() - examStartTime) / 1000 : 0,
+        markedForReview: Array.from(markedForReview),
+        startTime: examStartTime,
+        savedAt: Date.now()
+      }
+      localStorage.setItem('exam_state', JSON.stringify(examState))
+    }
+  }
+
+  const restoreExamState = () => {
+    const saved = localStorage.getItem('exam_state')
+    if (saved) {
+      try {
+        const examState = JSON.parse(saved)
+        return examState
+      } catch (e) {
+        return null
+      }
+    }
+    return null
+  }
+
+  const clearExamState = () => {
+    localStorage.removeItem('exam_state')
+  }
+
+  const handleRestoreExam = () => {
+    if (!savedExamState) return
+    
+    // Restaurer toutes les questions avec leurs données complètes
+    setExamQuestions(savedExamState.examQuestions)
+    setCurrentIndex(savedExamState.currentIndex)
+    setAnswers(savedExamState.answers)
+    setTimeLeft(savedExamState.timeLeft)
+    setMarkedForReview(new Set(savedExamState.markedForReview))
+    setExamStartTime(savedExamState.startTime)
+    setState('running')
+    setShowRestorePrompt(false)
+  }
+
+  const handleNewExam = () => {
+    clearExamState()
+    setSavedExamState(null)
+    setShowRestorePrompt(false)
+    // L'utilisateur peut maintenant choisir le nombre de questions
+    // L'état reste en 'setup' pour permettre la sélection
+  }
+
+  const getExamStats = () => {
+    if (!savedExamState) return null
+    
+    const totalQuestions = savedExamState.examQuestions.length
+    const answeredQuestions = Object.keys(savedExamState.answers).length
+    const timeSpentSeconds = savedExamState.totalTime
+    const timeSpentMinutes = Math.floor(timeSpentSeconds / 60)
+    const startDate = new Date(savedExamState.startTime)
+    
+    return {
+      totalQuestions,
+      answeredQuestions,
+      unansweredQuestions: totalQuestions - answeredQuestions,
+      timeSpentMinutes,
+      timeSpentSeconds: Math.floor(timeSpentSeconds % 60),
+      startDate: startDate.toLocaleDateString('fr-FR'),
+      startTime: startDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+      markedCount: savedExamState.markedForReview.length
+    }
   }
 
   const handleExitExam = () => {
@@ -233,6 +487,15 @@ export default function ExamPage() {
   }
 
   const confirmExitExam = () => {
+    // NE PLUS appeler clearExamState() ici
+    // L'examen reste sauvegardé par défaut
+    // NE PLUS appeler resetExam() non plus pour garder la sauvegarde
+    setShowExitConfirm(false)
+    router.push('/')
+  }
+
+  const abandonExam = () => {
+    clearExamState() // Supprimer la sauvegarde
     resetExam()
     setShowExitConfirm(false)
     router.push('/')
@@ -242,12 +505,13 @@ export default function ExamPage() {
     setShowExitConfirm(false)
   }
 
-  // Fonction pour détecter si le contenu est scrollable
+  // Fonction pour détecter si le contenu est scrollable et si on n'est pas en bas
   const checkScrollable = () => {
     const mainContent = document.querySelector('.exam-main-content')
     if (mainContent) {
       const isScrollable = mainContent.scrollHeight > mainContent.clientHeight
-      setShowScrollIndicator(isScrollable)
+      const isAtBottom = mainContent.scrollTop + mainContent.clientHeight >= mainContent.scrollHeight - 20 // 20px de tolérance
+      setShowScrollIndicator(isScrollable && !isAtBottom)
     }
   }
 
@@ -258,9 +522,19 @@ export default function ExamPage() {
       checkScrollable()
     }, 100)
     
+    const mainContent = document.querySelector('.exam-main-content')
+    
+    // Ajouter listener pour le scroll
+    if (mainContent) {
+      mainContent.addEventListener('scroll', checkScrollable)
+    }
+    
     window.addEventListener('resize', checkScrollable)
     return () => {
       clearTimeout(timer)
+      if (mainContent) {
+        mainContent.removeEventListener('scroll', checkScrollable)
+      }
       window.removeEventListener('resize', checkScrollable)
     }
   }, [examQuestions, currentIndex, reviewIndex])
@@ -303,10 +577,22 @@ export default function ExamPage() {
     )
   }
 
+  // Afficher un écran de chargement si on vérifie la sauvegarde
+  if (state === 'setup' && loading) {
+    return (
+      <div className="h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Chargement...</p>
+        </div>
+      </div>
+    )
+  }
+
   if (state === 'setup') {
     return (
       <div className="h-screen bg-background flex items-center justify-center">
-        <Card className="w-full max-w-md">
+        <Card className="w-full max-w-md card-elegant">
           <CardHeader>
             <CardTitle className="text-center">Configuration de l&apos;examen</CardTitle>
           </CardHeader>
@@ -338,6 +624,90 @@ export default function ExamPage() {
             </div>
           </CardContent>
         </Card>
+        
+        {/* Modal de reprise d'examen */}
+        {showRestorePrompt && savedExamState && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <Card className="w-full max-w-lg card-elegant">
+              <CardHeader>
+                <CardTitle className="text-center text-xl">
+                  Examen en cours détecté
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="bg-muted/50 rounded-lg p-4 space-y-3">
+                  <p className="text-sm font-medium text-center mb-3">
+                    Vous avez un examen non terminé. Voulez-vous le reprendre ?
+                  </p>
+                  
+                  {(() => {
+                    const stats = getExamStats()
+                    if (!stats) return null
+                    
+                    return (
+                      <div className="grid grid-cols-2 gap-3 text-sm">
+                        <div className="bg-background rounded p-2">
+                          <div className="text-muted-foreground text-xs">Questions répondues</div>
+                          <div className="font-bold text-lg text-primary">
+                            {stats.answeredQuestions} / {stats.totalQuestions}
+                          </div>
+                        </div>
+                        
+                        <div className="bg-background rounded p-2">
+                          <div className="text-muted-foreground text-xs">Questions restantes</div>
+                          <div className="font-bold text-lg">
+                            {stats.unansweredQuestions}
+                          </div>
+                        </div>
+                        
+                        <div className="bg-background rounded p-2">
+                          <div className="text-muted-foreground text-xs">Temps passé</div>
+                          <div className="font-bold text-lg">
+                            {stats.timeSpentMinutes}min {stats.timeSpentSeconds}s
+                          </div>
+                        </div>
+                        
+                        <div className="bg-background rounded p-2">
+                          <div className="text-muted-foreground text-xs">Marquées pour révision</div>
+                          <div className="font-bold text-lg text-primary">
+                            {stats.markedCount}
+                          </div>
+                        </div>
+                        
+                        <div className="bg-background rounded p-2 col-span-2">
+                          <div className="text-muted-foreground text-xs">Début de l&apos;examen</div>
+                          <div className="font-bold">
+                            {stats.startDate} à {stats.startTime}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })()}
+                </div>
+                
+                <div className="flex flex-col gap-2">
+                  <Button 
+                    onClick={handleRestoreExam}
+                    className="w-full h-12 text-base"
+                  >
+                    Reprendre l&apos;examen
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={handleNewExam}
+                    className="w-full"
+                  >
+                    Commencer un nouvel examen
+                  </Button>
+                </div>
+                
+                <p className="text-xs text-muted-foreground text-center">
+                  Si vous commencez un nouvel examen, l&apos;examen en cours sera définitivement perdu.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </div>
     )
   }
@@ -350,7 +720,7 @@ export default function ExamPage() {
       <div className="h-screen bg-background flex flex-col overflow-hidden">
         <div className="flex-1 flex flex-col">
           {/* Header avec score et navigation */}
-          <Card className="m-2 md:m-4 mb-2">
+          <Card className="m-2 md:m-4 mb-2 card-elegant">
             <CardContent className="p-2 md:p-4">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-2 md:mb-3 gap-3 md:gap-0">
                 <div className="flex items-center gap-2 md:gap-3">
@@ -397,23 +767,52 @@ export default function ExamPage() {
           </Card>
 
           {/* Contenu principal - Layout responsive */}
-          <div className="flex-1 flex flex-col md:flex-row mx-2 md:mx-4 mb-32 gap-4">
+          <div className="flex-1 flex flex-col md:flex-row mx-2 md:mx-4 pb-20 md:pb-24 gap-4">
             {/* Image - responsive */}
             <div className="w-full md:w-1/2">
-              <Card className="h-48 md:h-full">
+              <Card className="h-64 md:h-full card-elegant">
                 <CardContent className="p-2 md:p-4 h-full flex items-center justify-center">
                   <img 
                     src={currentReviewQuestion.imagePath} 
                     alt={`Question ${currentReviewQuestion.question}`}
-                    className="max-w-full max-h-48 md:max-h-full object-contain"
+                    className="max-w-full max-h-60 md:max-h-full object-contain cursor-pointer transition-all duration-300"
+                    onClick={() => setIsImageZoomed(!isImageZoomed)}
                   />
                 </CardContent>
               </Card>
+              
+              {/* Overlay de zoom séparé */}
+              {isImageZoomed && (
+                <div 
+                  className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+                  onClick={() => setIsImageZoomed(false)}
+                >
+                  <div 
+                    className="max-w-[90vw] max-h-[90vh] flex items-center justify-center relative"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <img 
+                      src={currentReviewQuestion.imagePath} 
+                      alt={`Question ${currentReviewQuestion.question} - Zoom`}
+                      className="max-w-full max-h-full object-contain cursor-pointer"
+                      onClick={() => setIsImageZoomed(false)}
+                    />
+                    {/* Bouton de fermeture */}
+                    <button
+                      className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold transition-colors"
+                      onClick={() => setIsImageZoomed(false)}
+                      aria-label="Fermer le zoom"
+                    >
+                      ×
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Question et réponses - responsive */}
             <div className="w-full md:w-1/2 flex flex-col">
-              <Card className="flex-1">
+              <Card className="flex-1 card-elegant">
                 <CardHeader className="pb-2 md:pb-3">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-base md:text-lg">
@@ -421,7 +820,7 @@ export default function ExamPage() {
                     </CardTitle>
                     <div className="flex gap-1 md:gap-2">
                       {currentReviewQuestion.categorie && (
-                        <Badge variant="secondary" className="text-xs text-black">
+                        <Badge variant="secondary" className="text-xs bg-primary text-white border border-primary">
                           {currentReviewQuestion.categorie}
                         </Badge>
                       )}
@@ -534,9 +933,9 @@ export default function ExamPage() {
 
           {/* Indicateur de scroll intelligent */}
           {showScrollIndicator && (
-            <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-40">
-              <div className="bg-primary/90 text-primary-foreground px-3 py-1 rounded-full text-xs font-medium shadow-lg animate-bounce">
-                ↑ Plus de contenu en dessous
+            <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-40">
+              <div className="bg-primary/50 text-primary-foreground w-8 h-8 rounded-full flex items-center justify-center shadow-md animate-bounce">
+                ↑
               </div>
             </div>
           )}
@@ -578,14 +977,57 @@ export default function ExamPage() {
     const answeredCount = Object.keys(answers).length
     const allAnswered = answeredCount === examQuestions.length
 
+    // Configuration optimisée pour 10 questions par page
+    const getButtonConfig = (totalQuestions: number) => {
+      // Toujours optimisé pour 10 questions
+      return {
+        size: 'w-9 h-9 md:w-10 md:h-10',      // Boutons confortables
+        text: 'text-xs md:text-sm',            // Texte lisible
+        gap: 'gap-2 md:gap-3',                 // Espacement généreux
+        shape: 'rounded-lg'                    // Forme arrondie
+      }
+    }
+
+    // Déterminer l'ensemble filtré
+    const answeredIds = new Set(Object.keys(answers))
+    const reviewIds = markedForReview
+
+    const filteredQuestions = examQuestions.filter((q) => {
+      if (questionFilter === 'all') return true
+      if (questionFilter === 'answered') return answeredIds.has(q.id)
+      if (questionFilter === 'review') return reviewIds.has(q.id)
+      // 'unanswered'
+      return !answeredIds.has(q.id)
+    })
+
+    const buttonConfig = getButtonConfig(filteredQuestions.length)
+
+    // IMPORTANT: mapping index global ←→ index filtré
+    // index global pour une question visible
+    const getGlobalIndex = (qId: string) => examQuestions.findIndex(eq => eq.id === qId)
+
+    // Calculer le nombre de questions par page (responsive) - basé sur les questions filtrées
+    const totalForPagination = filteredQuestions.length
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+    const questionsPerPage = getQuestionsPerPage(totalForPagination, isMobile)
+
+    // Calculer le nombre total de pages
+    const totalPages = Math.ceil(totalForPagination / questionsPerPage)
+
+    // Questions visibles sur la page actuelle
+    const startIndex = currentPage * questionsPerPage
+    const endIndex = Math.min(startIndex + questionsPerPage, totalForPagination)
+    const visibleQuestions = filteredQuestions.slice(startIndex, endIndex)
+
     return (
       <div className="h-screen bg-background flex flex-col overflow-hidden">
-        <div className="flex-1 flex flex-col exam-main-content">
+        <div className="flex-1 flex flex-col exam-main-content overflow-y-auto">
           {/* Header avec timer et navigation par numéros */}
-          <Card className="sticky top-0 z-40 bg-background shadow-md m-2 md:m-4 mb-2">
+          <Card className="sticky top-0 z-40 bg-background shadow-md m-2 md:m-4 mb-2 card-elegant">
             <CardContent className="p-2 md:p-4">
-              <div className="flex items-center justify-between">
-                {/* Boutons de contrôle à gauche */}
+              {/* Header principal - une seule ligne */}
+              <div className="flex items-center justify-between gap-2 md:gap-4 flex-wrap md:flex-nowrap">
+                {/* Zone 1: Contrôles gauche */}
                 <div className="flex items-center gap-2">
                   <Button
                     variant="ghost"
@@ -593,99 +1035,213 @@ export default function ExamPage() {
                     onClick={handleExitExam}
                     className="text-muted-foreground hover:text-destructive"
                   >
-                    <LogOut className="h-4 w-4 mr-1" />
-                    <span className="hidden md:inline">Sortir</span>
+                    <LogOut className="h-4 w-4" />
+                    <span className="hidden md:inline ml-1">Sortir</span>
                   </Button>
                   <ThemeToggle />
                 </div>
                 
-                {/* Chrono valorisé au centre */}
-                <div className="flex flex-col items-center">
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-6 w-6 md:h-8 md:w-8 text-primary" />
-                    <span className="font-mono text-2xl md:text-3xl font-bold text-primary">
-                      {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
-                    </span>
-                  </div>
-                  <h1 className="text-xs md:text-sm text-muted-foreground font-medium">Examen en cours</h1>
+                {/* Zone 2: Chrono */}
+                <div className="flex items-center gap-2">
+                  <Clock className="h-5 w-5 md:h-6 md:w-6 text-primary" />
+                  <span className="font-mono text-lg md:text-2xl font-bold text-primary">
+                    {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
+                  </span>
                 </div>
                 
-                {/* Compteur à droite */}
-                <Badge variant={allAnswered ? "default" : "secondary"} className="text-xs font-semibold text-primary-foreground">
+                {/* Zone 3: Filtres - Desktop (boutons) */}
+                <div className="hidden md:flex gap-2" role="tablist" aria-label="Filtres de questions">
+                  {([
+                    { key: 'all', label: 'Toutes', count: examQuestions.length },
+                    { key: 'answered', label: 'Répondues', count: answeredIds.size },
+                    { key: 'review', label: 'À revoir', count: reviewIds.size },
+                    { key: 'unanswered', label: 'Non répondues', count: examQuestions.length - answeredIds.size },
+                  ] as const).map(({ key, label, count }) => (
+                    <Button
+                      key={key}
+                      variant={questionFilter === key ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setQuestionFilter(key)}
+                      aria-pressed={questionFilter === key}
+                      aria-label={`${label} (${count})`}
+                      className="h-8 px-3"
+                    >
+                      <span className="mr-2">{label}</span>
+                      <Badge variant={questionFilter === key ? 'secondary' : 'outline'} className={`text-[10px] h-5 px-2 ${questionFilter === key ? 'bg-primary text-white' : ''}`}>
+                        {count}
+                      </Badge>
+                    </Button>
+                  ))}
+                </div>
+                
+                {/* Zone 3: Filtres - Mobile (select) */}
+                <div className="flex md:hidden">
+                  <Select value={questionFilter} onValueChange={(value) => setQuestionFilter(value as QuestionFilter)}>
+                    <SelectTrigger className="w-[140px] h-8">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Toutes ({examQuestions.length})</SelectItem>
+                      <SelectItem value="answered">Répondues ({answeredIds.size})</SelectItem>
+                      <SelectItem value="review">À revoir ({reviewIds.size})</SelectItem>
+                      <SelectItem value="unanswered">Non répondues ({examQuestions.length - answeredIds.size})</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                {/* Zone 4: Compteur */}
+                <Badge variant={allAnswered ? "default" : "secondary"} className={`text-xs font-semibold ${allAnswered ? 'bg-success text-success-foreground' : 'bg-primary text-white'}`}>
                   {answeredCount} / {examQuestions.length}
                 </Badge>
               </div>
 
               {/* Navigation par numéros de questions */}
               <div className="mt-3 md:mt-4">
-                <div className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
-                  Cliquez sur un numéro :
-                </div>
-                <div className="flex flex-wrap justify-center gap-2 md:gap-3">
-                  {examQuestions.map((q, index) => {
-                    const isAnswered = !!answers[q.id]
-                    const isMarked = markedForReview.has(q.id)
-                    const isCurrent = index === currentIndex
+                {filteredQuestions.length === 0 ? (
+                  <div className="text-center text-muted-foreground text-sm py-4">
+                    Aucune question dans ce filtre
+                  </div>
+                ) : (
+                  <div className="flex w-full gap-2 px-2">
+                    {/* Flèche gauche - taille fixe */}
+                    <button
+                      onClick={() => {
+                        if (currentPage > 0) {
+                          setIsManualPageChange(true)
+                          setCurrentPage(currentPage - 1)
+                        }
+                      }}
+                      disabled={currentPage === 0}
+                      className={`w-9 h-9 md:w-10 md:h-10 flex-shrink-0 rounded-full flex items-center justify-center transition-all bg-gradient-to-r from-primary/20 to-primary/30 border-2 border-primary/40 shadow-lg ${
+                        currentPage === 0 
+                          ? 'opacity-30 cursor-not-allowed' 
+                          : 'hover:from-primary/30 hover:to-primary/40 hover:border-primary/60 hover:shadow-xl hover:scale-105'
+                      }`}
+                      aria-label="Page précédente"
+                    >
+                      <ArrowLeft className="h-5 w-5 text-primary font-bold" />
+                    </button>
                     
-                    return (
-                      <button
-                        key={q.id}
-                        onClick={() => goToQuestion(index)}
-                        className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-sm md:text-base font-bold transition-all shadow-sm hover:shadow-md ${
-                          isCurrent
-                            ? 'ring-2 ring-primary ring-offset-2 scale-105'
-                            : 'hover:scale-105'
-                        } ${
-                          isMarked
-                            ? 'bg-primary text-primary-foreground hover:bg-primary/80'
-                            : isAnswered
-                            ? 'bg-success text-success-foreground hover:bg-success/80'
-                            : 'bg-muted text-muted-foreground hover:bg-muted/80'
-                        }`}
-                      >
-                        {index + 1}
-                      </button>
-                    )
-                  })}
-                </div>
-                
-                {/* Légende masquée sur mobile */}
-                <div className="hidden md:flex gap-4 mt-3 text-xs text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <div className="w-4 h-4 rounded-full bg-success"></div>
-                    <span>Répondue</span>
+                    {/* Numéros de questions - prend tout l'espace restant */}
+                    <div className="flex-1 flex gap-1 md:gap-2">
+                      {visibleQuestions.map((q) => {
+                        const index = getGlobalIndex(q.id)
+                        const isAnswered = !!answers[q.id]
+                        const isMarked = markedForReview.has(q.id)
+                        const isCurrent = index === currentIndex
+                        
+                        return (
+                          <button
+                            key={q.id}
+                            onClick={() => goToQuestion(index)}
+                            className={`flex-1 min-w-[28px] max-w-[48px] md:min-w-[32px] md:max-w-[60px] h-9 md:h-10 ${buttonConfig.shape} flex items-center justify-center ${buttonConfig.text} font-bold transition-all shadow-sm hover:shadow-md ${
+                              isCurrent
+                                ? 'ring-2 ring-primary ring-offset-2 scale-105'
+                                : 'hover:scale-105'
+                            } ${
+                              isMarked
+                                ? 'bg-primary text-primary-foreground hover:bg-primary/80'
+                                : isAnswered
+                                ? 'bg-success text-success-foreground hover:bg-success/80'
+                                : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                            }`}
+                          >
+                            {index + 1}
+                          </button>
+                        )
+                      })}
+                    </div>
+                    
+                    {/* Flèche droite - taille fixe */}
+                    <button
+                      onClick={() => {
+                        if (currentPage < totalPages - 1) {
+                          setIsManualPageChange(true)
+                          setCurrentPage(currentPage + 1)
+                        }
+                      }}
+                      disabled={currentPage === totalPages - 1}
+                      className={`w-9 h-9 md:w-10 md:h-10 flex-shrink-0 rounded-full flex items-center justify-center transition-all bg-gradient-to-r from-primary/20 to-primary/30 border-2 border-primary/40 shadow-lg ${
+                        currentPage === totalPages - 1 
+                          ? 'opacity-30 cursor-not-allowed' 
+                          : 'hover:from-primary/30 hover:to-primary/40 hover:border-primary/60 hover:shadow-xl hover:scale-105'
+                      }`}
+                      aria-label="Page suivante"
+                    >
+                      <ArrowRight className="h-5 w-5 text-primary font-bold" />
+                    </button>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <div className="w-4 h-4 rounded-full bg-primary"></div>
-                    <span>À revoir</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <div className="w-4 h-4 rounded-full bg-muted"></div>
-                    <span>Non répondue</span>
-                  </div>
-                </div>
+                )}
               </div>
             </CardContent>
           </Card>
 
           {/* Contenu principal - Layout responsive */}
-          <div className="flex-1 flex flex-col md:flex-row mx-2 md:mx-4 mb-32 gap-4">
+          <div className="flex-1 flex flex-col md:flex-row mx-2 md:mx-4 pb-20 md:pb-24 gap-4">
             {/* Image - responsive */}
             <div className="w-full md:w-1/2">
-              <Card className="h-48 md:h-full">
-                <CardContent className="p-2 md:p-4 h-full flex items-center justify-center">
-                  <img 
-                    src={currentQuestion.imagePath} 
-                    alt={`Question ${currentQuestion.question}`}
-                    className="max-w-full max-h-48 md:max-h-full object-contain"
-                  />
+              <Card className="h-64 md:h-full card-elegant">
+                <CardContent className="p-2 md:p-4 h-full flex flex-col">
+                  {/* Légende des états en haut */}
+                  <div className="flex gap-2 mb-2 text-[10px] text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <div className="w-2 h-2 rounded-full bg-success"></div>
+                      <span>Répondue</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-2 h-2 rounded-full bg-primary"></div>
+                      <span>À revoir</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-2 h-2 rounded-full bg-muted"></div>
+                      <span>Non rép.</span>
+                    </div>
+                  </div>
+                  
+                  {/* Image centrée */}
+                  <div className="flex-1 flex items-center justify-center">
+                    <img 
+                      src={currentQuestion.imagePath} 
+                      alt={`Question ${currentQuestion.question}`}
+                      className="max-w-full max-h-full object-contain cursor-pointer transition-all duration-300"
+                      onClick={() => setIsImageZoomed(!isImageZoomed)}
+                    />
+                  </div>
                 </CardContent>
               </Card>
+              
+              {/* Overlay de zoom séparé */}
+              {isImageZoomed && (
+                <div 
+                  className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+                  onClick={() => setIsImageZoomed(false)}
+                >
+                  <div 
+                    className="max-w-[90vw] max-h-[90vh] flex items-center justify-center relative"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <img 
+                      src={currentQuestion.imagePath} 
+                      alt={`Question ${currentQuestion.question} - Zoom`}
+                      className="max-w-full max-h-full object-contain cursor-pointer"
+                      onClick={() => setIsImageZoomed(false)}
+                    />
+                    {/* Bouton de fermeture */}
+                    <button
+                      className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold transition-colors"
+                      onClick={() => setIsImageZoomed(false)}
+                      aria-label="Fermer le zoom"
+                    >
+                      ×
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Question et options - responsive */}
             <div className="w-full md:w-1/2 flex flex-col">
-              <Card className="flex-1">
+              <Card className="flex-1 card-elegant">
                 <CardHeader className="pb-2 md:pb-3">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-base md:text-lg">
@@ -693,7 +1249,7 @@ export default function ExamPage() {
                     </CardTitle>
                     <div className="flex gap-1 md:gap-2">
                       {currentQuestion.categorie && (
-                        <Badge variant="secondary" className="text-xs text-black">
+                        <Badge variant="secondary" className="text-xs bg-primary text-white border border-primary">
                           {currentQuestion.categorie}
                         </Badge>
                       )}
@@ -791,9 +1347,9 @@ export default function ExamPage() {
 
           {/* Indicateur de scroll intelligent */}
           {showScrollIndicator && (
-            <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-40">
-              <div className="bg-primary/90 text-primary-foreground px-3 py-1 rounded-full text-xs font-medium shadow-lg animate-bounce">
-                ↑ Plus de contenu en dessous
+            <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-40">
+              <div className="bg-primary/50 text-primary-foreground w-8 h-8 rounded-full flex items-center justify-center shadow-md animate-bounce">
+                ↑
               </div>
             </div>
           )}
@@ -840,33 +1396,52 @@ export default function ExamPage() {
             )}
           </button>
 
+
           {/* Modal de confirmation pour sortir de l'examen */}
           {showExitConfirm && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-              <Card className="w-full max-w-md">
+              <Card className="w-full max-w-md card-elegant">
                 <CardHeader>
-                  <CardTitle className="text-center">Confirmer la sortie</CardTitle>
+                  <CardTitle className="text-center">Quitter l&apos;examen</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-center text-muted-foreground">
-                    Êtes-vous sûr de vouloir quitter l&apos;examen ? Vos réponses ne seront pas sauvegardées.
+                    Que souhaitez-vous faire ?
                   </p>
-                  <div className="flex gap-3">
+                  <p className="text-center text-sm text-muted-foreground">
+                    Vous avez répondu à {Object.keys(answers).length} question(s) sur {examQuestions.length}.
+                  </p>
+                  
+                  <div className="flex flex-col gap-3">
+                    <Button 
+                      onClick={confirmExitExam}
+                      className="w-full h-12 flex flex-col items-center justify-center py-2"
+                    >
+                      <span className="font-semibold">Sauvegarder et quitter</span>
+                      <span className="text-xs opacity-90">Reprendre l&apos;examen plus tard</span>
+                    </Button>
+                    
+                    <Button 
+                      variant="destructive" 
+                      onClick={abandonExam}
+                      className="w-full h-12 flex flex-col items-center justify-center py-2"
+                    >
+                      <span className="font-semibold">Abandonner l&apos;examen</span>
+                      <span className="text-xs opacity-90">Perdre toutes les réponses</span>
+                    </Button>
+                    
                     <Button 
                       variant="outline" 
                       onClick={cancelExitExam}
-                      className="flex-1"
+                      className="w-full"
                     >
                       Annuler
                     </Button>
-                    <Button 
-                      variant="destructive" 
-                      onClick={confirmExitExam}
-                      className="flex-1"
-                    >
-                      Quitter
-                    </Button>
                   </div>
+                  
+                  <p className="text-xs text-muted-foreground text-center">
+                    💾 Si vous sauvegardez, l&apos;examen sera disponible au prochain démarrage.
+                  </p>
                 </CardContent>
               </Card>
             </div>
