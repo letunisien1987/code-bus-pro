@@ -48,6 +48,11 @@ function TrainPageContent() {
     return match ? parseInt(match[1], 10) : null
   }
 
+  // Fonction pour calculer le nombre total de questions dans un questionnaire
+  const getTotalQuestionsInQuestionnaire = (questionnaireNumber: number): number => {
+    return questions.filter(q => q.questionnaire === questionnaireNumber).length
+  }
+
   // Réinitialiser le zoom quand on change de question
   useEffect(() => {
     setIsImageZoomed(false)
@@ -395,7 +400,7 @@ function TrainPageContent() {
                 <div className="absolute top-2 left-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
                   <div className="flex items-center gap-2">
                     <div className="font-black text-xl leading-none">{currentQuestion.questionnaire}</div>
-                    <div className="text-[11px] opacity-80">{extractImageNumber(currentQuestion.imagePath) || '?'}/40</div>
+                    <div className="text-[11px] opacity-80">{extractImageNumber(currentQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentQuestion.questionnaire)}</div>
                   </div>
                 </div>
               </CardContent>
@@ -422,7 +427,7 @@ function TrainPageContent() {
                     <div className="absolute top-2 left-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
                       <div className="flex items-center gap-2">
                         <div className="font-black text-xl leading-none">{currentQuestion.questionnaire}</div>
-                        <div className="text-[11px] opacity-80">{extractImageNumber(currentQuestion.imagePath) || '?'}/40</div>
+                        <div className="text-[11px] opacity-80">{extractImageNumber(currentQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentQuestion.questionnaire)}</div>
                       </div>
                     </div>
                     
