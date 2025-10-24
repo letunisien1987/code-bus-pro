@@ -401,8 +401,8 @@ function TrainPageContent() {
                   <div className="font-black text-xl leading-none">{extractImageNumber(currentQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentQuestion.questionnaire)}</div>
                 </div>
                 
-                {/* Badge de notification pour le questionnaire (chevauchement élégant) */}
-                <div className="absolute top-1 left-1 bg-yellow-500 rounded-full w-7 h-7 flex items-center justify-center text-[11px] font-bold text-white border-2 border-white shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300 z-10">
+                {/* Badge de notification pour le questionnaire (position sûre) */}
+                <div className="absolute top-1 right-1 bg-yellow-500 rounded-full w-7 h-7 flex items-center justify-center text-[11px] font-bold text-white border-2 border-white shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300 z-10">
                   {currentQuestion.questionnaire}
                 </div>
               </CardContent>
