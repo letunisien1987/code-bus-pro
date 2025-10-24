@@ -793,8 +793,8 @@ export default function ExamPage() {
                   {/* Badge avec numéro d'image et questionnaire */}
                   <div className="absolute top-2 left-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
                     <div className="flex items-center gap-2">
-                      <div className="font-black text-xl leading-none">{currentReviewQuestion.questionnaire}</div>
-                      <div className="text-[11px] opacity-80 font-bold">{extractImageNumber(currentReviewQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentReviewQuestion.questionnaire)}</div>
+                      <div className="text-[11px] opacity-80 font-bold">{currentReviewQuestion.questionnaire}</div>
+                      <div className="font-black text-xl leading-none">{extractImageNumber(currentReviewQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentReviewQuestion.questionnaire)}</div>
                     </div>
                   </div>
                 </CardContent>
@@ -1238,8 +1238,8 @@ export default function ExamPage() {
                     {/* Badge avec numéro d'image et questionnaire */}
                     <div className="absolute top-2 left-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
                       <div className="flex items-center gap-2">
-                        <div className="font-black text-xl leading-none">{currentQuestion.questionnaire}</div>
-                        <div className="text-[11px] opacity-80 font-bold">{extractImageNumber(currentQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentQuestion.questionnaire)}</div>
+                        <div className="text-[11px] opacity-80 font-bold">{currentQuestion.questionnaire}</div>
+                        <div className="font-black text-xl leading-none">{extractImageNumber(currentQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentQuestion.questionnaire)}</div>
                       </div>
                     </div>
                   </div>
@@ -1266,8 +1266,8 @@ export default function ExamPage() {
                     {/* Badge avec numéro d'image et questionnaire dans le zoom */}
                     <div className="absolute top-2 left-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
                       <div className="flex items-center gap-2">
-                        <div className="font-black text-xl leading-none">{currentQuestion.questionnaire}</div>
-                        <div className="text-[11px] opacity-80 font-bold">{extractImageNumber(currentQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentQuestion.questionnaire)}</div>
+                        <div className="text-[11px] opacity-80 font-bold">{currentQuestion.questionnaire}</div>
+                        <div className="font-black text-xl leading-none">{extractImageNumber(currentQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentQuestion.questionnaire)}</div>
                       </div>
                     </div>
                     
