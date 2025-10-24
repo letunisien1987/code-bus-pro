@@ -632,8 +632,8 @@ export default function JsonEditorPage() {
                 <strong>💡 Workflow :</strong> 
                 <span className="ml-2">
                   1️⃣ Modifier les questions → 
-                  2️⃣ "Sauvegarder dans JSON" → 
-                  3️⃣ "💾 Importer dans la base" pour voir les changements dans l'app
+                  2️⃣ &quot;Sauvegarder dans JSON&quot; → 
+                  3️⃣ &quot;💾 Importer dans la base&quot; pour voir les changements dans l&apos;app
                 </span>
               </p>
             </div>
@@ -866,7 +866,7 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                     {/* Nom de l'image */}
                     <div className="col-span-3 bg-white/50 dark:bg-black/20 rounded p-2 border border-orange-300 dark:border-orange-700">
                       <div className="text-[10px] font-bold text-orange-700 dark:text-orange-400 uppercase mb-0.5">
-                        📁 Nom de l'image
+                        📁 Nom de l&apos;image
                       </div>
                       <div className="text-sm font-mono font-bold text-orange-600 dark:text-orange-400">
                         {question.image_path.split('/').pop()}
@@ -1375,7 +1375,7 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
               {/* Nom de l'image */}
               <div className="col-span-3 bg-white/50 dark:bg-black/20 rounded p-2 border border-orange-400 dark:border-orange-600">
                 <div className="text-[10px] font-bold text-orange-700 dark:text-orange-400 uppercase mb-0.5">
-                  📁 Nom de l'image
+                  📁 Nom de l&apos;image
                 </div>
                 <div className="text-base font-mono font-bold text-orange-600 dark:text-orange-400">
                   {formData.image_path.split('/').pop()}
