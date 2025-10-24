@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useSession, signOut } from 'next-auth/react'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import { ThemeToggle } from './theme-toggle'
@@ -11,7 +12,10 @@ import {
   FileText, 
   Menu,
   X,
-  Settings
+  Settings,
+  LogIn,
+  LogOut,
+  User
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -25,6 +29,7 @@ const navigation = [
 export default function Navigation() {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { data: session, status } = useSession()
 
   return (
     <nav className="bg-background/80 backdrop-blur-sm border-b border-border sticky top-0 z-50 shadow-lg">
@@ -65,9 +70,45 @@ export default function Navigation() {
             })}
           </div>
 
-          {/* Theme toggle - visible sur desktop et mobile */}
+          {/* Theme toggle et Auth - visible sur desktop et mobile */}
           <div className="flex items-center gap-2">
             <ThemeToggle />
+            
+            {/* Bouton de connexion/déconnexion */}
+            {status === 'loading' ? (
+              <div className="w-8 h-8 bg-muted rounded animate-pulse" />
+            ) : session ? (
+              <div className="flex items-center gap-2">
+                {/* Badge utilisateur avec rôle */}
+                <Badge variant="secondary" className="hidden sm:flex items-center gap-1">
+                  <User className="h-3 w-3" />
+                  {session.user?.name}
+                  {session.user?.role === 'ADMIN' && (
+                    <Badge variant="destructive" className="ml-1 text-xs">
+                      ADMIN
+                    </Badge>
+                  )}
+                </Badge>
+                
+                {/* Bouton de déconnexion */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => signOut()}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span className="hidden sm:inline ml-1">Déconnexion</span>
+                </Button>
+              </div>
+            ) : (
+              <Link href="/auth/signin">
+                <Button variant="default" size="sm">
+                  <LogIn className="h-4 w-4" />
+                  <span className="hidden sm:inline ml-1">Se connecter</span>
+                </Button>
+              </Link>
+            )}
             
             {/* Mobile menu button */}
             <Button
@@ -109,6 +150,43 @@ export default function Navigation() {
                   </Link>
                 )
               })}
+              
+              {/* Séparateur pour l'authentification */}
+              <div className="border-t border-border my-2" />
+              
+              {/* Options d'authentification mobile */}
+              {session ? (
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground">
+                    <User className="h-4 w-4" />
+                    <span>{session.user?.name}</span>
+                    {session.user?.role === 'ADMIN' && (
+                      <Badge variant="destructive" className="text-xs">
+                        ADMIN
+                      </Badge>
+                    )}
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-start text-muted-foreground hover:text-foreground"
+                    onClick={() => {
+                      signOut()
+                      setMobileMenuOpen(false)
+                    }}
+                  >
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Déconnexion
+                  </Button>
+                </div>
+              ) : (
+                <Link href="/auth/signin" onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant="default" size="sm" className="w-full justify-start">
+                    <LogIn className="h-4 w-4 mr-2" />
+                    Se connecter
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         )}
