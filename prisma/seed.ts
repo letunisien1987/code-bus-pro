@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import questionsData from '../data/questions.json'
+import questionsData from '../config/data/questions.json'
 
 const prisma = new PrismaClient()
 
