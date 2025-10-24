@@ -4,7 +4,7 @@ import path from 'path'
 import OpenAI from 'openai'
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY || 'dummy-key-for-build',
 })
 
 interface Question {
@@ -51,6 +51,13 @@ interface AIAnalysisResult {
 
 export async function POST(request: NextRequest) {
   try {
+    // Vérifier si l'API key est configurée
+    if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'dummy-key-for-build') {
+      return NextResponse.json({ 
+        error: 'OpenAI API key not configured' 
+      }, { status: 500 })
+    }
+
     const { question, imagePath } = await request.json() as { question: Question; imagePath: string }
     
     // Extraire le numéro de question du nom de fichier (ex: "Question (25).jpg" -> 25)
