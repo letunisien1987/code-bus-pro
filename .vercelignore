@@ -1,0 +1,6 @@
+# Exclure les images volumineuses du déploiement Vercel
+public/images/questionnaire_*/app_zone/
+public/images/questionnaire_*/visualizations/
+public/images/reponse/
+config/data/questions.backup*.json
+data/questionsreserve.json
