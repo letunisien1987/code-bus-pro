@@ -796,7 +796,7 @@ export default function ExamPage() {
                   </div>
                   
                   {/* Badge de notification pour le questionnaire (positionné à l'extérieur) */}
-                  <div className="absolute top-0 left-0 bg-yellow-500 rounded-full w-8 h-8 flex items-center justify-center text-[12px] font-bold text-white border-2 border-white shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300">
+                  <div className="absolute top-0 right-0 bg-yellow-500 rounded-full w-8 h-8 flex items-center justify-center text-[12px] font-bold text-white border-2 border-white shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300">
                     {currentReviewQuestion.questionnaire}
                   </div>
                 </CardContent>
@@ -1243,7 +1243,7 @@ export default function ExamPage() {
                     </div>
                     
                     {/* Badge de notification pour le questionnaire (positionné à l'extérieur) */}
-                    <div className="absolute top-0 left-0 bg-yellow-500 rounded-full w-8 h-8 flex items-center justify-center text-[12px] font-bold text-white border-2 border-white shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300">
+                    <div className="absolute top-0 right-0 bg-yellow-500 rounded-full w-8 h-8 flex items-center justify-center text-[12px] font-bold text-white border-2 border-white shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300">
                       {currentQuestion.questionnaire}
                     </div>
                   </div>
