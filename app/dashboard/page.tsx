@@ -218,14 +218,14 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs md:text-sm font-medium text-muted-foreground">Score moyen</p>
-                    <p className="text-2xl md:text-3xl font-bold text-primary">{stats.global.averageScore}%</p>
+                    <p className="text-2xl md:text-3xl font-bold text-primary">{stats.global?.averageScore || 0}%</p>
                   </div>
                   <div className="h-8 w-8 md:h-12 md:w-12 bg-primary/10 rounded-full flex items-center justify-center">
                     <TrendingUp className="h-4 w-4 md:h-6 md:w-6 text-primary" />
                   </div>
                 </div>
                 <div className="mt-2 md:mt-4">
-                  <Progress value={stats.global.averageScore} size="sm" />
+                  <Progress value={stats.global?.averageScore || 0} size="sm" />
                 </div>
               </CardContent>
             </Card>
@@ -235,7 +235,7 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs md:text-sm font-medium text-muted-foreground">Questions étudiées</p>
-                    <p className="text-2xl md:text-3xl font-bold text-secondary-foreground">{stats.global.completedQuestions}</p>
+                    <p className="text-2xl md:text-3xl font-bold text-secondary-foreground">{stats.global?.completedQuestions || 0}</p>
                   </div>
                   <div className="h-8 w-8 md:h-12 md:w-12 bg-secondary/10 rounded-full flex items-center justify-center">
                     <BookOpen className="h-4 w-4 md:h-6 md:w-6 text-secondary-foreground" />
@@ -243,7 +243,7 @@ export default function DashboardPage() {
                 </div>
                 <div className="mt-2 md:mt-4">
                   <p className="text-xs md:text-sm text-muted-foreground">
-                    {stats.global.totalQuestions > 0 ? Math.round((stats.global.completedQuestions / stats.global.totalQuestions) * 100) : 0}% du programme
+                    {(stats.global?.totalQuestions || 0) > 0 ? Math.round(((stats.global?.completedQuestions || 0) / (stats.global?.totalQuestions || 1)) * 100) : 0}% du programme
                   </p>
                 </div>
               </CardContent>
@@ -254,7 +254,7 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs md:text-sm font-medium text-muted-foreground">Série actuelle</p>
-                    <p className="text-2xl md:text-3xl font-bold text-accent-foreground">{stats.global.streak} jours</p>
+                    <p className="text-2xl md:text-3xl font-bold text-accent-foreground">{stats.global?.streak || 0} jours</p>
                   </div>
                   <div className="h-8 w-8 md:h-12 md:w-12 bg-accent/10 rounded-full flex items-center justify-center">
                     <Zap className="h-4 w-4 md:h-6 md:w-6 text-accent-foreground" />
@@ -271,7 +271,7 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs md:text-sm font-medium text-muted-foreground">Temps d&apos;étude</p>
-                    <p className="text-2xl md:text-3xl font-bold text-muted-foreground">{stats.global.studyTime}h</p>
+                    <p className="text-2xl md:text-3xl font-bold text-muted-foreground">{stats.global?.studyTime || 0}h</p>
                   </div>
                   <div className="h-8 w-8 md:h-12 md:w-12 bg-muted rounded-full flex items-center justify-center">
                     <Clock className="h-4 w-4 md:h-6 md:w-6 text-muted-foreground" />
@@ -761,21 +761,21 @@ export default function DashboardPage() {
                         <CheckCircle className="h-4 w-4 text-primary" />
                         <span className="text-sm">Correctes</span>
                       </div>
-                      <span className="font-bold text-primary">{stats.global.correctAnswers}</span>
+                      <span className="font-bold text-primary">{stats.global?.correctAnswers || 0}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <XCircle className="h-4 w-4 text-destructive" />
                         <span className="text-sm">Incorrectes</span>
                       </div>
-                      <span className="font-bold text-destructive">{stats.global.incorrectAnswers}</span>
+                      <span className="font-bold text-destructive">{stats.global?.incorrectAnswers || 0}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <AlertCircle className="h-4 w-4 text-muted-foreground" />
                         <span className="text-sm">Non étudiées</span>
                       </div>
-                      <span className="font-bold text-muted-foreground">{stats.global.totalQuestions - stats.global.completedQuestions}</span>
+                      <span className="font-bold text-muted-foreground">{(stats.global?.totalQuestions || 0) - (stats.global?.completedQuestions || 0)}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -792,19 +792,19 @@ export default function DashboardPage() {
                   <div className="space-y-4">
                     <div className="flex justify-between items-center p-3 bg-primary/10 rounded-lg">
                       <span className="text-sm">Total tentatives</span>
-                      <span className="font-bold text-primary">{stats.global.totalAttempts}</span>
+                      <span className="font-bold text-primary">{stats.global?.totalAttempts || 0}</span>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-secondary/10 rounded-lg">
                       <span className="text-sm">Taux de réussite global</span>
-                      <span className="font-bold text-secondary-foreground">{stats.global.averageScore}%</span>
+                      <span className="font-bold text-secondary-foreground">{stats.global?.averageScore || 0}%</span>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-accent/10 rounded-lg">
                       <span className="text-sm">Temps d&apos;étude total</span>
-                      <span className="font-bold text-accent-foreground">{stats.global.studyTime}h</span>
+                      <span className="font-bold text-accent-foreground">{stats.global?.studyTime || 0}h</span>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-muted rounded-lg">
                       <span className="text-sm">Série actuelle</span>
-                      <span className="font-bold text-muted-foreground">{stats.global.streak} jours</span>
+                      <span className="font-bold text-muted-foreground">{stats.global?.streak || 0} jours</span>
                     </div>
                   </div>
                 </CardContent>

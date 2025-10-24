@@ -3,7 +3,7 @@
 import { useTheme } from 'next-themes'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card'
 import { Button } from '../../components/ui/button'
-import { Sun, Moon, Monitor, Upload } from 'lucide-react'
+import { Sun, Moon, Monitor, Upload, FileJson } from 'lucide-react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
@@ -66,7 +66,7 @@ export default function SettingsPage() {
             Importez et gérez les questions de l&apos;application
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-3">
           <Link href="/import">
             <Button className="w-full h-16 flex items-center gap-3">
               <Upload className="h-6 w-6" />
@@ -74,6 +74,18 @@ export default function SettingsPage() {
                 <div className="font-semibold">Importer des questions</div>
                 <div className="text-sm text-muted-foreground">
                   Ajoutez de nouvelles questions à la base de données
+                </div>
+              </div>
+            </Button>
+          </Link>
+          
+          <Link href="/json-editor">
+            <Button variant="outline" className="w-full h-16 flex items-center gap-3">
+              <FileJson className="h-6 w-6" />
+              <div className="text-left">
+                <div className="font-semibold">Éditeur JSON</div>
+                <div className="text-sm text-muted-foreground">
+                  Modifier, corriger et valider les questions avec IA
                 </div>
               </div>
             </Button>

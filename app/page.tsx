@@ -190,11 +190,11 @@ export default function HomePage() {
                   <div className="space-y-3">
                     <div className="flex justify-between items-baseline">
                       <span className="text-sm text-muted-foreground">Score moyen</span>
-                      <span className="text-3xl font-bold text-primary">{stats.global.averageScore}%</span>
+                      <span className="text-3xl font-bold text-primary">{stats.global?.averageScore || 0}%</span>
                     </div>
-                    <Progress value={stats.global.averageScore} className="h-2" />
+                    <Progress value={stats.global?.averageScore || 0} className="h-2" />
                     <p className="text-xs text-muted-foreground">
-                      {stats.global.correctAnswers} / {stats.global.totalQuestions} questions
+                      {stats.global?.correctAnswers || 0} / {stats.global?.totalQuestions || 0} questions
                     </p>
                   </div>
                 </CardContent>
@@ -212,15 +212,15 @@ export default function HomePage() {
                   <div className="space-y-3">
                     <div className="text-center">
                       <div className="text-3xl font-bold text-amber-500">
-                        {stats.global.streak}
+                        {stats.global?.streak || 0}
                       </div>
                       <p className="text-xs text-muted-foreground">réponses consécutives</p>
                     </div>
                     <div className="flex items-center justify-center gap-2 bg-amber-500/10 rounded-lg py-2">
                       <Trophy className="h-4 w-4 text-amber-500" />
                       <span className="text-sm font-medium text-amber-700 dark:text-amber-400">
-                        {stats.global.streak >= 7 ? 'Excellent !' : 
-                         stats.global.streak >= 3 ? 'Bien !' : 'Continuez !'}
+                        {(stats.global?.streak || 0) >= 7 ? 'Excellent !' : 
+                         (stats.global?.streak || 0) >= 3 ? 'Bien !' : 'Continuez !'}
                       </span>
                     </div>
                   </div>
@@ -239,15 +239,15 @@ export default function HomePage() {
                   <div className="space-y-3">
                     <div className="text-center">
                       <div className="text-3xl font-bold text-blue-500">
-                        {stats.global.studyTime}h
+                        {stats.global?.studyTime || 0}h
                       </div>
                       <p className="text-xs text-muted-foreground">temps total</p>
                     </div>
                     <div className="flex items-center justify-center gap-2 bg-blue-500/10 rounded-lg py-2">
                       <Brain className="h-4 w-4 text-blue-500" />
                       <span className="text-sm font-medium text-blue-700 dark:text-blue-400">
-                        {stats.global.studyTime >= 10 ? 'Expert !' : 
-                         stats.global.studyTime >= 5 ? 'Avancé !' : 'Débutant'}
+                        {(stats.global?.studyTime || 0) >= 10 ? 'Expert !' : 
+                         (stats.global?.studyTime || 0) >= 5 ? 'Avancé !' : 'Débutant'}
                       </span>
                     </div>
                   </div>

@@ -325,7 +325,7 @@ function TrainPageContent() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">Tous</SelectItem>
-                      {Array.from(new Set(questions.map(q => q.questionnaire).filter(Boolean))).sort().map(num => (
+                      {Array.from(new Set(questions.map(q => q.questionnaire).filter(Boolean))).sort((a, b) => a - b).map(num => (
                         <SelectItem key={num} value={num.toString()}>Questionnaire {num}</SelectItem>
                       ))}
                     </SelectContent>

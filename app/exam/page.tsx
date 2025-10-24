@@ -1332,7 +1332,7 @@ export default function ExamPage() {
 
               {/* Bouton finir l'examen - Visible seulement si toutes les questions sont répondues */}
               {allAnswered && (
-                <div className="hidden md:block mt-4 text-center">
+                <div className="mt-4 text-center">
                   <Button 
                     onClick={finishExam}
                     className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"

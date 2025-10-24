@@ -30,7 +30,7 @@ export async function POST() {
 
     // Nettoyer l'ancienne donnée (ordre important : d'abord les tables avec clés étrangères)
     await prisma.attempt.deleteMany()
-    // await prisma.questionProgress.deleteMany() // Table n'existe pas encore sur Vercel
+    await prisma.questionProgress.deleteMany()
     await prisma.question.deleteMany()
 
     // Importer les questions
