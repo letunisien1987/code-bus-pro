@@ -790,15 +790,14 @@ export default function ExamPage() {
                     onClick={() => setIsImageZoomed(!isImageZoomed)}
                   />
                   
-                  {/* Badge avec numéro d'image et questionnaire */}
+                  {/* Badge principal avec numéro de question */}
                   <div className="absolute top-2 left-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
-                    <div className="flex items-center gap-2">
-                      {/* Badge de notification pour le questionnaire */}
-                      <div className="bg-yellow-500 rounded-full w-7 h-7 flex items-center justify-center text-[11px] font-bold text-white border-2 border-white shadow-lg -ml-1 -mt-1">
-                        {currentReviewQuestion.questionnaire}
-                      </div>
-                      <div className="font-black text-xl leading-none">{extractImageNumber(currentReviewQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentReviewQuestion.questionnaire)}</div>
-                    </div>
+                    <div className="font-black text-xl leading-none">{extractImageNumber(currentReviewQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentReviewQuestion.questionnaire)}</div>
+                  </div>
+                  
+                  {/* Badge de notification pour le questionnaire (positionné à l'extérieur) */}
+                  <div className="absolute top-0 left-0 bg-yellow-500 rounded-full w-8 h-8 flex items-center justify-center text-[12px] font-bold text-white border-2 border-white shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300">
+                    {currentReviewQuestion.questionnaire}
                   </div>
                 </CardContent>
               </Card>
@@ -1238,15 +1237,14 @@ export default function ExamPage() {
                       onClick={() => setIsImageZoomed(!isImageZoomed)}
                     />
                     
-                    {/* Badge avec numéro d'image et questionnaire */}
+                    {/* Badge principal avec numéro de question */}
                     <div className="absolute top-2 left-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
-                      <div className="flex items-center gap-2">
-                        {/* Badge de notification pour le questionnaire */}
-                        <div className="bg-yellow-500 rounded-full w-7 h-7 flex items-center justify-center text-[11px] font-bold text-white border-2 border-white shadow-lg -ml-1 -mt-1">
-                          {currentQuestion.questionnaire}
-                        </div>
-                        <div className="font-black text-xl leading-none">{extractImageNumber(currentQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentQuestion.questionnaire)}</div>
-                      </div>
+                      <div className="font-black text-xl leading-none">{extractImageNumber(currentQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentQuestion.questionnaire)}</div>
+                    </div>
+                    
+                    {/* Badge de notification pour le questionnaire (positionné à l'extérieur) */}
+                    <div className="absolute top-0 left-0 bg-yellow-500 rounded-full w-8 h-8 flex items-center justify-center text-[12px] font-bold text-white border-2 border-white shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300">
+                      {currentQuestion.questionnaire}
                     </div>
                   </div>
                 </CardContent>
