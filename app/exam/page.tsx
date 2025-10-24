@@ -793,7 +793,10 @@ export default function ExamPage() {
                   {/* Badge avec numéro d'image et questionnaire */}
                   <div className="absolute top-2 left-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
                     <div className="flex items-center gap-2">
-                      <div className="text-[11px] opacity-80 font-bold">{currentReviewQuestion.questionnaire}</div>
+                      {/* Bulle ronde pour le questionnaire */}
+                      <div className="bg-white/20 backdrop-blur-sm rounded-full w-6 h-6 flex items-center justify-center text-[10px] font-bold border border-white/30 -ml-1 -mt-1">
+                        {currentReviewQuestion.questionnaire}
+                      </div>
                       <div className="font-black text-xl leading-none">{extractImageNumber(currentReviewQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentReviewQuestion.questionnaire)}</div>
                     </div>
                   </div>
@@ -1238,7 +1241,10 @@ export default function ExamPage() {
                     {/* Badge avec numéro d'image et questionnaire */}
                     <div className="absolute top-2 left-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
                       <div className="flex items-center gap-2">
-                        <div className="text-[11px] opacity-80 font-bold">{currentQuestion.questionnaire}</div>
+                        {/* Bulle ronde pour le questionnaire */}
+                        <div className="bg-white/20 backdrop-blur-sm rounded-full w-6 h-6 flex items-center justify-center text-[10px] font-bold border border-white/30 -ml-1 -mt-1">
+                          {currentQuestion.questionnaire}
+                        </div>
                         <div className="font-black text-xl leading-none">{extractImageNumber(currentQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentQuestion.questionnaire)}</div>
                       </div>
                     </div>
