@@ -60,9 +60,9 @@
     
     /* Couleurs principales */
     --primary: 47 100% 50%;           /* 🟡 JAUNE VIF #fec800 - Actions principales */
-    --primary-foreground: 26 83.3% 14.1%; /* Texte sur fond jaune */
+    --primary-foreground: 240 10% 3.9%; /* Texte très sombre sur fond jaune */
     --secondary: 47 100% 50%;         /* 🟡 JAUNE VIF #fec800 - Sélections */
-    --secondary-foreground: 47 100% 50%;/* Texte sur fond jaune */
+    --secondary-foreground: 240 10% 3.9%; /* Texte très sombre sur fond jaune */
     
     /* Couleurs neutres */
     --muted: 240 3.7% 15.9%;          /* Fond neutre (gris foncé) */
@@ -70,7 +70,7 @@
     
     /* Couleurs d'accent */
     --accent: 47 100% 50%;            /* 🟡 JAUNE VIF #fec800 - Sélections, focus */
-    --accent-foreground: 47 100% 50%; /* Texte sur fond accent */
+    --accent-foreground: 240 10% 3.9%; /* Texte très sombre sur fond accent */
     
     /* Couleurs sémantiques */
     --destructive: 0 84.2% 60.2%;     /* 🔴 ROUGE - Erreurs, échecs (plus clair) */
