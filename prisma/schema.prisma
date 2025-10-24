@@ -6,11 +6,11 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-// SQLite ne supporte pas les enums, on utilise des strings
+// PostgreSQL supporte les enums, mais on utilise des strings pour la compatibilité
 // ProgressStatus: "not_seen" | "learning" | "to_review" | "mastered"
 // DifficultyTag: "easy" | "medium" | "hard"
 
