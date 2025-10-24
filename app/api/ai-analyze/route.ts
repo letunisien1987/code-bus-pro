@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import fs from 'fs'
 import path from 'path'
 import OpenAI from 'openai'
+import { getImageUrl } from '@/lib/blob-helper'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || 'dummy-key-for-build',
@@ -65,38 +66,74 @@ export async function POST(request: NextRequest) {
     const numeroMatch = imageFilename.match(/Question\s*\((\d+)\)/)
     const numeroFromFilename = numeroMatch ? parseInt(numeroMatch[1]) : question.numero_question
 
-    // Le chemin d'image reçu du frontend contient déjà /app_zone/
-    // On l'utilise directement sans transformation
-    const fullImagePath = path.join(process.cwd(), 'public', imagePath)
-
-    // Vérifier que l'image existe
-    if (!fs.existsSync(fullImagePath)) {
-      return NextResponse.json(
-        { error: `Image non trouvée: ${fullImagePath}` },
-        { status: 404 }
-      )
-    }
-
-    // Lire l'image de la question et la convertir en base64
-    const imageBuffer = fs.readFileSync(fullImagePath)
-    const base64Image = imageBuffer.toString('base64')
-    const imageExtension = path.extname(fullImagePath).toLowerCase()
-    const mimeType = imageExtension === '.png' ? 'image/png' : 'image/jpeg'
+    // Obtenir l'URL de l'image (Blob en production, locale en développement)
+    const imageUrl = await getImageUrl(imagePath)
     
-    // Construire le chemin de l'image de réponse
-    const answerImagePath = path.join(
-      process.cwd(), 
-      'public', 
-      'images', 
-      'reponse', 
-      `reponses ${question.questionnaire}.jpg`
-    )
+    // Variables pour l'image
+    let base64Image: string
+    let mimeType: string
+    
+    // En développement local, utiliser le système de fichiers
+    if (imageUrl.startsWith('/')) {
+      const fullImagePath = path.join(process.cwd(), 'public', imagePath)
+      
+      // Vérifier que l'image existe
+      if (!fs.existsSync(fullImagePath)) {
+        return NextResponse.json(
+          { error: `Image non trouvée: ${fullImagePath}` },
+          { status: 404 }
+        )
+      }
+
+      // Lire l'image de la question et la convertir en base64
+      const imageBuffer = fs.readFileSync(fullImagePath)
+      base64Image = imageBuffer.toString('base64')
+      const imageExtension = path.extname(fullImagePath).toLowerCase()
+      mimeType = imageExtension === '.png' ? 'image/png' : 'image/jpeg'
+    } else {
+      // En production, télécharger depuis Vercel Blob
+      try {
+        const response = await fetch(imageUrl)
+        if (!response.ok) {
+          throw new Error(`Erreur lors du téléchargement: ${response.status}`)
+        }
+        
+        const imageBuffer = await response.arrayBuffer()
+        base64Image = Buffer.from(imageBuffer).toString('base64')
+        const imageExtension = path.extname(imagePath).toLowerCase()
+        mimeType = imageExtension === '.png' ? 'image/png' : 'image/jpeg'
+      } catch (error) {
+        return NextResponse.json(
+          { error: `Erreur lors du téléchargement de l'image depuis Blob: ${error}` },
+          { status: 500 }
+        )
+      }
+    }
+    
+    // Obtenir l'URL de l'image de réponse
+    const answerImagePath = `images/reponse/reponses ${question.questionnaire}.jpg`
+    const answerImageUrl = await getImageUrl(answerImagePath)
     
     // Lire l'image de réponse si elle existe
     let base64AnswerImage: string | null = null
-    if (fs.existsSync(answerImagePath)) {
-      const answerBuffer = fs.readFileSync(answerImagePath)
-      base64AnswerImage = answerBuffer.toString('base64')
+    if (answerImageUrl.startsWith('/')) {
+      // En développement local
+      const fullAnswerPath = path.join(process.cwd(), 'public', answerImagePath)
+      if (fs.existsSync(fullAnswerPath)) {
+        const answerBuffer = fs.readFileSync(fullAnswerPath)
+        base64AnswerImage = answerBuffer.toString('base64')
+      }
+    } else {
+      // En production, télécharger depuis Vercel Blob
+      try {
+        const response = await fetch(answerImageUrl)
+        if (response.ok) {
+          const answerBuffer = await response.arrayBuffer()
+          base64AnswerImage = Buffer.from(answerBuffer).toString('base64')
+        }
+      } catch (error) {
+        console.warn(`Image de réponse non trouvée: ${answerImagePath}`)
+      }
     }
 
     // Créer le prompt pour OpenAI

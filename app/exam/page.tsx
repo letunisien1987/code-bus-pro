@@ -9,6 +9,7 @@ import { Progress } from '../../components/ui/progress'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
 import { ThemeToggle } from '../../components/theme-toggle'
 import { ArrowLeft, ArrowRight, CheckCircle, XCircle, Clock, RotateCcw, LogOut, ChevronLeft, ChevronRight } from 'lucide-react'
+import { getImageUrlSync } from '@/lib/blob-helper'
 
 interface Question {
   id: string
@@ -784,7 +785,7 @@ export default function ExamPage() {
               <Card className="h-64 md:h-full card-elegant relative">
                 <CardContent className="p-2 md:p-4 h-full flex items-center justify-center">
                   <img 
-                    src={currentReviewQuestion.imagePath} 
+                    src={getImageUrlSync(currentReviewQuestion.imagePath)} 
                     alt={`Question ${currentReviewQuestion.question}`}
                     className="max-w-full max-h-60 md:max-h-full object-contain cursor-pointer transition-all duration-300"
                     onClick={() => setIsImageZoomed(!isImageZoomed)}
@@ -813,7 +814,7 @@ export default function ExamPage() {
                     onClick={(e) => e.stopPropagation()}
                   >
                     <img 
-                      src={currentReviewQuestion.imagePath} 
+                      src={getImageUrlSync(currentReviewQuestion.imagePath)} 
                       alt={`Question ${currentReviewQuestion.question} - Zoom`}
                       className="max-w-full max-h-full object-contain cursor-pointer"
                       onClick={() => setIsImageZoomed(false)}
@@ -1231,7 +1232,7 @@ export default function ExamPage() {
                   {/* Image centrée */}
                   <div className="flex-1 flex items-center justify-center relative">
                     <img 
-                      src={currentQuestion.imagePath} 
+                      src={getImageUrlSync(currentQuestion.imagePath)} 
                       alt={`Question ${currentQuestion.question}`}
                       className="max-w-full max-h-full object-contain cursor-pointer transition-all duration-300"
                       onClick={() => setIsImageZoomed(!isImageZoomed)}
@@ -1261,7 +1262,7 @@ export default function ExamPage() {
                     onClick={(e) => e.stopPropagation()}
                   >
                     <img 
-                      src={currentQuestion.imagePath} 
+                      src={getImageUrlSync(currentQuestion.imagePath)} 
                       alt={`Question ${currentQuestion.question} - Zoom`}
                       className="max-w-full max-h-full object-contain cursor-pointer"
                       onClick={() => setIsImageZoomed(false)}

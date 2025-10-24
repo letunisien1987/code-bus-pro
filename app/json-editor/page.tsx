@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { AlertCircle, Check, Save, Search, Bot, Sparkles, Loader2, ChevronDown, ChevronRight, Database } from 'lucide-react'
+import { getImageUrlSync } from '@/lib/blob-helper'
 
 interface Question {
   id: string // UUID unique et permanent
@@ -1333,7 +1334,7 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
               onClick={(e) => e.stopPropagation()}
             >
               <img 
-                src={question.image_path} 
+                src={getImageUrlSync(question.image_path)} 
                 alt={`Question ${question.id} - Zoom`}
                 className="max-w-full max-h-full object-contain"
               />
@@ -1487,7 +1488,7 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                 }}
               >
                 <img
-                  src={question.image_path}
+                  src={getImageUrlSync(question.image_path)}
                   alt={`Question ${question.id}`}
                   className="w-full h-full object-contain transition-transform duration-200 cursor-grab active:cursor-grabbing"
                   style={{ transform: 'scale(1) translate(0px, 0px)' }}
@@ -1695,7 +1696,7 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
           onClick={(e) => e.stopPropagation()}
         >
           <img 
-            src={question.image_path} 
+            src={getImageUrlSync(question.image_path)} 
             alt={`Question ${question.id} - Zoom`}
             className="max-w-full max-h-full object-contain cursor-pointer"
             onClick={() => setIsImageZoomed(false)}

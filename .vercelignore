@@ -2,5 +2,9 @@
 config/data/questions.backup*.json
 data/questionsreserve.json
 
+# Exclure les images lourdes (servies depuis Vercel Blob)
+public/images/questionnaire_*/app_zone/
+public/images/reponse/
+
 # Version DEV : Garder l'éditeur JSON pour le développement
 # (L'éditeur JSON est disponible en local pour le développement)

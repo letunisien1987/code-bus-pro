@@ -1,0 +1,40 @@
+name: Sync Images to Vercel Blob
+
+on:
+  push:
+    branches:
+      - vercel-prod
+    paths:
+      - 'public/images/**'
+      - 'scripts/sync-to-blob.ts'
+
+jobs:
+  sync-images:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Sync images to Vercel Blob
+        env:
+          BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
+        run: npx tsx scripts/sync-to-blob.ts
+        
+      - name: Notify completion
+        if: always()
+        run: |
+          if [ $? -eq 0 ]; then
+            echo "✅ Synchronisation des images terminée avec succès"
+          else
+            echo "❌ Erreur lors de la synchronisation des images"
+          fi

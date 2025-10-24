@@ -7,6 +7,7 @@ import { Button } from '../../components/ui/button'
 import { Badge } from '../../components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
 import { ArrowLeft, ArrowRight, CheckCircle, XCircle, RotateCcw, Menu, Filter, X } from 'lucide-react'
+import { getImageUrlSync } from '@/lib/blob-helper'
 
 interface Question {
   id: string
@@ -390,7 +391,7 @@ function TrainPageContent() {
             <Card className="h-48 md:h-full card-elegant relative">
               <CardContent className="p-2 md:p-4 h-full flex items-center justify-center">
                 <img 
-                  src={currentQuestion.imagePath} 
+                  src={getImageUrlSync(currentQuestion.imagePath)} 
                   alt={`Question ${currentQuestion.question}`}
                   className="max-w-full max-h-48 md:max-h-full object-contain cursor-pointer transition-all duration-300"
                   onClick={() => setIsImageZoomed(!isImageZoomed)}
@@ -419,7 +420,7 @@ function TrainPageContent() {
                     onClick={(e) => e.stopPropagation()}
                   >
                     <img 
-                      src={currentQuestion.imagePath} 
+                      src={getImageUrlSync(currentQuestion.imagePath)} 
                       alt={`Question ${currentQuestion.question} - Zoom`}
                       className="max-w-full max-h-full object-contain cursor-pointer"
                       onClick={() => setIsImageZoomed(false)}
