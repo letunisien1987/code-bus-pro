@@ -2183,24 +2183,26 @@
       "c": "Si la visibilité est bonne, à la vitesse que vous permet ce rapport"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_4/Question (10).jpg"
+    "image_path": "images/questionnaire_4/Question (10).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "ce3f57e3-34ac-49bd-97d3-d09f55a5e568",
     "old_id": "4_0081",
     "numero_question": 11,
     "questionnaire": 4,
-    "question": "0081",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/180",
-    "enonce": "Que signifie ce témoin lumineux de frein?",
+    "question": "1039",
+    "categorie": "Règles et prescriptions",
+    "astag D/F/I ": "6/39",
+    "enonce": "Quelle réponse se réfère à ce chiffre: 40 km/h",
     "options": {
-      "a": "Frein de stationnement serré",
-      "b": "Pression de frein insuffisante",
-      "c": "Circuit de frein défaillant"
+      "a": "Vitesse maximale pour les tracteurs industriels",
+      "b": "Vitesse maximale pour les véhicules spéciaux",
+      "c": "Vitesse maximale lors du remorquage"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_4/Question (11).jpg"
+    "image_path": "images/questionnaire_4/Question (11).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "a8f87e5a-e128-4acc-8539-88c4f29deee7",
@@ -2261,51 +2263,54 @@
     "old_id": "4_0259",
     "numero_question": 15,
     "questionnaire": 4,
-    "question": "0259",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/152",
-    "enonce": "Quelle est la signification de ce témoin lumineux?",
+    "question": "0498",
+    "categorie": "Règles et prescriptions",
+    "astag D/F/I ": "demandez explications",
+    "enonce": "Qui est responsable du contrôle du véhicule avant le départ ?",
     "options": {
-      "a": "Le frein de stationnement est serré",
-      "b": "La pression de service des freins est insuffisante",
-      "c": "Un circuit de freinage ne fonctionne plus correctement"
+      "a": "Le constructeur",
+      "b": "Le détenteur du véhicule et le conducteur",
+      "c": "Le conducteur"
     },
-    "bonne_reponse": "b",
-    "image_path": "images/questionnaire_4/Question (15).jpg"
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_4/Question (15).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "a98be816-3afb-4a16-beed-7183065bdfea",
     "old_id": "4_0260",
     "numero_question": 16,
     "questionnaire": 4,
-    "question": "0260",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/153",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "1301",
+    "categorie": "OTR 1",
+    "astag D/F/I ": "ARV-OTR-OLR 4/1a",
+    "enonce": "L'OTR 1:",
     "options": {
-      "a": "La pression de service des freins est insuffisante",
-      "b": "Le frein de stationnement est serré",
-      "c": "Un circuit de freinage ne fonctionne plus correctement"
+      "a": "s’applique à tous les conducteurs de véhicules",
+      "b": "s’applique par exemple, aux conducteurs de voitures automobiles et ensembles de véhicules affectés aux transports de choses dont le poids total excède 3,5 t selon le permis de circulation",
+      "c": "s’applique à tous les conducteurs qui conduisent uniquement des voitures automobiles de travail"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_4/Question (16).jpg"
+    "image_path": "images/questionnaire_4/Question (16).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "d77b78e3-666f-4f24-b3fb-7f241bf853d6",
     "old_id": "4_0261",
     "numero_question": 17,
     "questionnaire": 4,
-    "question": "0261",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/154",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "0443",
+    "categorie": "Signalisation routière et vitesse",
+    "astag D/F/I ": "2/22",
+    "enonce": "A quoi fait référence ce signal?",
     "options": {
-      "a": "Un circuit de freinage ne fonctionne plus correctement",
-      "b": "Le frein de stationnement est serré",
-      "c": "La pression de service des freins est insuffisante"
+      "a": "À la hauteur maximale du véhicule, chargement compris",
+      "b": "À la hauteur maximale du chargement, à partir du pont",
+      "c": "À la hauteur maximale du passage sous voie"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_4/Question (17).jpg"
+    "image_path": "images/questionnaire_4/Question (17).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "f170da15-6132-42a0-9729-78f5a79c60f2",
@@ -2330,99 +2335,104 @@
     "old_id": "4_0263",
     "numero_question": 19,
     "questionnaire": 4,
-    "question": "0263",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/156",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "0148",
+    "categorie": "Entretien",
+    "astag D/F/I ": "15/146",
+    "enonce": "Lors du remplacement d'un fusible:",
     "options": {
-      "a": "Un circuit de freinage ne fonctionne plus correctement",
-      "b": "Le frein de stationnement est serré",
-      "c": "La pression de service des freins est insuffisante"
+      "a": "il faut tenir compte de l'inscription \"ampère\"",
+      "b": "il faut tenir compte de l'inscription \"volt\"",
+      "c": "il faut tenir compte de l'inscription \"watt\""
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_4/Question (19).jpg"
+    "image_path": "images/questionnaire_4/Question (19).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "e80e2e76-16f5-4ef5-b31c-7f12ef936fd6",
     "old_id": "4_0264",
     "numero_question": 20,
     "questionnaire": 4,
-    "question": "0264",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/157",
+    "question": "3654",
+    "categorie": "Règles et prescriptions",
+    "astag D/F/I ": "7/50",
     "enonce": "Que signifie ce témoin lumineux?",
     "options": {
-      "a": "Le frein de stationnement est serré",
-      "b": "La pression de service des freins est insuffisante",
-      "c": "Un circuit de freinage ne fonctionne plus correctement"
+      "a": "Avec une barre de remorquage, je ne peux dépanner que si les deux moteurs fonctionnent",
+      "b": "Avec une barre de remorquage, je dois utiliser un camion du même poids effectif",
+      "c": "Du moment que j’utilise une barre de remorquage, le poids du véhicule tracteur n’a pas d’importance"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_4/Question (20).jpg"
+    "image_path": "images/questionnaire_4/Question (20).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "4b333f41-b174-4b94-962b-5b4750649d41",
     "old_id": "4_0265",
     "numero_question": 21,
     "questionnaire": 4,
-    "question": "0265",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/158",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "3659",
+    "categorie": "Entretien",
+    "astag D/F/I ": "13/117",
+    "enonce": "Les soufflets de la suspension pneumatique:",
     "options": {
-      "a": "La pression de service des freins est insuffisante",
-      "b": "Le frein de stationnement est serré",
-      "c": "Un circuit de freinage ne fonctionne plus correctement"
+      "a": "emmagasinent de l'air uniquement pour la charge",
+      "b": "emmagasinent de l'air uniquement pour le freinage",
+      "c": "transmet la pression dans les soufflets au régulateur de la force de freinage en fonction de la charge"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_4/Question (21).jpg"
+    "image_path": "images/questionnaire_4/Question (21).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "9fce728f-e702-4d54-b374-277f9b59c1ac",
     "old_id": "4_0266",
     "numero_question": 22,
     "questionnaire": 4,
-    "question": "0266",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/159",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "0225",
+    "categorie": "Roues et pneumatiques",
+    "astag D/F/I ": "13/118",
+    "enonce": "",
     "options": {
-      "a": "Un circuit de freinage ne fonctionne plus correctement",
-      "b": "Le frein de stationnement est serré",
-      "c": "La pression de service des freins est insuffisante"
+      "a": "Le symbole de vitesse \"M\" sur ce pneu se rapporte à la vitesse qui est établie en fonction de la capacité de charge correspondante. M = 130 km/h",
+      "b": "La désignation \"M\" sur ce pneu indique qu'il s'agit d'un pneu d'hiver. M = Matsch (neige mouillée)",
+      "c": "Le symbole de vitesse \"M\" sur ce pneu se rapporte à la vitesse qui est établie en fonction de la capacité de charge correspondante. M = 160 km/h"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_4/Question (22).jpg"
+    "image_path": "images/questionnaire_4/Question (22).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "d30cb871-db4c-4c5a-baf1-084b9aad8440",
     "old_id": "4_0267",
     "numero_question": 23,
     "questionnaire": 4,
-    "question": "0267",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/160",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "0790",
+    "categorie": "Moteur",
+    "astag D/F/I ": "14/126",
+    "enonce": "",
     "options": {
-      "a": "Le frein de stationnement est serré",
-      "b": "La pression de service des freins est insuffisante",
-      "c": "Un circuit de freinage ne fonctionne plus correctement"
+      "a": "Pour maintenir le niveau du liquide de refroidissement, je dois compléter avec de l'eau",
+      "b": "Chaque fois que je dois compléter le radiateur de liquide de refroidissement, il est nécessaire de purger toute l'installation",
+      "c": "Pour maintenir le niveau du liquide de refroidissement, je dois le remplir avec le liquide prévu par le constructeur"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_4/Question (23).jpg"
+    "image_path": "images/questionnaire_4/Question (23).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "2ab08a0c-f121-44e4-aad6-fab1121c92e2",
     "old_id": "4_0268",
     "numero_question": 24,
     "questionnaire": 4,
-    "question": "0268",
+    "question": "0646",
     "categorie": "Freins",
-    "astag D/F/I ": "16/161",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "astag D/F/I ": "16/155",
+    "enonce": "",
     "options": {
-      "a": "Un circuit de freinage ne fonctionne plus correctement",
-      "b": "Le frein de stationnement est serré",
-      "c": "La pression de service des freins est insuffisante"
+      "a": "Il s'agit du blocage du différentiel",
+      "b": "Il s'agit du frein moteur sur l'échappement",
+      "c": "Il s'agit de la suspension pneumatique"
     },
     "bonne_reponse": "b",
     "image_path": "images/questionnaire_4/Question (24).jpg"

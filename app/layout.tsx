@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import React from 'react'
 import ConditionalNavigation from '../components/conditional-navigation'
 import { ThemeProvider } from '../components/theme-provider'
+import AuthSessionProvider from '../components/session-provider'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -41,15 +42,17 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <ConditionalNavigation />
-          {children}
-        </ThemeProvider>
+        <AuthSessionProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ConditionalNavigation />
+            {children}
+          </ThemeProvider>
+        </AuthSessionProvider>
       </body>
     </html>
   );
