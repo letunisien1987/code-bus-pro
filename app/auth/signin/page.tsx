@@ -56,7 +56,7 @@ export default function SignInPage() {
             <CardTitle className="text-2xl">Connexion</CardTitle>
           </div>
           <CardDescription>
-            Connectez-vous à votre compte pour accéder à l'application
+            Connectez-vous à votre compte pour accéder à l&apos;application
           </CardDescription>
         </CardHeader>
         
@@ -175,7 +175,7 @@ export default function SignInPage() {
               onClick={() => router.push('/')}
               className="text-sm"
             >
-              ← Retour à l'accueil
+              ← Retour à l&apos;accueil
             </Button>
           </div>
         </CardContent>

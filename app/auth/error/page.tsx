@@ -19,7 +19,7 @@ export default function AuthErrorPage() {
       case 'Verification':
         return 'Le token a expiré ou a déjà été utilisé'
       default:
-        return 'Une erreur inattendue s\'est produite'
+        return 'Une erreur inattendue s&apos;est produite'
     }
   }
 
@@ -31,7 +31,7 @@ export default function AuthErrorPage() {
             <div className="w-8 h-8 bg-destructive/10 rounded-full flex items-center justify-center">
               <AlertCircle className="h-4 w-4 text-destructive" />
             </div>
-            <CardTitle className="text-2xl">Erreur d'authentification</CardTitle>
+            <CardTitle className="text-2xl">Erreur d&apos;authentification</CardTitle>
           </div>
           <CardDescription>
             {getErrorMessage(error)}
@@ -41,7 +41,7 @@ export default function AuthErrorPage() {
         <CardContent className="space-y-4">
           <div className="text-center">
             <p className="text-sm text-muted-foreground mb-4">
-              Veuillez réessayer ou contacter l'administrateur si le problème persiste.
+              Veuillez réessayer ou contacter l&apos;administrateur si le problème persiste.
             </p>
           </div>
 

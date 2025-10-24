@@ -169,7 +169,7 @@ export default function ImportPage() {
                   <div className="flex items-start gap-2">
                     <Badge variant="outline" className="text-xs">3</Badge>
                     <p className="text-sm text-muted-foreground">
-                      Utilisez l'éditeur JSON pour valider et corriger vos données
+                      Utilisez l&apos;éditeur JSON pour valider et corriger vos données
                     </p>
                   </div>
                   <div className="flex items-start gap-2">
