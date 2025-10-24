@@ -392,11 +392,11 @@ function TrainPageContent() {
                 />
                 
                 {/* Badge avec numéro d'image et questionnaire */}
-                <div className="absolute top-2 right-2 bg-primary/90 text-primary-foreground px-2 py-1 rounded-lg text-xs font-bold shadow-lg backdrop-blur-sm">
+                <div className="absolute top-2 right-2 bg-primary text-primary-foreground px-3 py-2 rounded-lg text-sm font-bold shadow-xl backdrop-blur-sm border-2 border-primary-foreground/20">
                   <div className="text-center">
-                    <div className="text-[10px] opacity-80">Image</div>
-                    <div className="font-bold">{extractImageNumber(currentQuestion.imagePath) || '?'}</div>
-                    <div className="text-[10px] opacity-80">Q{currentQuestion.questionnaire}</div>
+                    <div className="text-[11px] opacity-90">Image</div>
+                    <div className="font-bold text-base">{extractImageNumber(currentQuestion.imagePath) || '?'}</div>
+                    <div className="text-[11px] opacity-90">Q{currentQuestion.questionnaire}</div>
                   </div>
                 </div>
               </CardContent>
@@ -420,11 +420,11 @@ function TrainPageContent() {
                     />
                     
                     {/* Badge avec numéro d'image et questionnaire dans le zoom */}
-                    <div className="absolute top-2 right-2 bg-primary/90 text-primary-foreground px-2 py-1 rounded-lg text-xs font-bold shadow-lg backdrop-blur-sm">
+                    <div className="absolute top-2 right-2 bg-primary text-primary-foreground px-3 py-2 rounded-lg text-sm font-bold shadow-xl backdrop-blur-sm border-2 border-primary-foreground/20">
                       <div className="text-center">
-                        <div className="text-[10px] opacity-80">Image</div>
-                        <div className="font-bold">{extractImageNumber(currentQuestion.imagePath) || '?'}</div>
-                        <div className="text-[10px] opacity-80">Q{currentQuestion.questionnaire}</div>
+                        <div className="text-[11px] opacity-90">Image</div>
+                        <div className="font-bold text-base">{extractImageNumber(currentQuestion.imagePath) || '?'}</div>
+                        <div className="text-[11px] opacity-90">Q{currentQuestion.questionnaire}</div>
                       </div>
                     </div>
                     
