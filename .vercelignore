@@ -5,7 +5,5 @@ public/images/reponse/
 config/data/questions.backup*.json
 data/questionsreserve.json
 
-# Exclure l'éditeur JSON (outil de développement uniquement)
-app/json-editor/
-app/api/json-editor/
-app/api/ai-analyze/
+# Version DEV : Garder l'éditeur JSON pour le développement
+# (L'éditeur JSON est disponible en local pour le développement)
