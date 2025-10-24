@@ -786,11 +786,11 @@ export default function ExamPage() {
                   />
                   
                   {/* Badge avec numéro d'image et questionnaire */}
-                  <div className="absolute top-2 right-2 bg-primary text-primary-foreground px-3 py-2 rounded-lg text-sm font-bold shadow-xl backdrop-blur-sm border-2 border-primary-foreground/20">
+                  <div className="absolute top-2 left-2 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground px-4 py-3 rounded-2xl text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
                     <div className="text-center">
-                      <div className="text-[11px] opacity-90">Image</div>
-                      <div className="font-bold text-base">{extractImageNumber(currentReviewQuestion.imagePath) || '?'}</div>
-                      <div className="text-[11px] opacity-90">Q{currentReviewQuestion.questionnaire}</div>
+                      <div className="text-[10px] opacity-80 uppercase tracking-wide">Image</div>
+                      <div className="font-black text-lg leading-none">{extractImageNumber(currentReviewQuestion.imagePath) || '?'}</div>
+                      <div className="text-[10px] opacity-80 mt-1">Q{currentReviewQuestion.questionnaire}</div>
                     </div>
                   </div>
                 </CardContent>
@@ -814,17 +814,17 @@ export default function ExamPage() {
                     />
                     
                     {/* Badge avec numéro d'image et questionnaire dans le zoom */}
-                    <div className="absolute top-2 right-2 bg-primary text-primary-foreground px-3 py-2 rounded-lg text-sm font-bold shadow-xl backdrop-blur-sm border-2 border-primary-foreground/20">
+                    <div className="absolute top-2 left-2 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground px-4 py-3 rounded-2xl text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
                       <div className="text-center">
-                        <div className="text-[11px] opacity-90">Image</div>
-                        <div className="font-bold text-base">{extractImageNumber(currentReviewQuestion.imagePath) || '?'}</div>
-                        <div className="text-[11px] opacity-90">Q{currentReviewQuestion.questionnaire}</div>
+                        <div className="text-[10px] opacity-80 uppercase tracking-wide">Image</div>
+                        <div className="font-black text-lg leading-none">{extractImageNumber(currentReviewQuestion.imagePath) || '?'}</div>
+                        <div className="text-[10px] opacity-80 mt-1">Q{currentReviewQuestion.questionnaire}</div>
                       </div>
                     </div>
                     
                     {/* Bouton de fermeture */}
                     <button
-                      className="absolute top-2 left-2 bg-black/50 hover:bg-black/70 text-white rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold transition-colors"
+                      className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold transition-colors"
                       onClick={() => setIsImageZoomed(false)}
                       aria-label="Fermer le zoom"
                     >
@@ -1233,11 +1233,11 @@ export default function ExamPage() {
                     />
                     
                     {/* Badge avec numéro d'image et questionnaire */}
-                    <div className="absolute top-2 right-2 bg-primary text-primary-foreground px-3 py-2 rounded-lg text-sm font-bold shadow-xl backdrop-blur-sm border-2 border-primary-foreground/20">
+                    <div className="absolute top-2 left-2 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground px-4 py-3 rounded-2xl text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
                       <div className="text-center">
-                        <div className="text-[11px] opacity-90">Image</div>
-                        <div className="font-bold text-base">{extractImageNumber(currentQuestion.imagePath) || '?'}</div>
-                        <div className="text-[11px] opacity-90">Q{currentQuestion.questionnaire}</div>
+                        <div className="text-[10px] opacity-80 uppercase tracking-wide">Image</div>
+                        <div className="font-black text-lg leading-none">{extractImageNumber(currentQuestion.imagePath) || '?'}</div>
+                        <div className="text-[10px] opacity-80 mt-1">Q{currentQuestion.questionnaire}</div>
                       </div>
                     </div>
                   </div>
@@ -1262,17 +1262,17 @@ export default function ExamPage() {
                     />
                     
                     {/* Badge avec numéro d'image et questionnaire dans le zoom */}
-                    <div className="absolute top-2 right-2 bg-primary text-primary-foreground px-3 py-2 rounded-lg text-sm font-bold shadow-xl backdrop-blur-sm border-2 border-primary-foreground/20">
+                    <div className="absolute top-2 left-2 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground px-4 py-3 rounded-2xl text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
                       <div className="text-center">
-                        <div className="text-[11px] opacity-90">Image</div>
-                        <div className="font-bold text-base">{extractImageNumber(currentQuestion.imagePath) || '?'}</div>
-                        <div className="text-[11px] opacity-90">Q{currentQuestion.questionnaire}</div>
+                        <div className="text-[10px] opacity-80 uppercase tracking-wide">Image</div>
+                        <div className="font-black text-lg leading-none">{extractImageNumber(currentQuestion.imagePath) || '?'}</div>
+                        <div className="text-[10px] opacity-80 mt-1">Q{currentQuestion.questionnaire}</div>
                       </div>
                     </div>
                     
                     {/* Bouton de fermeture */}
                     <button
-                      className="absolute top-2 left-2 bg-black/50 hover:bg-black/70 text-white rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold transition-colors"
+                      className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold transition-colors"
                       onClick={() => setIsImageZoomed(false)}
                       aria-label="Fermer le zoom"
                     >
