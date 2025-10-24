@@ -42,6 +42,12 @@ function TrainPageContent() {
   const [isImageZoomed, setIsImageZoomed] = useState(false)
   const [loading, setLoading] = useState(true)
 
+  // Fonction pour extraire le numéro de l'image depuis le nom de fichier
+  const extractImageNumber = (imagePath: string): number | null => {
+    const match = imagePath.match(/Question\s*\((\d+)\)\.jpg/i)
+    return match ? parseInt(match[1], 10) : null
+  }
+
   // Réinitialiser le zoom quand on change de question
   useEffect(() => {
     setIsImageZoomed(false)
@@ -376,7 +382,7 @@ function TrainPageContent() {
         <div className="flex-1 flex flex-col md:flex-row gap-4 p-2 md:p-4 min-h-0 pb-20 md:pb-4">
           {/* Image - responsive */}
           <div className="w-full md:w-1/2">
-            <Card className="h-48 md:h-full card-elegant">
+            <Card className="h-48 md:h-full card-elegant relative">
               <CardContent className="p-2 md:p-4 h-full flex items-center justify-center">
                 <img 
                   src={currentQuestion.imagePath} 
@@ -384,6 +390,15 @@ function TrainPageContent() {
                   className="max-w-full max-h-48 md:max-h-full object-contain cursor-pointer transition-all duration-300"
                   onClick={() => setIsImageZoomed(!isImageZoomed)}
                 />
+                
+                {/* Badge avec numéro d'image et questionnaire */}
+                <div className="absolute top-2 right-2 bg-primary/90 text-primary-foreground px-2 py-1 rounded-lg text-xs font-bold shadow-lg backdrop-blur-sm">
+                  <div className="text-center">
+                    <div className="text-[10px] opacity-80">Image</div>
+                    <div className="font-bold">{extractImageNumber(currentQuestion.imagePath) || '?'}</div>
+                    <div className="text-[10px] opacity-80">Q{currentQuestion.questionnaire}</div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
             
@@ -393,25 +408,35 @@ function TrainPageContent() {
                 className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
                 onClick={() => setIsImageZoomed(false)}
               >
-                <div 
-                  className="max-w-[90vw] max-h-[90vh] flex items-center justify-center relative"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <img 
-                    src={currentQuestion.imagePath} 
-                    alt={`Question ${currentQuestion.question} - Zoom`}
-                    className="max-w-full max-h-full object-contain cursor-pointer"
-                    onClick={() => setIsImageZoomed(false)}
-                  />
-                  {/* Bouton de fermeture */}
-                  <button
-                    className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold transition-colors"
-                    onClick={() => setIsImageZoomed(false)}
-                    aria-label="Fermer le zoom"
+                  <div 
+                    className="max-w-[90vw] max-h-[90vh] flex items-center justify-center relative"
+                    onClick={(e) => e.stopPropagation()}
                   >
-                    ×
-                  </button>
-                </div>
+                    <img 
+                      src={currentQuestion.imagePath} 
+                      alt={`Question ${currentQuestion.question} - Zoom`}
+                      className="max-w-full max-h-full object-contain cursor-pointer"
+                      onClick={() => setIsImageZoomed(false)}
+                    />
+                    
+                    {/* Badge avec numéro d'image et questionnaire dans le zoom */}
+                    <div className="absolute top-2 right-2 bg-primary/90 text-primary-foreground px-2 py-1 rounded-lg text-xs font-bold shadow-lg backdrop-blur-sm">
+                      <div className="text-center">
+                        <div className="text-[10px] opacity-80">Image</div>
+                        <div className="font-bold">{extractImageNumber(currentQuestion.imagePath) || '?'}</div>
+                        <div className="text-[10px] opacity-80">Q{currentQuestion.questionnaire}</div>
+                      </div>
+                    </div>
+                    
+                    {/* Bouton de fermeture */}
+                    <button
+                      className="absolute top-2 left-2 bg-black/50 hover:bg-black/70 text-white rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold transition-colors"
+                      onClick={() => setIsImageZoomed(false)}
+                      aria-label="Fermer le zoom"
+                    >
+                      ×
+                    </button>
+                  </div>
               </div>
             )}
           </div>
