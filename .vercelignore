@@ -4,3 +4,8 @@ public/images/questionnaire_*/visualizations/
 public/images/reponse/
 config/data/questions.backup*.json
 data/questionsreserve.json
+
+# Exclure l'éditeur JSON (outil de développement uniquement)
+app/json-editor/
+app/api/json-editor/
+app/api/ai-analyze/
