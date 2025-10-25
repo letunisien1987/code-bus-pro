@@ -1,27 +1,44 @@
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { prisma } from '@/lib/prisma-singleton'
+import { signupSchema, formatZodError } from '@/lib/validations/auth'
+import { authRateLimit, getClientIP, checkRateLimit } from '@/lib/rate-limit'
+import { createSecureErrorResponse, logError } from '@/lib/error-handler'
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, password } = await request.json()
+    // Rate limiting pour l'authentification
+    const ip = getClientIP(request)
+    const { success: rateLimitSuccess } = await checkRateLimit(authRateLimit, ip)
+    
+    if (!rateLimitSuccess) {
+      return createSecureErrorResponse(
+        new Error('Trop de tentatives de création de compte'),
+        {
+          request,
+          action: 'signup',
+          type: 'RATE_LIMIT' as any,
+          statusCode: 429
+        }
+      )
+    }
 
-    // Validation des données
-    if (!name || !email || !password) {
+    const body = await request.json()
+    
+    // Validation avec Zod
+    const validationResult = signupSchema.safeParse(body)
+    if (!validationResult.success) {
+      const errors = formatZodError(validationResult.error)
       return NextResponse.json(
-        { error: 'Tous les champs sont requis' },
+        { 
+          error: 'Données invalides',
+          details: errors 
+        },
         { status: 400 }
       )
     }
 
-    if (password.length < 6) {
-      return NextResponse.json(
-        { error: 'Le mot de passe doit contenir au moins 6 caractères' },
-        { status: 400 }
-      )
-    }
+    const { name, email, password } = validationResult.data
 
     // Vérifier si l'email existe déjà
     const existingUser = await prisma.user.findUnique({
@@ -57,10 +74,14 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Erreur lors de la création du compte:', error)
-    return NextResponse.json(
-      { error: 'Une erreur est survenue lors de la création du compte' },
-      { status: 500 }
-    )
+    logError(error, {
+      request,
+      action: 'signup'
+    })
+    
+    return createSecureErrorResponse(error, {
+      request,
+      action: 'signup'
+    })
   }
 }

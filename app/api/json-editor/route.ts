@@ -1,11 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import fs from 'fs'
 import path from 'path'
+import { withAdminAuth } from '@/lib/auth-helpers'
+import { questionSchema } from '@/lib/validations/json-editor'
+import { formatZodError } from '@/lib/validations/auth'
+import { validateImagePath } from '@/lib/path-validator'
+import { jsonEditorRateLimit, getClientIP, checkRateLimit } from '@/lib/rate-limit'
+import { validateCSRF } from '@/lib/csrf'
+import { createSecureErrorResponse, logError } from '@/lib/error-handler'
 
 const JSON_PATH = path.join(process.cwd(), 'config', 'data', 'questions.json')
 
 // Lire le fichier JSON
-export async function GET() {
+export const GET = withAdminAuth(async (request: NextRequest) => {
   try {
     const data = fs.readFileSync(JSON_PATH, 'utf-8')
     const questions = JSON.parse(data)
@@ -27,17 +34,79 @@ export async function GET() {
     
     return NextResponse.json(transformedQuestions)
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Erreur lecture fichier' },
-      { status: 500 }
-    )
+    logError(error, {
+      request,
+      action: 'get_questions'
+    })
+    
+    return createSecureErrorResponse(error, {
+      request,
+      action: 'get_questions'
+    })
   }
-}
+})
 
 // Mettre à jour une question dans le fichier
-export async function PUT(request: NextRequest) {
+export const PUT = withAdminAuth(async (request: NextRequest) => {
   try {
-    const updatedQuestion = await request.json()
+    // Rate limiting pour le JSON Editor
+    const ip = getClientIP(request)
+    const { success: rateLimitSuccess } = await checkRateLimit(jsonEditorRateLimit, ip)
+    
+    if (!rateLimitSuccess) {
+      return createSecureErrorResponse(
+        new Error('Trop de requêtes vers l\'éditeur JSON'),
+        {
+          request,
+          action: 'update_question',
+          type: 'RATE_LIMIT' as any,
+          statusCode: 429
+        }
+      )
+    }
+
+    // Vérification CSRF
+    const csrfValidation = await validateCSRF(request)
+    if (!csrfValidation.valid) {
+      return createSecureErrorResponse(
+        new Error(csrfValidation.error || 'Token CSRF invalide'),
+        {
+          request,
+          action: 'update_question',
+          type: 'CSRF' as any,
+          statusCode: 403
+        }
+      )
+    }
+
+    const body = await request.json()
+    
+    // Validation avec Zod
+    const validationResult = questionSchema.safeParse(body)
+    if (!validationResult.success) {
+      const errors = formatZodError(validationResult.error)
+      return NextResponse.json(
+        { 
+          error: 'Données de question invalides',
+          details: errors 
+        },
+        { status: 400 }
+      )
+    }
+
+    const updatedQuestion = validationResult.data
+
+    // Validation du chemin d'image
+    const imageValidation = validateImagePath(updatedQuestion.image_path)
+    if (!imageValidation.valid) {
+      return NextResponse.json(
+        { 
+          error: 'Chemin d\'image invalide',
+          details: imageValidation.error 
+        },
+        { status: 400 }
+      )
+    }
     
     // Transformer le chemin d'image vers l'ancien format pour la sauvegarde
     const questionToSave = {
@@ -66,13 +135,17 @@ export async function PUT(request: NextRequest) {
       { status: 404 }
     )
   } catch (error) {
-    console.error('Erreur API:', error)
-    return NextResponse.json(
-      { error: 'Erreur mise à jour' },
-      { status: 500 }
-    )
+    logError(error, {
+      request,
+      action: 'update_question'
+    })
+    
+    return createSecureErrorResponse(error, {
+      request,
+      action: 'update_question'
+    })
   }
-}
+})
 
 
 
