@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '../../../lib/prisma'
-import { computeAccuracy, computeConsecutiveCorrect, updateSM2 } from '../../../lib/learningMetrics'
+import { prisma } from '@/lib/prisma-singleton'
+import { computeAccuracy, computeConsecutiveCorrect, updateSM2 } from '@/lib/learning/metrics'
 
 export async function POST(request: NextRequest) {
   try {

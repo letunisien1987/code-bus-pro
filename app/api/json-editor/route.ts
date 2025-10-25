@@ -12,7 +12,7 @@ import { createSecureErrorResponse, logError } from '@/lib/error-handler'
 const JSON_PATH = path.join(process.cwd(), 'config', 'data', 'questions.json')
 
 // Lire le fichier JSON
-export const GET = withAdminAuth(async (request: NextRequest) => {
+export const GET = withAdminAuth(async (request: NextRequest, user) => {
   try {
     const data = fs.readFileSync(JSON_PATH, 'utf-8')
     const questions = JSON.parse(data)
@@ -47,7 +47,7 @@ export const GET = withAdminAuth(async (request: NextRequest) => {
 })
 
 // Mettre à jour une question dans le fichier
-export const PUT = withAdminAuth(async (request: NextRequest) => {
+export const PUT = withAdminAuth(async (request: NextRequest, user) => {
   try {
     // Rate limiting pour le JSON Editor
     const ip = getClientIP(request)

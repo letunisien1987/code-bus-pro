@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server'
-import { prisma } from '../../../../lib/prisma'
+import { prisma } from '@/lib/prisma-singleton'
 import { 
   selectQuestionsForExam, 
   sortQuestionsForTraining, 
   getLearningMetrics,
   SelectionOptions 
-} from '../../../../lib/questionSelector'
+} from '@/lib/learning/selector'
 // ProgressStatus est maintenant un string dans SQLite
 
 export async function POST(request: Request) {

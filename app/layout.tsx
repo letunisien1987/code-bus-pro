@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import React from 'react'
-import ConditionalNavigation from '../components/conditional-navigation'
-import { ThemeProvider } from '../components/theme-provider'
+import ConditionalNavigation from '../components/layout/conditional-navigation'
+import { ThemeProvider } from '../components/layout/theme-provider'
 import AuthSessionProvider from '../components/session-provider'
 import './globals.css'
 

@@ -40,7 +40,7 @@ export async function getUserFromRequest(request: NextRequest): Promise<Authenti
     return {
       id: user.id,
       email: user.email,
-      name: user.name,
+      name: user.name || 'Utilisateur',
       role: user.role as 'STUDENT' | 'ADMIN'
     }
   } catch (error) {
@@ -161,7 +161,7 @@ export async function withAuth(
 }
 
 // Middleware pour protéger les routes admin
-export async function withAdminAuth(
+export function withAdminAuth(
   handler: (request: NextRequest, user: AuthenticatedUser) => Promise<Response>
 ) {
   return async (request: NextRequest): Promise<Response> => {

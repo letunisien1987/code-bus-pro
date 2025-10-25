@@ -7,7 +7,7 @@ import { Button } from '../../components/ui/button'
 import { Badge } from '../../components/ui/badge'
 import { Progress } from '../../components/ui/progress'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
-import { ThemeToggle } from '../../components/theme-toggle'
+// ThemeToggle supprimé - utiliser le composant du layout
 import { ArrowLeft, ArrowRight, CheckCircle, XCircle, Clock, RotateCcw, LogOut, ChevronLeft, ChevronRight } from 'lucide-react'
 import { getImageUrlSync } from '@/lib/blob-helper'
 
@@ -1069,7 +1069,7 @@ export default function ExamPage() {
                     <LogOut className="h-4 w-4" />
                     <span className="hidden md:inline ml-1">Sortir</span>
                   </Button>
-                  <ThemeToggle />
+                  {/* ThemeToggle géré par le layout */}
                 </div>
                 
                 {/* Zone 2: Chrono */}

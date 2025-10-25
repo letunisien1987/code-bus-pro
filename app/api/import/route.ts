@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { prisma } from '../../../lib/prisma'
+import { prisma } from '@/lib/prisma-singleton'
 import fs from 'fs'
 import path from 'path'
 
