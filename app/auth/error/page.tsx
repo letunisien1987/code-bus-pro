@@ -53,7 +53,7 @@ export default function AuthErrorPage() {
             </Link>
             
             <Link href="/">
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full interactive-hover">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Retour à l'accueil
               </Button>

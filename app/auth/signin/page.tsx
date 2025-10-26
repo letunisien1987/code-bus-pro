@@ -24,19 +24,12 @@ export default function SignInPage() {
       const result = await signIn('credentials', {
         email,
         password,
-        redirect: false
+        redirect: true,
+        callbackUrl: '/dashboard'
       })
 
       if (result?.error) {
         setError('Email ou mot de passe incorrect')
-      } else {
-        // Vérifier la session pour rediriger selon le rôle
-        const session = await getSession()
-        if (session?.user?.role === 'ADMIN') {
-          router.push('/dashboard')
-        } else {
-          router.push('/dashboard')
-        }
       }
     } catch (error) {
       setError('Une erreur est survenue lors de la connexion')
@@ -132,7 +125,7 @@ export default function SignInPage() {
           <Button 
             variant="outline" 
             className="w-full"
-            onClick={() => signIn('google')}
+            onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
           >
             <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24">
               <path

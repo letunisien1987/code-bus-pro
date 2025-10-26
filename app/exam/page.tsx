@@ -7,9 +7,53 @@ import { Button } from '../../components/ui/button'
 import { Badge } from '../../components/ui/badge'
 import { Progress } from '../../components/ui/progress'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../components/ui/tabs'
 import { ThemeToggle } from '../../components/theme-toggle'
-import { ArrowLeft, ArrowRight, CheckCircle, XCircle, Clock, RotateCcw, LogOut, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, CheckCircle, Clock, RotateCcw, LogOut, ChevronLeft, ChevronRight, XCircle } from 'lucide-react'
 import { getImageUrlSync } from '@/lib/blob-helper'
+
+// Fonction de calcul du score de performance
+function calculatePerformanceScore(correct: number, total: number, timeSpent: number) {
+  // Score de justesse (70% du total = 700 points)
+  const accuracyScore = Math.round((correct / total) * 700)
+  
+  // Calcul du temps moyen par question
+  const avgTimePerQuestion = timeSpent / total
+  
+  // Bonus de vitesse (30% du total = 300 points)
+  let speedBonus = 0
+  if (avgTimePerQuestion <= 30) {
+    speedBonus = 300 // Éclair
+  } else if (avgTimePerQuestion <= 45) {
+    speedBonus = 200 // Rapide
+  } else if (avgTimePerQuestion <= 60) {
+    speedBonus = 100 // Normal
+  }
+  // Sinon 0 (Lent)
+  
+  // Score final
+  const performanceScore = accuracyScore + speedBonus
+  
+  // Badge
+  let performanceBadge: 'gold' | 'silver' | 'bronze' | 'standard'
+  if (performanceScore >= 900) {
+    performanceBadge = 'gold'
+  } else if (performanceScore >= 800) {
+    performanceBadge = 'silver'
+  } else if (performanceScore >= 700) {
+    performanceBadge = 'bronze'
+  } else {
+    performanceBadge = 'standard'
+  }
+  
+  return {
+    performanceScore,
+    accuracyScore,
+    speedBonus,
+    avgTimePerQuestion: Math.round(avgTimePerQuestion),
+    performanceBadge
+  }
+}
 
 interface Question {
   id: string
@@ -39,6 +83,256 @@ interface ExamResult {
   }>
 }
 
+interface ExamHistoryEntry {
+  id: string
+  userId: string
+  score: number
+  percentage: number
+  total: number
+  correct: number
+  incorrect: number
+  timeSpent: number // en secondes
+  // NOUVEAUX CHAMPS
+  performanceScore?: number  // Score sur 1000
+  accuracyScore?: number     // Score de justesse (700 max)
+  speedBonus?: number        // Bonus de vitesse (300 max)
+  avgTimePerQuestion?: number // Temps moyen par question en secondes
+  performanceBadge?: 'gold' | 'silver' | 'bronze' | 'standard'
+  completedAt: string // ISO date
+  answers: Array<{
+    questionId: string
+    answer: string
+    correct: boolean
+  }>
+}
+
+// Composant pour afficher l'historique des examens
+function ExamHistoryView({ history, onExamClick, questions }: { history: ExamHistoryEntry[], onExamClick: (exam: ExamHistoryEntry) => void, questions: Question[] }) {
+  if (history.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-16 text-center">
+        <p className="text-sm md:text-base text-muted-foreground">
+          Aucun examen terminé pour le moment
+        </p>
+      </div>
+    )
+  }
+
+  const chartData = history.slice(0, 8).reverse().map((exam, index) => ({
+    index: index + 1,
+    percentage: exam.percentage,
+    performanceScore: exam.performanceScore || 0,
+    passed: exam.percentage >= 90
+  }))
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      {/* Graphique de progression */}
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle className="text-sm md:text-base">Performance</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-64 relative">
+            {/* Axe Y avec typographie responsive */}
+            <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-between text-xs text-muted-foreground">
+              <span>100%</span>
+              <span>80%</span>
+              <span>60%</span>
+              <span>40%</span>
+              <span>20%</span>
+              <span>0%</span>
+            </div>
+            
+            {/* Ligne objectif 90% - utiliser couleur info du theme */}
+            <div className="absolute left-12 right-0 top-[10%] border-t-2 border-info border-dashed">
+              <span className="text-xs text-info ml-2">But</span>
+            </div>
+            
+            {/* Barres - utiliser couleurs semantiques du theme */}
+            <div className="absolute left-12 right-0 top-0 bottom-8 flex items-end justify-around gap-2">
+              {chartData.map((data) => {
+                // Calculer la hauteur en pixels (h-64 = 256px, moins 32px pour les labels = 224px)
+                const maxHeight = 224
+                const barHeight = Math.max((data.percentage / 100) * maxHeight, 4) // Minimum 4px pour visibilité
+                
+                return (
+                  <div key={data.index} className="flex-1 flex flex-col items-center">
+                    <div 
+                      className={`w-full rounded-t transition-all ${
+                        data.percentage >= 95 ? 'bg-success dark:bg-success' :
+                        data.percentage >= 90 ? 'bg-success/80 dark:bg-success/80' :
+                        data.percentage >= 80 ? 'bg-warning dark:bg-warning' :
+                        'bg-destructive dark:bg-destructive'
+                      }`}
+                      style={{ height: `${barHeight}px` }}
+                    />
+                    <span className="text-xs mt-2 text-foreground">{data.index}</span>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+          
+          {/* Légende pour le score de performance */}
+          <div className="text-xs text-muted-foreground mt-2 flex gap-4">
+            <span>📊 Pourcentage de réussite</span>
+            <span>⭐ Score de performance (sur 1000)</span>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Grille de resultats */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {history.map((exam) => (
+          <ExamHistoryCard key={exam.id} exam={exam} onExamClick={onExamClick} questions={questions} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// Composant pour afficher une carte d'examen dans l'historique
+function ExamHistoryCard({ exam, onExamClick, questions }: { exam: ExamHistoryEntry, onExamClick: (exam: ExamHistoryEntry) => void, questions: Question[] }) {
+  const getResultMessage = (percentage: number) => {
+    if (percentage >= 95) return 'Résultat fantastique!'
+    if (percentage >= 90) return 'Félicitations, tu as réussi'
+    if (percentage >= 80) return 'Tu as échoué, travaille plus!'
+    if (percentage >= 60) return 'Raté, plus d\'efforts!'
+    return 'Raté, plus d\'efforts!'
+  }
+
+  const getBadgeVariant = (percentage: number): 'default' | 'secondary' | 'destructive' => {
+    if (percentage >= 90) return 'default' // Utilisera bg-primary (jaune)
+    if (percentage >= 80) return 'secondary'
+    return 'destructive'
+  }
+
+  const getBackgroundImage = (percentage: number) => {
+    return percentage >= 90 
+      ? '/images/succes.jpg' 
+      : '/images/bus1.jpg'
+  }
+
+  const formatDuration = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60)
+    return `${minutes}m`
+  }
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit' })
+  }
+
+  const getBadgeIcon = (badge: string) => {
+    switch(badge) {
+      case 'gold': return '🥇'
+      case 'silver': return '🥈'
+      case 'bronze': return '🥉'
+      default: return '⭐'
+    }
+  }
+  
+  const getSpeedLabel = (avgTime: number) => {
+    if (avgTime <= 30) return 'Éclair ⚡'
+    if (avgTime <= 45) return 'Rapide 🚀'
+    if (avgTime <= 60) return 'Normal ⏱️'
+    return 'Lent 🐢'
+  }
+
+  // Vérifier si les questions sont encore disponibles
+  const questionsAvailable = exam.answers.some(answer => 
+    questions.find(q => q.id === answer.questionId)
+  )
+
+  return (
+    <Card 
+      className={`overflow-hidden transition-all border-2 border-transparent ${
+        questionsAvailable 
+          ? 'cursor-pointer hover:shadow-lg hover:scale-[1.02] interactive-hover hover:border-primary' 
+          : 'cursor-not-allowed opacity-60'
+      }`}
+      onClick={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        if (questionsAvailable) {
+          console.log('Clic sur la carte d\'examen:', exam.id)
+          onExamClick(exam)
+        }
+      }}
+    >
+      <div className="relative h-40">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${getBackgroundImage(exam.percentage)})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/20 dark:from-black/80 dark:to-black/40" />
+        
+        {/* Badge de performance */}
+        {exam.performanceBadge && (
+          <div className="absolute top-2 left-2 bg-background/90 px-2 py-1 rounded text-lg">
+            {getBadgeIcon(exam.performanceBadge)}
+          </div>
+        )}
+        
+        <Badge 
+          variant={getBadgeVariant(exam.percentage)}
+          className="absolute top-2 right-2"
+        >
+          {Math.round(exam.percentage)}%
+        </Badge>
+        
+        {!questionsAvailable && (
+          <div className="absolute top-2 left-2 bg-destructive text-destructive-foreground px-2 py-1 rounded text-xs">
+            Détails non disponibles
+          </div>
+        )}
+      </div>
+      <CardContent className="p-4">
+        <h3 className="font-bold mb-2 text-sm md:text-base text-foreground">
+          {getResultMessage(exam.percentage)}
+        </h3>
+        
+        {/* Affichage du score de performance */}
+        {exam.performanceScore !== undefined && (
+          <div className="mb-2">
+            <div className="flex items-center gap-2">
+              <span className="text-lg font-bold text-primary">
+                {exam.performanceScore}
+              </span>
+              <span className="text-xs text-muted-foreground">/1000 pts</span>
+            </div>
+            <div className="flex gap-2 text-xs text-muted-foreground mt-1">
+              <span>Justesse: {exam.accuracyScore}/700</span>
+              <span>•</span>
+              <span>Vitesse: {exam.speedBonus}/300</span>
+            </div>
+          </div>
+        )}
+        
+        <p className="text-xs md:text-sm text-muted-foreground">
+          Score {exam.score} | {formatDuration(exam.timeSpent)}
+          {exam.avgTimePerQuestion && ` (${exam.avgTimePerQuestion}s/q)`}
+          {' | '}{formatDate(exam.completedAt)}
+        </p>
+        
+        {exam.avgTimePerQuestion && (
+          <p className="text-xs text-muted-foreground mt-1">
+            {getSpeedLabel(exam.avgTimePerQuestion)}
+          </p>
+        )}
+        
+        {questionsAvailable && (
+          <p className="text-xs text-primary mt-2 cursor-pointer hover:underline">
+            Cliquez pour voir les détails
+          </p>
+        )}
+      </CardContent>
+    </Card>
+  )
+}
+
+
 export default function ExamPage() {
   const router = useRouter()
   const [questions, setQuestions] = useState<Question[]>([])
@@ -48,6 +342,8 @@ export default function ExamPage() {
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [timeLeft, setTimeLeft] = useState(0)
   const [state, setState] = useState<'setup' | 'running' | 'finished'>('setup')
+  const [activeTab, setActiveTab] = useState<'setup' | 'history'>('history') // Par défaut sur l'historique
+  const [examHistory, setExamHistory] = useState<ExamHistoryEntry[]>([])
   const [result, setResult] = useState<ExamResult | null>(null)
   const [loading, setLoading] = useState(true)
   const [reviewIndex, setReviewIndex] = useState(0)
@@ -63,6 +359,12 @@ export default function ExamPage() {
 
   // Fonction pour extraire le numéro de l'image depuis le nom de fichier
   const extractImageNumber = (imagePath: string): number | null => {
+    // Vérification de sécurité pour éviter les erreurs si imagePath est undefined
+    if (!imagePath || typeof imagePath !== 'string') {
+      console.warn('extractImageNumber: imagePath is undefined or not a string:', imagePath);
+      return null;
+    }
+    
     const match = imagePath.match(/Question\s*\((\d+)\)\.jpg/i)
     return match ? parseInt(match[1], 10) : null
   }
@@ -72,6 +374,16 @@ export default function ExamPage() {
     return questions.filter(q => q.questionnaire === questionnaireNumber).length
   }
   
+  // Charger l'historique des examens
+  useEffect(() => {
+    if (activeTab === 'history') {
+      fetch('/api/exam-history')
+        .then(res => res.json())
+        .then(data => setExamHistory(data.history || []))
+        .catch(err => console.error('Erreur chargement historique:', err))
+    }
+  }, [activeTab])
+
   // Réinitialiser le zoom quand on change de question
   useEffect(() => {
     setIsImageZoomed(false)
@@ -260,7 +572,7 @@ export default function ExamPage() {
   const startExam = async (questionCount: number) => {
     try {
       // Utiliser la sélection intelligente au lieu du mélange aléatoire
-      const response = await fetch('/api/questions/smart-select', {
+      const response = await fetch('/api/questions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -361,6 +673,36 @@ export default function ExamPage() {
         answer: answers[q.id] || '',
         correct: answers[q.id] === q.bonneReponse
       }))
+    }
+
+    // Sauvegarder dans l'historique
+    try {
+      const performanceData = calculatePerformanceScore(
+        examResult.correct,
+        examResult.total,
+        examResult.timeSpent
+      )
+
+      const examData = {
+        score: examResult.score,
+        percentage: (examResult.correct / examResult.total) * 100,
+        total: examResult.total,
+        correct: examResult.correct,
+        incorrect: examResult.incorrect,
+        timeSpent: examResult.timeSpent,
+        answers: examResult.answers,
+        // NOUVEAUX CHAMPS
+        ...performanceData
+      }
+
+      await fetch('/api/exam-history', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(examData)
+      })
+      console.log('✅ Examen sauvegardé dans l\'historique')
+    } catch (error) {
+      console.error('❌ Erreur sauvegarde historique:', error)
     }
 
     // Enregistrer toutes les tentatives dans la base de données
@@ -578,6 +920,47 @@ export default function ExamPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, currentIndex, examQuestions.length, reviewIndex, result])
 
+  // Barre de navigation
+  const NavigationBar = () => (
+    <nav className="bg-background border-b border-border">
+      <div className="container mx-auto px-4 py-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => router.push('/')}
+              className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              <span className="text-sm font-medium">Retour</span>
+            </button>
+          </div>
+          
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => router.push('/dashboard')}
+              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              Tableau de bord
+            </button>
+            <button
+              onClick={() => router.push('/train')}
+              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              Entraînement
+            </button>
+            <button
+              onClick={() => router.push('/achievements')}
+              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              Trophées
+            </button>
+            <ThemeToggle />
+          </div>
+        </div>
+      </div>
+    </nav>
+  )
+
   if (loading) {
     return (
       <div className="h-screen bg-background flex items-center justify-center">
@@ -603,123 +986,192 @@ export default function ExamPage() {
 
   if (state === 'setup') {
     return (
-      <div className="h-screen bg-background flex items-center justify-center">
-        <Card className="w-full max-w-md card-elegant">
-          <CardHeader>
-            <CardTitle className="text-center">Configuration de l&apos;examen</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="text-center">
-              <p className="text-muted-foreground mb-4">
-                Choisissez le nombre de questions pour votre examen
-              </p>
-              <div className="grid grid-cols-2 gap-2">
-                <Button onClick={() => startExam(10)} variant="outline">
-                  10 questions
-                </Button>
-                <Button onClick={() => startExam(20)} variant="outline">
-                  20 questions
-                </Button>
-                <Button onClick={() => startExam(30)} variant="outline">
-                  30 questions
-                </Button>
-                <Button onClick={() => startExam(50)} variant="outline">
-                  50 questions
+      <div className="min-h-screen bg-background">
+        <NavigationBar />
+        <div className="pb-20 md:pb-0">
+          <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'setup' | 'history')}>
+          <div className="bg-card border-b">
+            <div className="container mx-auto px-4 py-6">
+              <div className="flex items-center justify-between">
+                {/* Titre principal */}
+                <div className="flex flex-col">
+                  <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+                    Mes Examens
+                  </h1>
+                  <p className="text-sm md:text-base text-muted-foreground">
+                    Consultez votre historique et commencez un nouveau test
+                  </p>
+                </div>
+                
+                {/* Bouton Nouveau test stylé à droite */}
+                <Button
+                  onClick={() => setActiveTab('setup')}
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
+                >
+                  <span>Nouveau test</span>
+                  <ArrowRight className="h-4 w-4" />
                 </Button>
               </div>
             </div>
-            <div className="flex justify-center">
-              <Button variant="outline" onClick={() => router.push('/')}>
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Retour
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-        
-        {/* Modal de reprise d'examen */}
-        {showRestorePrompt && savedExamState && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <Card className="w-full max-w-lg card-elegant">
-              <CardHeader>
-                <CardTitle className="text-center text-xl">
-                  Examen en cours détecté
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="bg-muted/50 rounded-lg p-4 space-y-3">
-                  <p className="text-sm font-medium text-center mb-3">
-                    Vous avez un examen non terminé. Voulez-vous le reprendre ?
-                  </p>
-                  
-                  {(() => {
-                    const stats = getExamStats()
-                    if (!stats) return null
-                    
-                    return (
-                      <div className="grid grid-cols-2 gap-3 text-sm">
-                        <div className="bg-background rounded p-2">
-                          <div className="text-muted-foreground text-xs">Questions répondues</div>
-                          <div className="font-bold text-lg text-primary">
-                            {stats.answeredQuestions} / {stats.totalQuestions}
-                          </div>
-                        </div>
-                        
-                        <div className="bg-background rounded p-2">
-                          <div className="text-muted-foreground text-xs">Questions restantes</div>
-                          <div className="font-bold text-lg">
-                            {stats.unansweredQuestions}
-                          </div>
-                        </div>
-                        
-                        <div className="bg-background rounded p-2">
-                          <div className="text-muted-foreground text-xs">Temps passé</div>
-                          <div className="font-bold text-lg">
-                            {stats.timeSpentMinutes}min {stats.timeSpentSeconds}s
-                          </div>
-                        </div>
-                        
-                        <div className="bg-background rounded p-2">
-                          <div className="text-muted-foreground text-xs">Marquées pour révision</div>
-                          <div className="font-bold text-lg text-primary">
-                            {stats.markedCount}
-                          </div>
-                        </div>
-                        
-                        <div className="bg-background rounded p-2 col-span-2">
-                          <div className="text-muted-foreground text-xs">Début de l&apos;examen</div>
-                          <div className="font-bold">
-                            {stats.startDate} à {stats.startTime}
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })()}
-                </div>
-                
-                <div className="flex flex-col gap-2">
-                  <Button 
-                    onClick={handleRestoreExam}
-                    className="w-full h-12 text-base"
-                  >
-                    Reprendre l&apos;examen
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    onClick={handleNewExam}
-                    className="w-full"
-                  >
-                    Commencer un nouvel examen
-                  </Button>
-                </div>
-                
-                <p className="text-xs text-muted-foreground text-center">
-                  Si vous commencez un nouvel examen, l&apos;examen en cours sera définitivement perdu.
-                </p>
-              </CardContent>
-            </Card>
           </div>
-        )}
+
+          <TabsContent value="setup" className="mt-0">
+            <div className="h-screen bg-background flex items-center justify-center">
+              <Card className="w-full max-w-md card-elegant">
+                <CardHeader>
+                  <CardTitle className="text-center">Configuration de l&apos;examen</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="text-center">
+                    <p className="text-muted-foreground mb-4">
+                      Choisissez le nombre de questions pour votre examen
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button onClick={() => startExam(10)} variant="outline" className="interactive-hover">
+                        10 questions
+                      </Button>
+                      <Button onClick={() => startExam(20)} variant="outline" className="interactive-hover">
+                        20 questions
+                      </Button>
+                      <Button onClick={() => startExam(30)} variant="outline" className="interactive-hover">
+                        30 questions
+                      </Button>
+                      <Button onClick={() => startExam(50)} variant="outline" className="interactive-hover">
+                        50 questions
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="flex justify-center">
+                    <Button variant="outline" onClick={() => router.push('/')} className="interactive-hover">
+                      <ArrowLeft className="h-4 w-4 mr-2" />
+                      Retour
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Modal de reprise d'examen */}
+              {showRestorePrompt && savedExamState && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                  <Card className="w-full max-w-lg card-elegant">
+                    <CardHeader>
+                      <CardTitle className="text-center text-xl">
+                        Examen en cours détecté
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="bg-muted/50 rounded-lg p-4 space-y-3">
+                        <p className="text-sm font-medium text-center mb-3">
+                          Vous avez un examen non terminé. Voulez-vous le reprendre ?
+                        </p>
+                        
+                        {(() => {
+                          const stats = getExamStats()
+                          if (!stats) return null
+                          
+                          return (
+                            <div className="grid grid-cols-2 gap-3 text-sm">
+                              <div className="bg-background rounded p-2">
+                                <div className="text-muted-foreground text-xs">Questions répondues</div>
+                                <div className="font-bold text-lg text-primary">
+                                  {stats.answeredQuestions} / {stats.totalQuestions}
+                                </div>
+                              </div>
+                              
+                              <div className="bg-background rounded p-2">
+                                <div className="text-muted-foreground text-xs">Questions restantes</div>
+                                <div className="font-bold text-lg">
+                                  {stats.unansweredQuestions}
+                                </div>
+                              </div>
+                              
+                              <div className="bg-background rounded p-2">
+                                <div className="text-muted-foreground text-xs">Temps passé</div>
+                                <div className="font-bold text-lg">
+                                  {stats.timeSpentMinutes}min {stats.timeSpentSeconds}s
+                                </div>
+                              </div>
+                              
+                              <div className="bg-background rounded p-2">
+                                <div className="text-muted-foreground text-xs">Marquées pour révision</div>
+                                <div className="font-bold text-lg text-primary">
+                                  {stats.markedCount}
+                                </div>
+                              </div>
+                              
+                              <div className="bg-background rounded p-2 col-span-2">
+                                <div className="text-muted-foreground text-xs">Début de l&apos;examen</div>
+                                <div className="font-bold">
+                                  {stats.startDate} à {stats.startTime}
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        })()}
+                      </div>
+                      
+                      <div className="flex flex-col gap-2">
+                        <Button 
+                          onClick={handleRestoreExam}
+                          className="w-full h-12 text-base"
+                        >
+                          Reprendre l&apos;examen
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          onClick={handleNewExam}
+                          className="w-full"
+                        >
+                          Commencer un nouvel examen
+                        </Button>
+                      </div>
+                      
+                      <p className="text-xs text-muted-foreground text-center">
+                        Si vous commencez un nouvel examen, l&apos;examen en cours sera définitivement perdu.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="history" className="mt-0">
+            <ExamHistoryView 
+              history={examHistory} 
+              questions={questions}
+              onExamClick={(exam) => {
+                console.log('onExamClick appelé avec:', exam.id)
+                // Récupérer les questions correspondantes à cet examen
+                const examQuestionsFromHistory = exam.answers.map(answer => 
+                  questions.find(q => q.id === answer.questionId)
+                ).filter(Boolean) as Question[]
+                
+                // Si on ne peut pas récupérer les questions, afficher un message
+                if (examQuestionsFromHistory.length === 0) {
+                  alert('Les détails de cet examen ne sont plus disponibles. Vous pouvez recommencer un nouvel examen.')
+                  return
+                }
+                
+                // Simuler un résultat d'examen terminé
+                const examResult: ExamResult = {
+                  score: exam.score,
+                  correct: exam.correct,
+                  incorrect: exam.incorrect,
+                  total: exam.total,
+                  timeSpent: exam.timeSpent,
+                  answers: exam.answers
+                }
+                
+                setExamQuestions(examQuestionsFromHistory)
+                setResult(examResult)
+                setState('finished')
+                setReviewIndex(0)
+                console.log('Redirection vers la page de révision des résultats')
+              }}
+            />
+          </TabsContent>
+        </Tabs>
       </div>
     )
   }
@@ -730,13 +1182,14 @@ export default function ExamPage() {
 
     return (
       <div className="h-screen bg-background flex flex-col overflow-hidden">
+        <NavigationBar />
         <div className="flex-1 flex flex-col">
           {/* Header avec score et navigation */}
           <Card className="m-2 md:m-4 mb-2 card-elegant">
             <CardContent className="p-2 md:p-4">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-2 md:mb-3 gap-3 md:gap-0">
                 <div className="flex items-center gap-2 md:gap-3">
-                  <Button variant="outline" size="sm" onClick={() => router.push('/')}>
+                  <Button variant="outline" size="sm" onClick={() => router.push('/')} className="interactive-hover">
                     <ArrowLeft className="h-4 w-4 mr-1" />
                     <span className="hidden md:inline">Retour</span>
                   </Button>
@@ -797,7 +1250,7 @@ export default function ExamPage() {
                   </div>
                   
                   {/* Badge de notification pour le questionnaire (position sûre) */}
-                  <div className="absolute top-1 right-1 bg-yellow-500 rounded-full w-10 h-10 flex items-center justify-center text-[14px] font-black text-white border-2 border-white shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300 z-10">
+                  <div className="badge-questionnaire-absolute">
                     {currentReviewQuestion.questionnaire}
                   </div>
                 </CardContent>
@@ -830,7 +1283,7 @@ export default function ExamPage() {
                     
                     {/* Bouton de fermeture */}
                     <button
-                      className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold transition-colors"
+                      className="btn-close-modal"
                       onClick={() => setIsImageZoomed(false)}
                       aria-label="Fermer le zoom"
                     >
@@ -851,7 +1304,7 @@ export default function ExamPage() {
                     </CardTitle>
                     <div className="flex gap-1 md:gap-2">
                       {currentReviewQuestion.categorie && (
-                        <Badge variant="secondary" className="text-xs bg-primary text-white border border-primary">
+                        <Badge variant="secondary" className="text-xs badge-questionnaire">
                           {currentReviewQuestion.categorie}
                         </Badge>
                       )}
@@ -950,11 +1403,11 @@ export default function ExamPage() {
 
               {/* Actions - masquées sur mobile */}
               <div className="hidden md:flex justify-between mt-4">
-                <Button onClick={resetExam} variant="outline">
+                <Button onClick={resetExam} variant="outline" className="interactive-hover">
                   <RotateCcw className="h-4 w-4 mr-2" />
                   Nouvel examen
                 </Button>
-                <Button onClick={() => router.push('/')}>
+                <Button onClick={() => router.push('/')} className="interactive-hover">
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Retour à l&apos;accueil
                 </Button>
@@ -978,7 +1431,7 @@ export default function ExamPage() {
                 variant="outline"
                 onClick={() => setReviewIndex(Math.max(0, reviewIndex - 1))}
                 disabled={reviewIndex === 0}
-                className="flex items-center gap-2 flex-1"
+                className="flex items-center gap-2 flex-1 interactive-hover"
               >
                 <ArrowLeft className="h-4 w-4" />
                 Précédent
@@ -987,7 +1440,7 @@ export default function ExamPage() {
               <Button
                 onClick={() => setReviewIndex(Math.min(examQuestions.length - 1, reviewIndex + 1))}
                 disabled={reviewIndex === examQuestions.length - 1}
-                className="flex items-center gap-2 flex-1"
+                className="flex items-center gap-2 flex-1 interactive-hover"
               >
                 Suivant
                 <ArrowRight className="h-4 w-4" />
@@ -1052,6 +1505,7 @@ export default function ExamPage() {
 
     return (
       <div className="h-screen bg-background flex flex-col overflow-hidden">
+        <NavigationBar />
         <div className="flex-1 flex flex-col exam-main-content overflow-y-auto">
           {/* Header avec timer et navigation par numéros */}
           <Card className="sticky top-0 z-40 bg-background shadow-md m-2 md:m-4 mb-2 card-elegant">
@@ -1098,7 +1552,7 @@ export default function ExamPage() {
                       className="h-8 px-3"
                     >
                       <span className="mr-2">{label}</span>
-                      <Badge variant={questionFilter === key ? 'secondary' : 'outline'} className={`text-[10px] h-5 px-2 ${questionFilter === key ? 'bg-primary text-white' : ''}`}>
+                      <Badge variant={questionFilter === key ? 'secondary' : 'outline'} className={`text-[10px] h-5 px-2 ${questionFilter === key ? 'badge-questionnaire' : ''}`}>
                         {count}
                       </Badge>
                     </Button>
@@ -1121,7 +1575,7 @@ export default function ExamPage() {
                 </div>
                 
                 {/* Zone 4: Compteur */}
-                <Badge variant={allAnswered ? "default" : "secondary"} className={`text-xs font-semibold ${allAnswered ? 'bg-success text-success-foreground' : 'bg-primary text-white'}`}>
+                <Badge variant={allAnswered ? "default" : "secondary"} className={`text-xs font-semibold ${allAnswered ? 'badge-status-success' : 'badge-questionnaire'}`}>
                   {answeredCount} / {examQuestions.length}
                 </Badge>
               </div>
@@ -1244,7 +1698,7 @@ export default function ExamPage() {
                     </div>
                     
                     {/* Badge de notification pour le questionnaire (position sûre) */}
-                    <div className="absolute top-1 right-1 bg-yellow-500 rounded-full w-10 h-10 flex items-center justify-center text-[14px] font-black text-white border-2 border-white shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300 z-10">
+                    <div className="badge-questionnaire-absolute">
                       {currentQuestion.questionnaire}
                     </div>
                   </div>
@@ -1278,7 +1732,7 @@ export default function ExamPage() {
                     
                     {/* Bouton de fermeture */}
                     <button
-                      className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold transition-colors"
+                      className="btn-close-modal"
                       onClick={() => setIsImageZoomed(false)}
                       aria-label="Fermer le zoom"
                     >
@@ -1299,7 +1753,7 @@ export default function ExamPage() {
                     </CardTitle>
                     <div className="flex gap-1 md:gap-2">
                       {currentQuestion.categorie && (
-                        <Badge variant="secondary" className="text-xs bg-primary text-white border border-primary">
+                        <Badge variant="secondary" className="text-xs badge-questionnaire">
                           {currentQuestion.categorie}
                         </Badge>
                       )}
@@ -1333,7 +1787,7 @@ export default function ExamPage() {
                           className={`p-3 md:p-4 rounded-lg border-2 cursor-pointer question-option transition-all hover:shadow-md ${
                             isSelected 
                               ? 'question-option-selected shadow-lg' 
-                              : 'bg-muted border-border hover:bg-muted/50 hover:text-primary'
+                              : 'bg-muted border-border hover:bg-muted/50 interactive-hover'
                           }`}
                           onClick={() => handleAnswerSelect(answerKey)}
                         >
@@ -1385,7 +1839,7 @@ export default function ExamPage() {
                 <div className="mt-4 text-center">
                   <Button 
                     onClick={finishExam}
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg" // Pas de hover jaune car fond jaune
                   >
                     <CheckCircle className="h-4 w-4 mr-2" />
                     Terminer l&apos;examen

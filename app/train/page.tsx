@@ -45,6 +45,12 @@ function TrainPageContent() {
 
   // Fonction pour extraire le numéro de l'image depuis le nom de fichier
   const extractImageNumber = (imagePath: string): number | null => {
+    // Vérification de sécurité pour éviter les erreurs si imagePath est undefined
+    if (!imagePath || typeof imagePath !== 'string') {
+      console.warn('extractImageNumber: imagePath is undefined or not a string:', imagePath);
+      return null;
+    }
+    
     const match = imagePath.match(/Question\s*\((\d+)\)\.jpg/i)
     return match ? parseInt(match[1], 10) : null
   }
@@ -247,7 +253,7 @@ function TrainPageContent() {
         <Card>
           <CardContent className="p-8">
             <p className="text-muted-foreground mb-4">Aucune question trouvée avec ces filtres.</p>
-            <Button onClick={resetFilters}>
+            <Button onClick={resetFilters} className="interactive-hover">
               Réinitialiser les filtres
             </Button>
           </CardContent>
@@ -298,12 +304,12 @@ function TrainPageContent() {
               <div className="mb-3 p-3 bg-background rounded-lg border">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium">Menu</h3>
-                  <Button variant="ghost" size="sm" onClick={() => setShowMenu(false)}>
+                  <Button variant="ghost" size="sm" onClick={() => setShowMenu(false)} className="interactive-hover">
                     <X className="h-4 w-4" />
                   </Button>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
-                  <Button variant="outline" size="sm" onClick={() => router.push('/')}>
+                  <Button variant="outline" size="sm" onClick={() => router.push('/')} className="interactive-hover">
                     <ArrowLeft className="h-4 w-4 mr-1" />
                     Accueil
                   </Button>
@@ -314,7 +320,7 @@ function TrainPageContent() {
                   >
                     {smartMode ? "🧠 Intelligent" : "📚 Standard"}
                   </Button>
-                  <Button variant="outline" size="sm" onClick={handleReset}>
+                  <Button variant="outline" size="sm" onClick={handleReset} className="interactive-hover">
                     <RotateCcw className="h-4 w-4 mr-1" />
                     Reset
                   </Button>
@@ -326,7 +332,7 @@ function TrainPageContent() {
               <div className="p-3 bg-background rounded-lg border">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium">Filtres</h3>
-                  <Button variant="ghost" size="sm" onClick={() => setShowFilters(false)}>
+                  <Button variant="ghost" size="sm" onClick={() => setShowFilters(false)} className="interactive-hover">
                     <X className="h-4 w-4" />
                   </Button>
                 </div>
@@ -403,7 +409,7 @@ function TrainPageContent() {
                 </div>
                 
                 {/* Badge de notification pour le questionnaire (position sûre) */}
-                <div className="absolute top-1 right-1 bg-yellow-500 rounded-full w-10 h-10 flex items-center justify-center text-[14px] font-black text-white border-2 border-white shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300 z-10">
+                <div className="badge-questionnaire-absolute">
                   {currentQuestion.questionnaire}
                 </div>
               </CardContent>
@@ -436,7 +442,7 @@ function TrainPageContent() {
                     
                     {/* Bouton de fermeture */}
                     <button
-                      className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold transition-colors"
+                      className="btn-close-modal"
                       onClick={() => setIsImageZoomed(false)}
                       aria-label="Fermer le zoom"
                     >
@@ -497,7 +503,7 @@ function TrainPageContent() {
                             ? 'question-option-incorrect' 
                             : isSelected 
                             ? 'question-option-selected' 
-                            : 'bg-muted border-border hover:bg-muted/50 hover:text-accent-foreground'
+                            : 'bg-muted border-border hover:bg-muted/50 interactive-hover'
                         }`}
                         onClick={() => !showFeedback && handleAnswerSelect(answerKey)}
                       >
@@ -569,7 +575,7 @@ function TrainPageContent() {
               <Button 
                 onClick={handleNext}
                 disabled={currentIndex === filteredQuestions.length - 1}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 interactive-hover"
               >
                 Suivant
                 <ArrowRight className="h-4 w-4" />
@@ -594,7 +600,7 @@ function TrainPageContent() {
             <Button 
               onClick={handleNext}
               disabled={currentIndex === filteredQuestions.length - 1}
-              className="flex items-center gap-2 flex-1"
+              className="flex items-center gap-2 flex-1 interactive-hover"
             >
               Suivant
               <ArrowRight className="h-4 w-4" />

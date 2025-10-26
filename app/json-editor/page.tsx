@@ -64,6 +64,16 @@ export default function JsonEditorPage() {
   const [aiLoading, setAiLoading] = useState<string | null>(null)
   const [expandedQuestionnaires, setExpandedQuestionnaires] = useState<Set<number>>(new Set())
   const [appliedChanges, setAppliedChanges] = useState<Record<string, { field: string, oldValue: any, newValue: any }[]>>({})
+  // Fonction wrapper pour sauvegarder sans rechargement
+  const saveWithScroll = async (updatedQuestion: Question) => {
+    const index = questions.findIndex(q => q.id === updatedQuestion.id)
+    const newQuestions = [...questions]
+    newQuestions[index] = updatedQuestion
+    setQuestions(newQuestions)
+    
+    // Sauvegarder en base (sans rechargement)
+    await saveQuestion(updatedQuestion)
+  }
   
   useEffect(() => {
     loadQuestions()
@@ -80,11 +90,13 @@ export default function JsonEditorPage() {
   }
   
   const isProblematic = (q: Question) => {
+    // Une question est problématique seulement si :
+    // 1. Une option est complètement manquante (null/undefined)
+    // 2. Une option est vide (chaîne vide)
+    // 3. Pas de bonne réponse définie
     return !q.options.a || !q.options.b || !q.options.c ||
-           q.options.a === 'A' || q.options.a === 'a' ||
-           q.options.b === 'B' || q.options.b === 'b' ||
-           q.options.c === 'C' || q.options.c === 'c' ||
-           !q.enonce || q.enonce === ''
+           q.options.a === '' || q.options.b === '' || q.options.c === '' ||
+           !q.bonne_reponse || q.bonne_reponse === ''
   }
   
   const filterQuestions = () => {
@@ -148,9 +160,9 @@ export default function JsonEditorPage() {
       })
       
       if (response.ok) {
-        // Silencieux si succès
+        // Silencieux si succès - PAS de rechargement des questions
         setEditingId(null)
-        loadQuestions()
+        // Les questions sont déjà mises à jour dans l'état local
       } else {
         const error = await response.json()
         console.error('Erreur lors de la sauvegarde:', error.error || 'Erreur inconnue')
@@ -515,7 +527,7 @@ export default function JsonEditorPage() {
           <div className="flex items-center justify-between flex-wrap gap-2">
             <CardTitle>Éditeur JSON - Questions</CardTitle>
             <div className="flex gap-2">
-              <Button onClick={saveAllToFile} disabled={saving} variant="outline">
+              <Button onClick={saveAllToFile} disabled={saving} variant="outline" className="interactive-hover">
                 <Save className="h-4 w-4 mr-2" />
                 {saving ? 'Sauvegarde...' : 'Sauvegarder dans JSON'}
               </Button>
@@ -700,13 +712,7 @@ export default function JsonEditorPage() {
                         isEditing={editingId === question.id}
                         onEdit={() => setEditingId(question.id)}
                         onCancel={() => setEditingId(null)}
-                        onSave={(updated) => {
-                          const index = questions.findIndex(q => q.id === question.id)
-                          const newQuestions = [...questions]
-                          newQuestions[index] = updated
-                          setQuestions(newQuestions)
-                          saveQuestion(updated)
-                        }}
+                        onSave={saveWithScroll}
                         aiAnalysis={aiAnalysis}
                         aiLoading={aiLoading}
                         analyzeWithAI={analyzeWithAI}
@@ -730,13 +736,7 @@ export default function JsonEditorPage() {
               isEditing={editingId === question.id}
               onEdit={() => setEditingId(question.id)}
               onCancel={() => setEditingId(null)}
-              onSave={(updated) => {
-                const index = questions.findIndex(q => q.id === question.id)
-                const newQuestions = [...questions]
-                newQuestions[index] = updated
-                setQuestions(newQuestions)
-                saveQuestion(updated)
-              }}
+              onSave={saveWithScroll}
               aiAnalysis={aiAnalysis}
               aiLoading={aiLoading}
               analyzeWithAI={analyzeWithAI}
@@ -772,6 +772,152 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
   const [formData, setFormData] = useState(question)
   const [isImageZoomed, setIsImageZoomed] = useState(false)
   const [hoveredOption, setHoveredOption] = useState<string | null>(null)
+  const [editingField, setEditingField] = useState<string | null>(null)
+  const [tempValue, setTempValue] = useState<string>('')
+  
+  // Synchroniser formData avec les changements de la question
+  useEffect(() => {
+    setFormData(question)
+  }, [question.id, question.numero_question, question.question, question.categorie, question["astag D/F/I "], question.enonce, question.bonne_reponse, question.options, question.image_path])
+
+  // Fonctions pour l'édition directe
+  const startEditing = (field: string, currentValue: string) => {
+    setEditingField(field)
+    setTempValue(currentValue)
+  }
+
+  const saveEdit = () => {
+    if (editingField && tempValue !== formData[editingField as keyof Question]) {
+      const updated = { ...formData }
+      
+      if (editingField.startsWith('options.')) {
+        const optionKey = editingField.split('.')[1] as 'a' | 'b' | 'c'
+        updated.options = { ...updated.options, [optionKey]: tempValue }
+      } else {
+        (updated as any)[editingField] = tempValue
+      }
+      
+      onSave(updated)
+    }
+    setEditingField(null)
+    setTempValue('')
+  }
+
+  const cancelEdit = () => {
+    setEditingField(null)
+    setTempValue('')
+  }
+
+  // Composant pour les options éditables
+  const EditableOption = ({ option, value, label }: { option: 'a' | 'b' | 'c', value: string, label: string }) => {
+    const [isHovered, setIsHovered] = useState(false)
+    
+    return (
+      <div 
+        className="flex items-center gap-2 group"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <Badge 
+          variant={question.bonne_reponse === option ? 'default' : 'outline'}
+          className={`cursor-pointer hover:bg-green-500 hover:text-white transition-colors ${hoveredOption === option ? 'ring-2 ring-yellow-500 shadow-lg' : ''}`}
+          onMouseEnter={() => setHoveredOption(option)}
+          onMouseLeave={() => setHoveredOption(null)}
+          onClick={() => {
+            const updated = { ...question, bonne_reponse: option }
+            onSave(updated)
+          }}
+        >
+          {option.toUpperCase()}
+        </Badge>
+        
+        {editingField === `options.${option}` ? (
+          <div className="flex items-center gap-2 flex-1">
+            <input
+              type="text"
+              value={tempValue}
+              onChange={(e) => setTempValue(e.target.value)}
+              className="flex-1 px-2 py-1 border rounded text-sm"
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') saveEdit()
+                if (e.key === 'Escape') cancelEdit()
+              }}
+            />
+            <Button size="sm" onClick={saveEdit} className="bg-green-600 hover:bg-green-700">
+              ✓
+            </Button>
+            <Button size="sm" variant="outline" onClick={cancelEdit} className="interactive-hover">
+              ✗
+            </Button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 flex-1">
+            <span className="text-sm">{value}</span>
+            {isHovered && (
+              <Button
+                size="sm"
+                variant="outline"
+                className="ml-2 opacity-90 hover:opacity-100"
+                onClick={() => startEditing(`options.${option}`, value)}
+              >
+                ✏️
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // Composant pour les champs éditables au survol
+  const EditableField = ({ field, value, label, className = "" }: { field: string, value: string, label: string, className?: string }) => {
+    const [isHovered, setIsHovered] = useState(false)
+    
+    return (
+      <div 
+        className={`relative group ${className}`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {editingField === field ? (
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              value={tempValue}
+              onChange={(e) => setTempValue(e.target.value)}
+              className="flex-1 px-2 py-1 border rounded text-sm"
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') saveEdit()
+                if (e.key === 'Escape') cancelEdit()
+              }}
+            />
+            <Button size="sm" onClick={saveEdit} className="bg-green-600 hover:bg-green-700">
+              ✓
+            </Button>
+            <Button size="sm" variant="outline" onClick={cancelEdit} className="interactive-hover">
+              ✗
+            </Button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2">
+            <span className={className}>{value || label}</span>
+            {isHovered && (
+              <Button
+                size="sm"
+                variant="outline"
+                className="ml-2 opacity-90 hover:opacity-100"
+                onClick={() => startEditing(field, value)}
+              >
+                ✏️ Modifier
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
+    )
+  }
   
   // Extraire le numéro de la question à partir du nom de l'image
   const getQuestionNumber = (imagePath: string) => {
@@ -882,9 +1028,12 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                       <div className="text-[10px] font-bold text-green-700 dark:text-green-400 uppercase mb-0.5">
                         🏷️ Code
                       </div>
-                      <div className="text-2xl font-black text-green-600 dark:text-green-400">
-                        {question.question}
-                      </div>
+                      <EditableField 
+                        field="question" 
+                        value={question.question} 
+                        label="Code question"
+                        className="text-2xl font-black text-green-600 dark:text-green-400"
+                      />
                     </div>
                     
                     {/* Catégorie */}
@@ -892,9 +1041,12 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                       <div className="text-[10px] font-bold text-indigo-700 dark:text-indigo-400 uppercase mb-0.5">
                         📂 Catégorie
                       </div>
-                      <div className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 truncate">
-                        {question.categorie || '-'}
-                      </div>
+                      <EditableField 
+                        field="categorie" 
+                        value={question.categorie || ''} 
+                        label="Catégorie"
+                        className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 truncate"
+                      />
                     </div>
                     
                     {/* Astag */}
@@ -902,16 +1054,19 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                       <div className="text-[10px] font-bold text-cyan-700 dark:text-cyan-400 uppercase mb-0.5">
                         🏷️ Astag
                       </div>
-                      <div className="text-xs font-semibold text-cyan-600 dark:text-cyan-400">
-                        {question["astag D/F/I "] || '-'}
-                      </div>
+                      <EditableField 
+                        field="astag D/F/I " 
+                        value={question["astag D/F/I "] || ''} 
+                        label="Astag"
+                        className="text-xs font-semibold text-cyan-600 dark:text-cyan-400"
+                      />
                     </div>
                   </div>
                 </div>
                 
                 <div className="flex items-center gap-2 mb-2 flex-wrap">
                   <Badge variant="outline">Question {question.old_id || question.id}</Badge>
-                  <Badge variant="default" className="bg-blue-500 text-white">
+                  <Badge variant="default" className="badge-question-number">
                     N° {questionNumber}
                   </Badge>
                   {question.categorie && (
@@ -931,81 +1086,39 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                   
                   {/* Badge de statut de validation */}
                   {(question.validation_status === 'valide') && (
-                    <Badge className="bg-green-500 text-white">
+                    <Badge className="badge-status-success">
                       <Check className="h-3 w-3 mr-1" />
                       Validée
                     </Badge>
                   )}
                   {(question.validation_status === 'a_corriger') && (
-                    <Badge className="bg-orange-500 text-white">
+                    <Badge className="badge-status-warning">
                       ⚠️ À corriger
                     </Badge>
                   )}
                   {(!question.validation_status || question.validation_status === 'non_verifie') && (
-                    <Badge className="bg-gray-500 text-white">
+                    <Badge className="badge-status-info">
                       ❓ Non vérifiée
                     </Badge>
                   )}
                 </div>
                 
-                {question.enonce && (
-                  <p className="text-sm mb-3 font-medium">{question.enonce}</p>
-                )}
+                <EditableField 
+                  field="enonce" 
+                  value={question.enonce || ''} 
+                  label="Énoncé de la question"
+                  className="text-sm mb-3 font-medium"
+                />
                 
                 <div className="space-y-1 text-sm">
-                  <div className="flex items-center gap-2">
-                    <Badge 
-                      variant={question.bonne_reponse === 'a' ? 'default' : 'outline'}
-                      className={`cursor-pointer hover:bg-green-500 hover:text-white transition-colors ${hoveredOption === 'a' ? 'ring-2 ring-yellow-500 shadow-lg' : ''}`}
-                      onMouseEnter={() => setHoveredOption('a')}
-                      onMouseLeave={() => setHoveredOption(null)}
-                      onClick={() => {
-                        const updated = { ...question, bonne_reponse: 'a' }
-                        onSave(updated)
-                      }}
-                    >
-                      A
-                    </Badge>
-                    <span>{question.options.a}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge 
-                      variant={question.bonne_reponse === 'b' ? 'default' : 'outline'}
-                      className={`cursor-pointer hover:bg-green-500 hover:text-white transition-colors ${hoveredOption === 'b' ? 'ring-2 ring-yellow-500 shadow-lg' : ''}`}
-                      onMouseEnter={() => setHoveredOption('b')}
-                      onMouseLeave={() => setHoveredOption(null)}
-                      onClick={() => {
-                        const updated = { ...question, bonne_reponse: 'b' }
-                        onSave(updated)
-                      }}
-                    >
-                      B
-                    </Badge>
-                    <span>{question.options.b}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge 
-                      variant={question.bonne_reponse === 'c' ? 'default' : 'outline'}
-                      className={`cursor-pointer hover:bg-green-500 hover:text-white transition-colors ${hoveredOption === 'c' ? 'ring-2 ring-yellow-500 shadow-lg' : ''}`}
-                      onMouseEnter={() => setHoveredOption('c')}
-                      onMouseLeave={() => setHoveredOption(null)}
-                      onClick={() => {
-                        const updated = { ...question, bonne_reponse: 'c' }
-                        onSave(updated)
-                      }}
-                    >
-                      C
-                    </Badge>
-                    <span>{question.options.c}</span>
-                  </div>
+                  <EditableOption option="a" value={question.options.a} label="Option A" />
+                  <EditableOption option="b" value={question.options.b} label="Option B" />
+                  <EditableOption option="c" value={question.options.c} label="Option C" />
                 </div>
               </div>
               
               <div className="flex-shrink-0 flex flex-col gap-2">
                 <div className="flex gap-2">
-                  <Button onClick={onEdit} size="sm">
-                    Éditer
-                  </Button>
                   <Button 
                     variant="secondary" 
                     size="sm"
@@ -1342,7 +1455,7 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
               
               {/* Bouton de fermeture en haut */}
               <button
-                className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold transition-colors"
+                className="btn-close-modal"
                 onClick={() => setIsImageZoomed(false)}
                 aria-label="Fermer le zoom"
               >
@@ -1504,7 +1617,7 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                   }}
                 />
               </div>
-              <div className="absolute top-2 right-2 bg-black/70 text-white px-3 py-2 rounded text-xs font-medium">
+              <div className="image-control-overlay">
                 🔍 Molette: zoom • 🖱️ Clic-drag: déplacer • 🔄 Double-clic: reset
               </div>
             </div>
@@ -1675,9 +1788,6 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
         </div>
         
         <div className="flex gap-2 justify-end">
-          <Button variant="outline" onClick={onCancel}>
-            Annuler
-          </Button>
           <Button onClick={() => onSave(formData)}>
             Sauvegarder
           </Button>
@@ -1703,7 +1813,7 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
           />
           {/* Bouton de fermeture */}
           <button
-            className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold transition-colors"
+            className="btn-close-modal"
             onClick={() => setIsImageZoomed(false)}
             aria-label="Fermer le zoom"
           >

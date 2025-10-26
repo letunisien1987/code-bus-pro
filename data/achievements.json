@@ -1,0 +1,34 @@
+[
+  {
+    "id": "102775192659809274711_first_exam_bronze_1761442145855",
+    "userId": "102775192659809274711",
+    "type": "first_exam",
+    "level": "bronze",
+    "value": 1,
+    "unlockedAt": "2025-10-26T01:29:05.855Z"
+  },
+  {
+    "id": "102775192659809274711_training_first_bronze_1761442145855",
+    "userId": "102775192659809274711",
+    "type": "training_first",
+    "level": "bronze",
+    "value": 1,
+    "unlockedAt": "2025-10-26T01:29:05.855Z"
+  },
+  {
+    "id": "102775192659809274711_training_5_bronze_1761446317924",
+    "userId": "102775192659809274711",
+    "type": "training_5",
+    "level": "bronze",
+    "value": 5,
+    "unlockedAt": "2025-10-26T02:38:37.924Z"
+  },
+  {
+    "id": "102775192659809274711_training_10_bronze_1761446317925",
+    "userId": "102775192659809274711",
+    "type": "training_10",
+    "level": "bronze",
+    "value": 10,
+    "unlockedAt": "2025-10-26T02:38:37.925Z"
+  }
+]

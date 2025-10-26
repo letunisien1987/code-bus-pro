@@ -196,7 +196,7 @@ export default function DashboardPage() {
         <div className="relative container mx-auto px-4 py-12">
           <div className="text-center mb-8 md:mb-12">
             <div className="inline-flex items-center gap-2 bg-card/80 backdrop-blur-sm rounded-full px-3 md:px-4 py-2 mb-4 md:mb-6 shadow-lg">
-              <Trophy className="h-4 w-4 md:h-5 md:w-5 text-accent-foreground" />
+              <Trophy className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
               <span className="text-xs md:text-sm font-medium">
                 <span className="hidden md:inline">Tableau de bord d&apos;apprentissage</span>
                 <span className="md:hidden">Dashboard</span>
@@ -235,10 +235,10 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs md:text-sm font-medium text-muted-foreground">Questions étudiées</p>
-                    <p className="text-2xl md:text-3xl font-bold text-secondary-foreground">{stats.global?.completedQuestions || 0}</p>
+                    <p className="text-2xl md:text-3xl font-bold text-foreground">{stats.global?.completedQuestions || 0}</p>
                   </div>
                   <div className="h-8 w-8 md:h-12 md:w-12 bg-secondary/10 rounded-full flex items-center justify-center">
-                    <BookOpen className="h-4 w-4 md:h-6 md:w-6 text-secondary-foreground" />
+                    <BookOpen className="h-4 w-4 md:h-6 md:w-6 text-foreground" />
                   </div>
                 </div>
                 <div className="mt-2 md:mt-4">
@@ -254,10 +254,10 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs md:text-sm font-medium text-muted-foreground">Série actuelle</p>
-                    <p className="text-2xl md:text-3xl font-bold text-accent-foreground">{stats.global?.streak || 0} jours</p>
+                    <p className="text-2xl md:text-3xl font-bold text-foreground">{stats.global?.streak || 0} jours</p>
                   </div>
                   <div className="h-8 w-8 md:h-12 md:w-12 bg-accent/10 rounded-full flex items-center justify-center">
-                    <Zap className="h-4 w-4 md:h-6 md:w-6 text-accent-foreground" />
+                    <Zap className="h-4 w-4 md:h-6 md:w-6 text-foreground" />
                   </div>
                 </div>
                 <div className="mt-2 md:mt-4">
@@ -285,6 +285,76 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* Indicateur "Prêt pour l'examen" - Seulement si les conditions sont remplies */}
+      {(() => {
+        // Calculer si l'utilisateur est prêt pour l'examen
+        const hasEnoughExams = stats.global.totalAttempts >= 5 // Au moins 5 examens
+        const hasGoodExamScores = stats.global.averageScore >= 90 // Score moyen >= 90%
+        const hasCategoryMastery = stats.byCategory.every(cat => 
+          cat.attempted > 0 && cat.percentage >= 80 // Toutes catégories >= 80%
+        )
+        const isExamReady = hasEnoughExams && hasGoodExamScores && hasCategoryMastery
+
+        if (!isExamReady) {
+          // Afficher les conditions manquantes
+          return (
+            <div className="container mx-auto px-4 py-6">
+              <Card className="card-elegant bg-gradient-to-r from-blue-500/10 to-blue-500/5 border-blue-500/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center">
+                      <Target className="h-8 w-8 text-blue-500" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-blue-500">Préparation à l'examen</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Conditions pour être prêt pour l'examen officiel
+                      </p>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        <Badge variant={hasEnoughExams ? "default" : "secondary"} className="text-xs">
+                          {hasEnoughExams ? "✓" : "○"} 5 examens passés
+                        </Badge>
+                        <Badge variant={hasGoodExamScores ? "default" : "secondary"} className="text-xs">
+                          {hasGoodExamScores ? "✓" : "○"} Score moyen ≥90%
+                        </Badge>
+                        <Badge variant={hasCategoryMastery ? "default" : "secondary"} className="text-xs">
+                          {hasCategoryMastery ? "✓" : "○"} Toutes catégories ≥80%
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )
+        }
+
+        // Afficher le message de succès si toutes les conditions sont remplies
+        return (
+          <div className="container mx-auto px-4 py-6">
+            <Card className="card-elegant bg-gradient-to-r from-green-500/10 to-green-500/5 border-green-500/30">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center">
+                    <CheckCircle className="h-8 w-8 text-green-500" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-green-500">Vous êtes prêt !</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Vous avez atteint le niveau requis pour passer l'examen officiel
+                    </p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <Badge variant="secondary" className="text-xs">5 examens &gt;90%</Badge>
+                      <Badge variant="secondary" className="text-xs">Toutes catégories &gt;80%</Badge>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )
+      })()}
 
       {/* Contenu principal */}
       <div className="container mx-auto px-2 md:px-4 pb-8 md:pb-12">
@@ -880,7 +950,7 @@ export default function DashboardPage() {
                     </Button>
                   </Link>
                   <Link href="/exam" className="w-full sm:w-auto">
-                    <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                    <Button variant="outline" size="lg" className="w-full sm:w-auto interactive-hover">
                       <FileText className="h-4 w-4 md:h-5 md:w-5 mr-2" />
                       Examen
                     </Button>

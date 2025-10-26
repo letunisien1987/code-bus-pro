@@ -1,16 +1,16 @@
 import { NextResponse } from 'next/server'
-import { prisma } from '../../../lib/prisma'
 import fs from 'fs'
 import path from 'path'
 
 export async function POST() {
   try {
-    console.log('🔄 Import des questions via Prisma (compatible Vercel) - v3...')
+    console.log('🔄 Vérification des données JSON...')
 
     const questionsPath = path.join(process.cwd(), 'config', 'data', 'questions.json')
     if (!fs.existsSync(questionsPath)) {
       throw new Error('config/data/questions.json introuvable')
     }
+    
     const questionsData = JSON.parse(fs.readFileSync(questionsPath, 'utf-8'))
     console.log(`📊 ${questionsData.length} questions trouvées dans questions.json`)
 
@@ -28,52 +28,38 @@ export async function POST() {
       }
     }
 
-    // Nettoyer l'ancienne donnée (ordre important : d'abord les tables avec clés étrangères)
-    await prisma.attempt.deleteMany()
-    await prisma.questionProgress.deleteMany()
-    await prisma.question.deleteMany()
-
-    // Importer les questions
-    let imported = 0
+    // Valider la structure des questions
+    let validQuestions = 0
+    let invalidQuestions = 0
+    
     for (const q of questionsData) {
-      await prisma.question.create({
-        data: {
-          id: q.id,
-          questionnaire: q.questionnaire,
-          question: q.question,
-          categorie: q.categorie || null,
-          astag: q['astag D/F/I '] || null,
-          enonce: q.enonce || q.question,
-          optionA: (q.options as any)?.a || null,
-          optionB: (q.options as any)?.b || null,
-          optionC: (q.options as any)?.c || null,
-          optionD: (q.options as any)?.d || null,
-          bonneReponse: q.bonne_reponse,
-          imagePath: `/${q.image_path}`
-        }
-      })
-      imported++
+      if (q.id && q.question && q.bonne_reponse && q.options) {
+        validQuestions++
+      } else {
+        invalidQuestions++
+        console.warn(`Question invalide: ${q.id || 'sans ID'}`)
+      }
     }
 
-    console.log(`✅ Import terminé : ${imported}/${questionsData.length}`)
+    console.log(`✅ Validation terminée : ${validQuestions} questions valides, ${invalidQuestions} invalides`)
+    
     return NextResponse.json({
       success: true,
-      message: `${imported} questions importées avec succès`,
-      imported,
+      message: `${validQuestions} questions validées avec succès`,
+      imported: validQuestions,
       total: questionsData.length,
+      invalid: invalidQuestions,
       imagesFound
     })
   } catch (error) {
-    console.error('Erreur lors de l\'importation:', error)
+    console.error('Erreur lors de la validation:', error)
     return NextResponse.json(
       {
         success: false,
-        message: 'Erreur lors de l\'importation des données',
+        message: 'Erreur lors de la validation des données',
         error: error instanceof Error ? error.message : 'Erreur inconnue'
       },
       { status: 500 }
     )
-  } finally {
-    await prisma.$disconnect()
   }
 }

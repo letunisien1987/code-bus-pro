@@ -64,6 +64,12 @@ async function getBlobUrls(): Promise<Map<string, string>> {
  * @returns URL de l'image (Blob en production, locale en développement)
  */
 export async function getImageUrl(imagePath: string): Promise<string> {
+  // Vérification de sécurité pour éviter les erreurs si imagePath est undefined
+  if (!imagePath || typeof imagePath !== 'string') {
+    console.warn('getImageUrl: imagePath is undefined or not a string:', imagePath);
+    return '/images/placeholder.jpg'; // Image de fallback
+  }
+  
   // Nettoyer le chemin (enlever le slash initial si présent)
   const cleanPath = imagePath.replace(/^\/+/, '');
   
@@ -100,6 +106,12 @@ export async function getImageUrl(imagePath: string): Promise<string> {
  * Utilise uniquement les images locales
  */
 export function getImageUrlSync(imagePath: string): string {
+  // Vérification de sécurité pour éviter les erreurs si imagePath est undefined
+  if (!imagePath || typeof imagePath !== 'string') {
+    console.warn('getImageUrlSync: imagePath is undefined or not a string:', imagePath);
+    return '/images/placeholder.jpg'; // Image de fallback
+  }
+  
   const cleanPath = imagePath.replace(/^\/+/, '');
   return `/${cleanPath}`;
 }

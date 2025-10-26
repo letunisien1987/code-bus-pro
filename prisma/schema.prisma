@@ -82,6 +82,7 @@ model User {
   attempts      Attempt[]
   progresses    QuestionProgress[]
   userProgress  UserProgress[]
+  achievements  Achievement[]
 }
 
 model Account {
@@ -134,5 +135,20 @@ model UserProgress {
   question              Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   @@unique([userId, questionId])
+  @@index([userId])
+}
+
+// Modèle pour les trophées et succès
+model Achievement {
+  id          String   @id @default(cuid())
+  userId      String
+  type        String   // "exam_perfect", "streak", "answers_streak", "category_master", etc.
+  level       String   // "bronze", "silver", "gold"
+  unlockedAt  DateTime @default(now())
+  value       Int      // Valeur associée (ex: 5 pour "5 en suite")
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, type, level])
   @@index([userId])
 }

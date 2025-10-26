@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
-const handler = NextAuth({
+export const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -58,7 +58,12 @@ const handler = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.role
+        // Définir le rôle admin pour ahmedelghoudi@gmail.com
+        if (user.email === 'ahmedelghoudi@gmail.com') {
+          token.role = 'ADMIN'
+        } else {
+          token.role = user.role || 'STUDENT'
+        }
       }
       return token
     },
@@ -68,6 +73,18 @@ const handler = NextAuth({
         session.user.role = token.role as string
       }
       return session
+    },
+    async redirect({ url, baseUrl }) {
+      // Si l'URL est relative, la rendre absolue
+      if (url.startsWith('/')) {
+        return `${baseUrl}${url}`
+      }
+      // Si l'URL est sur le même domaine, l'utiliser
+      if (url.startsWith(baseUrl)) {
+        return url
+      }
+      // Sinon, rediriger vers le dashboard
+      return `${baseUrl}/dashboard`
     }
   },
   pages: {
@@ -75,6 +92,8 @@ const handler = NextAuth({
     error: '/auth/error'
   },
   secret: process.env.NEXTAUTH_SECRET
-})
+}
+
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }

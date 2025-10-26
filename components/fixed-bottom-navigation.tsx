@@ -12,7 +12,7 @@ export function FixedBottomNavigation() {
       <div className="flex gap-2">
         <Button 
           onClick={() => router.push('/train')}
-          className="flex-1 h-12 text-sm font-semibold"
+          className="flex-1 h-12 text-sm font-semibold interactive-hover"
           variant="outline"
         >
           <BookOpen className="h-4 w-4 mr-2" />
