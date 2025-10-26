@@ -43,6 +43,7 @@ function TrainPageContent() {
   const [showFeedback, setShowFeedback] = useState(false)
   const [isImageZoomed, setIsImageZoomed] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [questionStartTime, setQuestionStartTime] = useState<number>(0)
 
   // Fonction pour extraire le numéro de l'image depuis le nom de fichier
   const extractImageNumber = (imagePath: string): number | null => {
@@ -61,9 +62,10 @@ function TrainPageContent() {
     return questions.filter(q => q.questionnaire === questionnaireNumber).length
   }
 
-  // Réinitialiser le zoom quand on change de question
+  // Réinitialiser le zoom et démarrer le timer quand on change de question
   useEffect(() => {
     setIsImageZoomed(false)
+    setQuestionStartTime(Date.now())
   }, [currentIndex])
 
   // Gestion de la touche Échap pour fermer le zoom
@@ -192,12 +194,15 @@ function TrainPageContent() {
 
   const saveAttempt = async (questionId: string, choix: string, correct: boolean) => {
     try {
+      // Calculer le temps passé sur cette question (en secondes)
+      const timeSpent = Math.floor((Date.now() - questionStartTime) / 1000)
+      
       await fetch('/api/attempts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ questionId, choix, correct })
+        body: JSON.stringify({ questionId, choix, correct, timeSpent })
       })
     } catch (error) {
       console.error('Erreur lors de l\'enregistrement de la tentative:', error)

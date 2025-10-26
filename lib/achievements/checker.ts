@@ -1,8 +1,5 @@
 import { ACHIEVEMENTS, AchievementDefinition } from './definitions'
-import fs from 'fs'
-import path from 'path'
-
-const ACHIEVEMENTS_FILE = path.join(process.cwd(), 'data', 'achievements.json')
+import { prisma } from '@/lib/prisma'
 
 // Fonction pour calculer la vraie série quotidienne avec qualité
 function calculateDailyStreak(attempts: any[], examHistory: any[]): number {
@@ -143,71 +140,60 @@ export async function checkAndUnlockAchievements(userId: string) {
   // Récupérer les stats de l'utilisateur
   const userStats = await getUserStats(userId)
   
-  // Lire les trophées existants
-  let existingAchievements = []
-  if (fs.existsSync(ACHIEVEMENTS_FILE)) {
-    const data = fs.readFileSync(ACHIEVEMENTS_FILE, 'utf-8')
-    existingAchievements = JSON.parse(data)
-  }
+  // Lire les trophées existants depuis PostgreSQL
+  const existingAchievements = await prisma.achievement.findMany({
+    where: { userId }
+  })
   
   // Vérifier chaque type de trophée
   for (const achievement of ACHIEVEMENTS) {
     const alreadyUnlocked = existingAchievements.find(
-      (a: any) => a.userId === userId && a.type === achievement.type && a.level === achievement.level
+      a => a.type === achievement.type && a.level === achievement.level
     )
     
     if (!alreadyUnlocked && await isAchievementUnlocked(achievement, userStats)) {
-      const newAchievement = {
-        id: `${userId}_${achievement.type}_${achievement.level}_${Date.now()}`,
-        userId,
-        type: achievement.type,
-        level: achievement.level,
-        value: achievement.requirement,
-        unlockedAt: new Date().toISOString()
-      }
+      const achievementId = `${userId}_${achievement.type}_${achievement.level}_${Date.now()}`
       
-      existingAchievements.push(newAchievement)
+      // Sauvegarder dans PostgreSQL au lieu de JSON
+      await prisma.achievement.create({
+        data: {
+          id: achievementId,
+          userId: userId,
+          type: achievement.type,
+          level: achievement.level,
+          value: achievement.requirement,
+          unlockedAt: new Date()
+        }
+      })
+      
       newAchievements.push(achievement)
     }
-  }
-  
-  // Sauvegarder les nouveaux trophées
-  if (newAchievements.length > 0) {
-    fs.writeFileSync(ACHIEVEMENTS_FILE, JSON.stringify(existingAchievements, null, 2))
   }
   
   return newAchievements
 }
 
 async function getUserStats(userId: string) {
-  // Lire les tentatives de l'utilisateur
-  const ATTEMPTS_FILE = path.join(process.cwd(), 'data', 'user-attempts.json')
-  const EXAM_HISTORY_FILE = path.join(process.cwd(), 'data', 'exam-history.json')
+  // Récupérer les tentatives et l'historique d'examens depuis PostgreSQL
+  const attempts = await prisma.attempt.findMany({
+    where: { userId }
+  })
   
-  let attempts = []
-  let examHistory = []
-  
-  if (fs.existsSync(ATTEMPTS_FILE)) {
-    const data = fs.readFileSync(ATTEMPTS_FILE, 'utf-8')
-    attempts = JSON.parse(data).filter((a: any) => a.userId === userId)
-  }
-  
-  if (fs.existsSync(EXAM_HISTORY_FILE)) {
-    const data = fs.readFileSync(EXAM_HISTORY_FILE, 'utf-8')
-    examHistory = JSON.parse(data).filter((e: any) => e.userId === userId)
-  }
+  const examHistory = await prisma.examHistory.findMany({
+    where: { userId }
+  })
   
   // Calculer les stats d'examens
   const totalExams = examHistory.length
-  const perfectExams = examHistory.filter((e: any) => e.percentage === 100).length
-  const examScore80 = examHistory.filter((e: any) => e.percentage >= 80).length
-  const examScore90 = examHistory.filter((e: any) => e.percentage >= 90).length
-  const examScore95 = examHistory.filter((e: any) => e.percentage >= 95).length
-  const examScores = examHistory.map((e: any) => e.percentage)
+  const perfectExams = examHistory.filter(e => e.percentage === 100).length
+  const examScore80 = examHistory.filter(e => e.percentage >= 80).length
+  const examScore90 = examHistory.filter(e => e.percentage >= 90).length
+  const examScore95 = examHistory.filter(e => e.percentage >= 95).length
+  const examScores = examHistory.map(e => e.percentage)
   
   // Calculer les stats de réponses
   const totalAttempts = attempts.length
-  const totalCorrectAnswers = attempts.filter((a: any) => a.correct).length
+  const totalCorrectAnswers = attempts.filter(a => a.correct).length
   
   // Calculer la série actuelle de bonnes réponses
   let currentAnswersStreak = 0
@@ -220,19 +206,14 @@ async function getUserStats(userId: string) {
   }
   
   // Calculer les stats par catégorie (nécessite de lire les questions)
-  const QUESTIONS_FILE = path.join(process.cwd(), 'data', 'questions.json')
-  let questions = []
-  if (fs.existsSync(QUESTIONS_FILE)) {
-    const data = fs.readFileSync(QUESTIONS_FILE, 'utf-8')
-    questions = JSON.parse(data)
-  }
+  const questions = await prisma.question.findMany()
   
   const categoryStats: Record<string, { correct: number, total: number }> = {}
   const questionnaireStats: Record<string, { correct: number, total: number }> = {}
   
   // Initialiser les stats
-  const categories = Array.from(new Set(questions.map((q: any) => q.categorie).filter(Boolean))) as string[]
-  const questionnaires = Array.from(new Set(questions.map((q: any) => q.questionnaire.toString()))) as string[]
+  const categories = Array.from(new Set(questions.map(q => q.categorie).filter(Boolean))) as string[]
+  const questionnaires = Array.from(new Set(questions.map(q => q.questionnaire.toString()))) as string[]
   
   categories.forEach((cat: string) => {
     categoryStats[cat] = { correct: 0, total: 0 }
@@ -243,8 +224,8 @@ async function getUserStats(userId: string) {
   })
   
   // Calculer les stats par catégorie et questionnaire
-  attempts.forEach((attempt: any) => {
-    const question = questions.find((q: any) => q.id === attempt.questionId)
+  attempts.forEach(attempt => {
+    const question = questions.find(q => q.id === attempt.questionId)
     if (question) {
       if (question.categorie) {
         categoryStats[question.categorie].total++
@@ -262,13 +243,13 @@ async function getUserStats(userId: string) {
   })
   
   // Compter les scores de performance
-  const performanceScores = examHistory.map((e: any) => e.performanceScore || 0)
+  const performanceScores = examHistory.map(e => e.performanceScore || 0)
   const maxPerformanceScore = Math.max(...performanceScores, 0)
-  const score700Count = performanceScores.filter((s: number) => s >= 700).length
-  const score800Count = performanceScores.filter((s: number) => s >= 800).length
-  const score900Count = performanceScores.filter((s: number) => s >= 900).length
-  const score1000Count = performanceScores.filter((s: number) => s >= 1000).length
-  const speedBonusMaxCount = examHistory.filter((e: any) => e.speedBonus === 300).length
+  const score700Count = performanceScores.filter(s => s >= 700).length
+  const score800Count = performanceScores.filter(s => s >= 800).length
+  const score900Count = performanceScores.filter(s => s >= 900).length
+  const score1000Count = performanceScores.filter(s => s >= 1000).length
+  const speedBonusMaxCount = examHistory.filter(e => e.speedBonus === 300).length
 
   return {
     // Stats d'examens

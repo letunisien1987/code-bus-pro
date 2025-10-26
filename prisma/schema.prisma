@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -32,6 +32,7 @@ model Question {
   attempts      Attempt[]
   progresses    QuestionProgress[]
   userProgress  UserProgress[]
+  examAnswers   ExamAnswer[]
 }
 
 model Attempt {
@@ -40,9 +41,50 @@ model Attempt {
   questionId String
   choix      String
   correct    Boolean
+  timeSpent  Int?     // Temps en secondes pour cette tentative
   createdAt  DateTime @default(now())
   question   Question @relation(fields: [questionId], references: [id])
   user       User?    @relation(fields: [userId], references: [id])
+}
+
+model ExamHistory {
+  id                String   @id @default(cuid())
+  userId            String
+  score             Int
+  percentage        Float
+  total             Int
+  correct           Int
+  incorrect         Int
+  timeSpent         Int      // Temps en secondes
+  completedAt       DateTime @default(now())
+  
+  // Nouveaux champs de performance
+  performanceScore  Int?
+  accuracyScore     Int?
+  speedBonus        Int?
+  avgTimePerQuestion Int?
+  performanceBadge  String?  // 'gold', 'silver', 'bronze', 'standard'
+  
+  // Relation avec User
+  user              User     @relation(fields: [userId], references: [id])
+  answers           ExamAnswer[]  // Réponses détaillées de l'examen
+  
+  @@index([userId])
+}
+
+model ExamAnswer {
+  id            String      @id @default(cuid())
+  examHistoryId String
+  questionId    String
+  choix         String
+  correct       Boolean
+  createdAt     DateTime    @default(now())
+  
+  examHistory   ExamHistory @relation(fields: [examHistoryId], references: [id], onDelete: Cascade)
+  question      Question    @relation(fields: [questionId], references: [id])
+  
+  @@index([examHistoryId])
+  @@index([questionId])
 }
 
 model QuestionProgress {
@@ -83,6 +125,7 @@ model User {
   progresses    QuestionProgress[]
   userProgress  UserProgress[]
   achievements  Achievement[]
+  examHistory   ExamHistory[]
 }
 
 model Account {

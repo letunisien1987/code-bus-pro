@@ -117,9 +117,25 @@ export default function JsonEditorPage() {
   }, [questions, searchTerm, filterProblematic, validationFilter, filterQuestions])
   
   const loadQuestions = async () => {
-    const response = await fetch('/api/json-editor')
-    const data = await response.json()
-    setQuestions(data)
+    try {
+      const response = await fetch('/api/json-editor')
+      
+      if (!response.ok) {
+        console.error('Erreur API:', response.status, response.statusText)
+        return
+      }
+      
+      const contentType = response.headers.get('content-type')
+      if (!contentType || !contentType.includes('application/json')) {
+        console.error('La réponse n\'est pas du JSON:', contentType)
+        return
+      }
+      
+      const data = await response.json()
+      setQuestions(data)
+    } catch (error) {
+      console.error('Erreur lors du chargement des questions:', error)
+    }
   }
 
   const groupQuestionsByQuestionnaire = (questions: Question[]) => {
@@ -165,8 +181,12 @@ export default function JsonEditorPage() {
         setEditingId(null)
         // Les questions sont déjà mises à jour dans l'état local
       } else {
-        const error = await response.json()
-        console.error('Erreur lors de la sauvegarde:', error.error || 'Erreur inconnue')
+        try {
+          const error = await response.json()
+          console.error('Erreur lors de la sauvegarde:', error.error || 'Erreur inconnue')
+        } catch (parseError) {
+          console.error('Erreur lors de la sauvegarde:', response.status, response.statusText)
+        }
       }
     } catch (error) {
       console.error('Erreur sauvegarde:', error)
@@ -232,8 +252,12 @@ export default function JsonEditorPage() {
           [question.id]: analysis
         }))
       } else {
-        const error = await response.json()
-        console.error(`Erreur lors de l'analyse IA:`, error.error || 'Erreur inconnue')
+        try {
+          const error = await response.json()
+          console.error(`Erreur lors de l'analyse IA:`, error.error || 'Erreur inconnue')
+        } catch (parseError) {
+          console.error(`Erreur lors de l'analyse IA:`, response.status, response.statusText)
+        }
       }
     } catch (error) {
       console.error('Erreur analyse IA:', error)
@@ -935,11 +959,31 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
   // Générer le chemin de l'image de réponse
   const getAnswerImagePath = () => {
     const questionnaire = question.questionnaire
-    return `/images/reponse/reponses ${questionnaire}.jpg`
+    // Utiliser les vrais noms de fichiers avec espaces
+    if (questionnaire === 1) {
+      return `images/reponse/Reponses ${questionnaire}.jpg`
+    } else {
+      return `images/reponse/reponses ${questionnaire}.jpg`
+    }
   }
   
   // Afficher l'image de réponse si hoveredOption existe
   const currentImagePath = hoveredOption ? getAnswerImagePath() : question.image_path
+  
+  // Validation de l'URL pour éviter les erreurs
+  const isValidImagePath = (path: string) => {
+    if (!path) return false
+    // Accepter tous les chemins qui commencent par 'images/'
+    if (path.startsWith('images/')) return true
+    try {
+      // Vérifier si c'est une URL valide ou un chemin relatif valide
+      if (path.startsWith('/')) return true
+      new URL(path)
+      return true
+    } catch {
+      return false
+    }
+  }
   
   // Calculer la position de zoom selon le numéro de question (1-40)
   const getImageZoomPosition = () => {
@@ -986,14 +1030,23 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                   className="w-[28rem] h-[21rem] md:w-[36rem] md:h-[27rem] lg:w-[48rem] lg:h-[36rem] border rounded-lg overflow-hidden bg-muted cursor-pointer relative hover:ring-2 hover:ring-primary/50 transition-all"
                   onClick={() => setIsImageZoomed(true)}
                 >
-                  <Image 
-                    src={currentImagePath} 
-                    alt={hoveredOption ? `Réponses Questionnaire ${question.questionnaire}` : `Question ${question.id}`}
-                    width={800}
-                    height={600}
-                    className="w-full h-full object-contain"
-                    style={getImageStyle()}
-                  />
+                  {isValidImagePath(currentImagePath) ? (
+                    <Image 
+                      src={currentImagePath.startsWith('/') ? currentImagePath : `/${currentImagePath}`} 
+                      alt={hoveredOption ? `Réponses Questionnaire ${question.questionnaire}` : `Question ${question.id}`}
+                      width={800}
+                      height={600}
+                      className="w-full h-full object-contain"
+                      style={getImageStyle()}
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground">
+                      <div className="text-center">
+                        <AlertCircle className="w-8 h-8 mx-auto mb-2" />
+                        <p className="text-sm">Image non disponible</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
               

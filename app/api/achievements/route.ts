@@ -2,10 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { ACHIEVEMENTS } from '@/lib/achievements/definitions'
 import { authOptions } from '@/lib/auth'
-import fs from 'fs'
-import path from 'path'
-
-const ACHIEVEMENTS_FILE = path.join(process.cwd(), 'data', 'achievements.json')
+import { prisma } from '@/lib/prisma'
 
 export async function GET(request: NextRequest) {
   const session = await getServerSession(authOptions)
@@ -16,18 +13,15 @@ export async function GET(request: NextRequest) {
   const userId = session.user.id
   
   try {
-    // Lire les trophées depuis le fichier JSON
-    let unlockedAchievements = []
-    if (fs.existsSync(ACHIEVEMENTS_FILE)) {
-      const data = fs.readFileSync(ACHIEVEMENTS_FILE, 'utf-8')
-      const allAchievements = JSON.parse(data)
-      unlockedAchievements = allAchievements.filter((a: any) => a.userId === userId)
-    }
+    // Lire les trophées depuis PostgreSQL
+    const unlockedAchievements = await prisma.achievement.findMany({
+      where: { userId }
+    })
     
     // Mapper avec les définitions
     const achievements = ACHIEVEMENTS.map(def => {
       const unlocked = unlockedAchievements.find(
-        (a: any) => a.type === def.type && a.level === def.level
+        a => a.type === def.type && a.level === def.level
       )
       return {
         ...def,

@@ -242,9 +242,7 @@ function ExamHistoryCard({ exam, onExamClick, questions }: { exam: ExamHistoryEn
   }
 
   // Vérifier si les questions sont encore disponibles
-  const questionsAvailable = exam.answers.some(answer => 
-    questions.find(q => q.id === answer.questionId)
-  )
+  const questionsAvailable = exam.answers && exam.answers.length > 0
 
   return (
     <Card 
@@ -689,7 +687,9 @@ export default function ExamPage() {
     const correct = examQuestions.filter(q => answers[q.id] === q.bonneReponse).length
     const incorrect = examQuestions.length - correct
     const score = Math.round((correct / examQuestions.length) * 100)
-    const timeSpent = (examQuestions.length * 60) - timeLeft
+    
+    // Calculer le temps réel passé sur l'examen
+    const timeSpent = examStartTime ? Math.floor((Date.now() - examStartTime) / 1000) : 0
 
     const examResult: ExamResult = {
       score,
@@ -1163,7 +1163,11 @@ export default function ExamPage() {
                   incorrect: exam.incorrect,
                   total: exam.total,
                   timeSpent: exam.timeSpent,
-                  answers: exam.answers
+                  answers: exam.answers.map((a: any) => ({
+                    questionId: a.questionId,
+                    answer: a.choix,  // Utiliser 'choix' au lieu de 'answer'
+                    correct: a.correct
+                  }))
                 }
                 
                 setExamQuestions(examQuestionsFromHistory)
