@@ -1172,6 +1172,7 @@ export default function ExamPage() {
             />
           </TabsContent>
         </Tabs>
+        </div>
       </div>
     )
   }
