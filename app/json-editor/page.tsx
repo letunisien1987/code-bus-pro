@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -76,20 +76,6 @@ export default function JsonEditorPage() {
     await saveQuestion(updatedQuestion)
   }
   
-  useEffect(() => {
-    loadQuestions()
-  }, [])
-  
-  useEffect(() => {
-    filterQuestions()
-  }, [questions, searchTerm, filterProblematic, validationFilter])
-  
-  const loadQuestions = async () => {
-    const response = await fetch('/api/json-editor')
-    const data = await response.json()
-    setQuestions(data)
-  }
-  
   const isProblematic = (q: Question) => {
     // Une question est problématique seulement si :
     // 1. Une option est complètement manquante (null/undefined)
@@ -100,7 +86,7 @@ export default function JsonEditorPage() {
            !q.bonne_reponse || q.bonne_reponse === ''
   }
   
-  const filterQuestions = () => {
+  const filterQuestions = useCallback(() => {
     let filtered = questions
     
     if (filterProblematic) {
@@ -120,6 +106,20 @@ export default function JsonEditorPage() {
     }
     
     setFilteredQuestions(filtered)
+  }, [questions, filterProblematic, validationFilter, searchTerm])
+
+  useEffect(() => {
+    loadQuestions()
+  }, [])
+  
+  useEffect(() => {
+    filterQuestions()
+  }, [questions, searchTerm, filterProblematic, validationFilter, filterQuestions])
+  
+  const loadQuestions = async () => {
+    const response = await fetch('/api/json-editor')
+    const data = await response.json()
+    setQuestions(data)
   }
 
   const groupQuestionsByQuestionnaire = (questions: Question[]) => {
@@ -779,7 +779,7 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
   // Synchroniser formData avec les changements de la question
   useEffect(() => {
     setFormData(question)
-  }, [question.id, question.numero_question, question.question, question.categorie, question["astag D/F/I "], question.enonce, question.bonne_reponse, question.options, question.image_path])
+  }, [question])
 
   // Fonctions pour l'édition directe
   const startEditing = (field: string, currentValue: string) => {

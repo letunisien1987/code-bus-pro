@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
@@ -404,30 +404,58 @@ export default function ExamPage() {
     }
   }, [isImageZoomed])
 
+  // Fonction de sauvegarde avec useCallback
+  const saveExamState = useCallback(() => {
+    if (state === 'running') {
+      const examState = {
+        examQuestions: examQuestions.map(q => ({
+          id: q.id,
+          questionnaire: q.questionnaire,
+          question: q.question,
+          categorie: q.categorie,
+          imagePath: q.imagePath,
+          optionA: q.optionA,
+          optionB: q.optionB,
+          optionC: q.optionC,
+          optionD: q.optionD,
+          bonneReponse: q.bonneReponse
+        })),
+        currentIndex,
+        answers,
+        timeLeft,
+        totalTime: examStartTime ? (Date.now() - examStartTime) / 1000 : 0,
+        markedForReview: Array.from(markedForReview),
+        startTime: examStartTime,
+        savedAt: Date.now()
+      }
+      localStorage.setItem('exam_state', JSON.stringify(examState))
+    }
+  }, [state, examQuestions, currentIndex, answers, timeLeft, examStartTime, markedForReview])
+
   // Sauvegarde automatique sur événements
   useEffect(() => {
     if (state === 'running' && Object.keys(answers).length > 0) {
       saveExamState()
     }
-  }, [answers])
+  }, [answers, saveExamState, state])
 
   useEffect(() => {
     if (state === 'running' && markedForReview.size > 0) {
       saveExamState()
     }
-  }, [markedForReview])
+  }, [markedForReview, saveExamState, state])
 
   useEffect(() => {
     if (state === 'running') {
       saveExamState()
     }
-  }, [currentIndex])
+  }, [currentIndex, saveExamState, state])
 
   useEffect(() => {
     if (state === 'running') {
       saveExamState()
     }
-  }, [state])
+  }, [state, saveExamState])
 
   // Protections contre les sorties accidentelles
   useEffect(() => {
@@ -541,7 +569,7 @@ export default function ExamPage() {
     if (questionPage !== currentPage && questionPage >= 0) {
       setCurrentPage(questionPage)
     }
-  }, [currentIndex]) // SEULEMENT currentIndex !
+  }, [currentIndex, examQuestions, isManualPageChange, answers, markedForReview, questionFilter, currentPage])
 
   // Reset du flag de changement manuel après un délai
   useEffect(() => {
@@ -750,32 +778,6 @@ export default function ExamPage() {
   }
 
   // Fonctions de sauvegarde et restauration
-  const saveExamState = () => {
-    if (state === 'running') {
-      const examState = {
-        examQuestions: examQuestions.map(q => ({
-          id: q.id,
-          questionnaire: q.questionnaire,
-          question: q.question,
-          categorie: q.categorie,
-          imagePath: q.imagePath,
-          optionA: q.optionA,
-          optionB: q.optionB,
-          optionC: q.optionC,
-          optionD: q.optionD,
-          bonneReponse: q.bonneReponse
-        })),
-        currentIndex,
-        answers,
-        timeLeft,
-        totalTime: examStartTime ? (Date.now() - examStartTime) / 1000 : 0,
-        markedForReview: Array.from(markedForReview),
-        startTime: examStartTime,
-        savedAt: Date.now()
-      }
-      localStorage.setItem('exam_state', JSON.stringify(examState))
-    }
-  }
 
   const restoreExamState = () => {
     const saved = localStorage.getItem('exam_state')
