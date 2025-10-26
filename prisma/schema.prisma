@@ -32,6 +32,7 @@ model Question {
   attempts      Attempt[]
   progresses    QuestionProgress[]
   userProgress  UserProgress[]
+  examAnswers   ExamAnswer[]
 }
 
 model Attempt {
@@ -40,9 +41,50 @@ model Attempt {
   questionId String
   choix      String
   correct    Boolean
+  timeSpent  Int?     // Temps en secondes pour cette tentative
   createdAt  DateTime @default(now())
   question   Question @relation(fields: [questionId], references: [id])
   user       User?    @relation(fields: [userId], references: [id])
+}
+
+model ExamHistory {
+  id                String   @id @default(cuid())
+  userId            String
+  score             Int
+  percentage        Float
+  total             Int
+  correct           Int
+  incorrect         Int
+  timeSpent         Int      // Temps en secondes
+  completedAt       DateTime @default(now())
+  
+  // Nouveaux champs de performance
+  performanceScore  Int?
+  accuracyScore     Int?
+  speedBonus        Int?
+  avgTimePerQuestion Int?
+  performanceBadge  String?  // 'gold', 'silver', 'bronze', 'standard'
+  
+  // Relation avec User
+  user              User     @relation(fields: [userId], references: [id])
+  answers           ExamAnswer[]  // Réponses détaillées de l'examen
+  
+  @@index([userId])
+}
+
+model ExamAnswer {
+  id            String      @id @default(cuid())
+  examHistoryId String
+  questionId    String
+  choix         String
+  correct       Boolean
+  createdAt     DateTime    @default(now())
+  
+  examHistory   ExamHistory @relation(fields: [examHistoryId], references: [id], onDelete: Cascade)
+  question      Question    @relation(fields: [questionId], references: [id])
+  
+  @@index([examHistoryId])
+  @@index([questionId])
 }
 
 model QuestionProgress {
@@ -82,6 +124,8 @@ model User {
   attempts      Attempt[]
   progresses    QuestionProgress[]
   userProgress  UserProgress[]
+  achievements  Achievement[]
+  examHistory   ExamHistory[]
 }
 
 model Account {
@@ -90,12 +134,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -134,5 +178,20 @@ model UserProgress {
   question              Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   @@unique([userId, questionId])
+  @@index([userId])
+}
+
+// Modèle pour les trophées et succès
+model Achievement {
+  id          String   @id @default(cuid())
+  userId      String
+  type        String   // "exam_perfect", "streak", "answers_streak", "category_master", etc.
+  level       String   // "bronze", "silver", "gold"
+  unlockedAt  DateTime @default(now())
+  value       Int      // Valeur associée (ex: 5 pour "5 en suite")
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, type, level])
   @@index([userId])
 }

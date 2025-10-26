@@ -696,7 +696,8 @@
       "c": "Avec une corde ou une barre"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_2/Question (2).jpg"
+    "image_path": "images/questionnaire_2/Question (2).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "157bed6e-f1e6-4c50-8e15-8ebfc70bff1d",
@@ -2435,279 +2436,296 @@
       "c": "Il s'agit de la suspension pneumatique"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_4/Question (24).jpg"
+    "image_path": "images/questionnaire_4/Question (24).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "0d3c3be5-a2ce-4e26-ac1d-23bb31e95190",
     "old_id": "4_0269",
     "numero_question": 25,
     "questionnaire": 4,
-    "question": "0269",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/162",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "0893",
+    "categorie": "Règles et prescriptions",
+    "astag D/F/I ": "15/143",
+    "enonce": "Avec quels feux, un témoin lumineux bien visible doit-il s'allumer simultanément?",
     "options": {
-      "a": "Le frein de stationnement est serré",
-      "b": "La pression de service des freins est insuffisante",
-      "c": "Un circuit de freinage ne fonctionne plus correctement"
+      "a": "Avec les feux de croisement",
+      "b": "Avec les feux de position, les feux de croisement et les clignoteurs",
+      "c": "Avec les feux de route, les feux de travail et les feux arrière de brouillard"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_4/Question (25).jpg"
+    "image_path": "images/questionnaire_4/Question (25).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "dfc55bde-f8b0-4d8a-8371-9b5554df6a16",
     "old_id": "4_0270",
     "numero_question": 26,
     "questionnaire": 4,
-    "question": "0270",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/163",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "1128",
+    "categorie": "Chargement",
+    "astag D/F/I ": "12/103",
+    "enonce": "Dans la soute à bagages le chargement doit être maintenu par des sangles:",
     "options": {
-      "a": "Un circuit de freinage ne fonctionne plus correctement",
-      "b": "Le frein de stationnement est serré",
-      "c": "La pression de service des freins est insuffisante"
+      "a": "devant assurer le 50 % du poids vers l'arrière",
+      "b": "devant assurer le 25 % du poids vers l'arrière",
+      "c": "devant assurer le 100 % du poids vers l'arrière"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_4/Question (26).jpg"
+    "image_path": "images/questionnaire_4/Question (26).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "b17a1c4d-d875-402f-a152-98a863b0a70e",
     "old_id": "4_0271",
     "numero_question": 27,
     "questionnaire": 4,
-    "question": "0271",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/164",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "0734",
+    "categorie": "Signalisation routière et vitesse",
+    "astag D/F/I ": "2/24",
+    "enonce": "",
     "options": {
-      "a": "La pression de service des freins est insuffisante",
-      "b": "Le frein de stationnement est serré",
-      "c": "Un circuit de freinage ne fonctionne plus correctement"
+      "a": "Le signal « Voie lente », oblige les conducteurs de véhicules lents à se ranger pour permettre à des véhicules plus rapides de les dépasser ; l'arrêt volontaire et le parcage sont interdits",
+      "b": "Le signal « Place d'évitement » désigne les places sur lesquelles les conducteurs de véhicules lents doivent se ranger pour permettre à des véhicules plus rapides de les dépasser ; l'arrêt volontaire et le parcage sont interdits",
+      "c": "Le signal « Place d'arrêt pour véhicule en panne », oblige les conducteurs de véhicules lents à s'arrêter pour laisser passer les véhicules plus rapides; l'arrêt volontaire et le parcage sont interdits"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_4/Question (27).jpg"
+    "image_path": "images/questionnaire_4/Question (27).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "50fb55a3-9b60-4350-9a79-a491791c6be3",
     "old_id": "4_0272",
     "numero_question": 28,
     "questionnaire": 4,
-    "question": "0272",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/165",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "3620",
+    "categorie": "Poids et mesures",
+    "astag D/F/I ": "11/86",
+    "enonce": "",
     "options": {
-      "a": "Un circuit de freinage ne fonctionne plus correctement",
-      "b": "Le frein de stationnement est serré",
-      "c": "La pression de service des freins est insuffisante"
+      "a": "La charge du timon fait partie de la charge utile du car",
+      "b": "La charge du timon est indépendante de la charge utile du car",
+      "c": "La charge du timon n'est valable que pour les remorques à deux essieux"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_4/Question (28).jpg"
+    "image_path": "images/questionnaire_4/Question (28).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "b85b4e41-1fa3-4d6b-ad99-0d74bba6eaa4",
     "old_id": "4_0273",
     "numero_question": 29,
     "questionnaire": 4,
-    "question": "0273",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/166",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "0796",
+    "categorie": "Roues et pneumatiques",
+    "astag D/F/I ": "13/119",
+    "enonce": "",
     "options": {
-      "a": "Le frein de stationnement est serré",
-      "b": "La pression de service des freins est insuffisante",
-      "c": "Un circuit de freinage ne fonctionne plus correctement"
+      "a": "Le pneu « A » n'est pas assez gonflé : le pneu « B » est trop gonflé : le pneu « C » est gonflé normalement",
+      "b": "Le pneu « A » est trop gonflé : le pneu « B » n'est pas assez gonflé : le pneu « C » est gonflé normalement",
+      "c": "Le pneu « A » est gonflé normalement : le pneu « B » est trop gonflé : le pneu « C » n'est pas assez gonflé"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_4/Question (29).jpg"
+    "image_path": "images/questionnaire_4/Question (29).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "caa0eaba-5207-45f9-bd23-7e71edab2a36",
     "old_id": "4_0274",
     "numero_question": 30,
     "questionnaire": 4,
-    "question": "0274",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/167",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "0955",
+    "categorie": "Règles et prescriptions",
+    "astag D/F/I ": "demandez explications",
+    "enonce": "De quoi faut-il tenir compte s'il commence à pleuvoir après une période de sécheresse?",
     "options": {
-      "a": "Un circuit de freinage ne fonctionne plus correctement",
-      "b": "Le frein de stationnement est serré",
-      "c": "La pression de service des freins est insuffisante"
+      "a": "Cela n'a pas de conséquences particulières",
+      "b": "Une dangereuse couche graisseuse peut apparaître sur la chaussée",
+      "c": "Les inconvénients arrivent seulement après une longue période de pluie"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_4/Question (30).jpg"
+    "image_path": "images/questionnaire_4/Question (30).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "8f7682ae-7b7b-4322-bf07-c11de5ff841d",
     "old_id": "4_0275",
     "numero_question": 31,
     "questionnaire": 4,
-    "question": "0275",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/168",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "1101",
+    "categorie": "Roues et pneumatiques",
+    "astag D/F/I ": "13/119",
+    "enonce": "Quelles sont les conséquence d'un pneumatique trop gonflé?",
     "options": {
-      "a": "Le frein de stationnement est serré",
-      "b": "La pression de service des freins est insuffisante",
-      "c": "Un circuit de freinage ne fonctionne plus correctement"
+      "a": "Il s'usera sur le milieu et rallonge la distance de freinage",
+      "b": "Cela augmente la consommation",
+      "c": "Cela permet une meilleure adhérence"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_4/Question (31).jpg"
+    "image_path": "images/questionnaire_4/Question (31).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "0f0e1391-8e7e-433d-8ec7-6a5355994895",
     "old_id": "4_0276",
     "numero_question": 32,
     "questionnaire": 4,
-    "question": "0276",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/169",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "0776",
+    "categorie": "Entretien",
+    "astag D/F/I ": "15/139",
+    "enonce": "",
     "options": {
-      "a": "Un circuit de freinage ne fonctionne plus correctement",
-      "b": "Le frein de stationnement est serré",
-      "c": "La pression de service des freins est insuffisante"
+      "a": "Il s'agit d'une batterie de 24 volts",
+      "b": "Il s'agit d'une batterie de 12 volts",
+      "c": "Il s'agit d'une batterie de 6 volts"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_4/Question (32).jpg"
+    "image_path": "images/questionnaire_4/Question (32).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "4c798a7a-ae2f-46fd-85bd-c740bd2784b4",
     "old_id": "4_0277",
     "numero_question": 33,
     "questionnaire": 4,
-    "question": "0277",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/170",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "3383",
+    "categorie": "Chargement",
+    "astag D/F/I ": "17/178",
+    "enonce": "Quelles mesures de sécurité sont à prendre avant le départ avec une remorque?",
     "options": {
-      "a": "Le frein de stationnement est serré",
-      "b": "La pression de service des freins est insuffisante",
-      "c": "Un circuit de freinage ne fonctionne plus correctement"
+      "a": "Vérifier uniquement l'éclairage du véhicule",
+      "b": "La remorque doit être accouplée correctement, les freins ainsi que l'éclairage doivent fonctionner parfaitement",
+      "c": "Avant le départ, il faut contrôler la pression des pneumatiques et le régulateur automatique en fonction de la charge"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_4/Question (33).jpg"
+    "image_path": "images/questionnaire_4/Question (33).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "f4bd207a-9f00-45ca-82c0-c61b2e7057e9",
     "old_id": "4_0278",
     "numero_question": 34,
     "questionnaire": 4,
-    "question": "0278",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/171",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "1114",
+    "categorie": "Moteur",
+    "astag D/F/I ": "16/158",
+    "enonce": "Que faire, lorsque le manomètre ou un témoin lumineux indique une température trop élevée du retarder?",
     "options": {
-      "a": "Un circuit de freinage ne fonctionne plus correctement",
-      "b": "Le frein de stationnement est serré",
-      "c": "La pression de service des freins est insuffisante"
+      "a": "Sortir la vitesse ou déclencher le retarder",
+      "b": "Enclencher un rapport de vitesse plus grand et de ce fait diminuer le débit du circuit de refroidissement ou déclencher le retarder",
+      "c": "Enclencher un rapport de vitesse plus petit et de ce fait augmenter le débit du circuit de refroidissement ou déclencher le retarder"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_4/Question (34).jpg"
+    "image_path": "images/questionnaire_4/Question (34).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "fa70d13f-8662-40aa-bbc4-43be812d908e",
     "old_id": "4_0279",
     "numero_question": 35,
     "questionnaire": 4,
-    "question": "0279",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/172",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "1111",
+    "categorie": "Règles et prescriptions",
+    "astag D/F/I ": "demandez explications",
+    "enonce": "Si en cours de route, le car prend soudain feu:",
     "options": {
-      "a": "Le frein de stationnement est serré",
-      "b": "La pression de service des freins est insuffisante",
-      "c": "Un circuit de freinage ne fonctionne plus correctement"
+      "a": "le conducteur évacuera ses passagers, il les mettra en sécurité et il avisera la police",
+      "b": "le conducteur utilisera l'extincteur pour essayer de sauver son car et il avisera la police",
+      "c": "le conducteur avertira immédiatement la police"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_4/Question (35).jpg"
+    "image_path": "images/questionnaire_4/Question (35).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "4acc2c05-a264-4fa0-9159-69ab56a6b7c7",
     "old_id": "4_0280",
     "numero_question": 36,
     "questionnaire": 4,
-    "question": "0280",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/173",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "1133",
+    "categorie": "Règles et prescriptions",
+    "astag D/F/I ": "6/39",
+    "enonce": "Sur cette semi-autoroute, je peux avec mon car, circuler à:",
     "options": {
-      "a": "Un circuit de freinage ne fonctionne plus correctement",
-      "b": "Le frein de stationnement est serré",
-      "c": "La pression de service des freins est insuffisante"
+      "a": "100 km/h si le poids total de ma remorque ne dépasse pas 3,5 t",
+      "b": "100 km/h si je ne tire pas de remorque",
+      "c": "100 km/h si le poids total de ma remorque ne dépasse pas 750 kg"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_4/Question (36).jpg"
+    "image_path": "images/questionnaire_4/Question (36).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "60899fb5-cd4c-42bd-ace4-ddfee437d66b",
     "old_id": "4_0281",
     "numero_question": 37,
     "questionnaire": 4,
-    "question": "0281",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/174",
+    "question": "0809",
+    "categorie": "Signalisation routière et vitesse",
+    "astag D/F/I ": "2/25",
     "enonce": "Que signifie ce témoin lumineux?",
     "options": {
-      "a": "Le frein de stationnement est serré",
-      "b": "La pression de service des freins est insuffisante",
-      "c": "Un circuit de freinage ne fonctionne plus correctement"
+      "a": "Sur les lignes en zigzag, je peux m'arrêter pour charger ou décharger des marchandises ainsi que pour laisser monter ou descendre des passagers, mais je n'ose pas parquer. Les transports publics ne doivent pas être gênés",
+      "b": "Sur les lignes en zigzag, je peux parquer mon véhicule pour un court instant, les transports publics ne doivent pas être gênés",
+      "c": "Sur les lignes en zigzag, je ne peux m'arrêter que pour laisser monter ou descendre des passagers, mais il est interdit de charger ou de décharger des marchandises. Les transports publics ne doivent pas être gênés"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_4/Question (37).jpg"
+    "image_path": "images/questionnaire_4/Question (37).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "7c2251d3-3ce2-4ea7-9aa8-a036812e2345",
     "old_id": "4_0282",
     "numero_question": 38,
     "questionnaire": 4,
-    "question": "0282",
+    "question": "0846",
     "categorie": "Freins",
-    "astag D/F/I ": "16/175",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "astag D/F/I ": "16/154",
+    "enonce": "Comment desserre-t-on le frein à ressort en utilisation normale?",
     "options": {
-      "a": "Un circuit de freinage ne fonctionne plus correctement",
-      "b": "Le frein de stationnement est serré",
-      "c": "La pression de service des freins est insuffisante"
+      "a": "Mécaniquement",
+      "b": "Hydrauliquement",
+      "c": "Avec l'air comprimé"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_4/Question (38).jpg"
+    "image_path": "images/questionnaire_4/Question (38).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "874ec19e-d7de-4ace-a07a-8311243e95b9",
     "old_id": "4_0283",
     "numero_question": 39,
     "questionnaire": 4,
-    "question": "0283",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/176",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "0993",
+    "categorie": "Poids et mesures",
+    "astag D/F/I ": "11/88",
+    "enonce": "Quel est le poids total autorisé pour un autocar à trois essieux?",
     "options": {
-      "a": "Le frein de stationnement est serré",
-      "b": "La pression de service des freins est insuffisante",
-      "c": "Un circuit de freinage ne fonctionne plus correctement"
+      "a": "18 tonnes",
+      "b": "25 tonnes",
+      "c": "26 tonnes"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_4/Question (39).jpg"
+    "image_path": "images/questionnaire_4/Question (39).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "eff2b1aa-d3f3-48a0-9a7d-596bc3e94c21",
     "old_id": "4_0284",
     "numero_question": 40,
     "questionnaire": 4,
-    "question": "0284",
-    "categorie": "Freins",
-    "astag D/F/I ": "16/177",
-    "enonce": "Que signifie ce témoin lumineux?",
+    "question": "1087",
+    "categorie": "Permis",
+    "astag D/F/I ": "Page VTS art. 43",
+    "enonce": "",
     "options": {
-      "a": "Un circuit de freinage ne fonctionne plus correctement",
-      "b": "Le frein de stationnement est serré",
-      "c": "La pression de service des freins est insuffisante"
+      "a": "Aucune charge n'est tolérée sur le toit de ce véhicule",
+      "b": "Une charge de 10 %, du poids total, est tolérée sur le toit de ce véhicule",
+      "c": "Une charge de 100 kg est tolérée sur le toit de ce véhicule"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_4/Question (40).jpg"
+    "image_path": "images/questionnaire_4/Question (40).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "66e4de9d-5be1-4c32-a3b6-403cb7944e5d",
@@ -2724,7 +2742,8 @@
       "c": "En cas de panne de cet ensemble, j'ai le droit sur de courtes distances, de remorquer l'ensemble"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_5/Question (1).jpg"
+    "image_path": "images/questionnaire_5/Question (1).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "5a31a720-1164-49d5-ba78-109a6f6ccf84",
@@ -2741,7 +2760,8 @@
       "c": "Les périodes durant lesquelles le salarié se trouve à son poste de travail, se tient à la disposition de l'employeur et exerce sa fonction ou ses activités"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_5/Question (2).jpg"
+    "image_path": "images/questionnaire_5/Question (2).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "7f204363-aab3-4e26-9491-ab0562778e8f",
@@ -2758,7 +2778,8 @@
       "c": "Non, excepté les cyclistes et les piétons si la visibilité est bonne"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_5/Question (3).jpg"
+    "image_path": "images/questionnaire_5/Question (3).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "08545097-7a33-429c-b622-4cc0a670dd8c",
@@ -2775,7 +2796,8 @@
       "c": "je peux encore conduire, avec précaution, jusqu'à mon lieu de stationnement"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_5/Question (4).jpg"
+    "image_path": "images/questionnaire_5/Question (4).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "2b75b1a8-a60e-4fa9-bfe7-0f7878c92f66",
@@ -2792,7 +2814,8 @@
       "c": "Il n'est pas possible de déterminer si le véhicule qui circule devant moi est un camion, un train-routier ou un véhicule articulé"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_5/Question (5).jpg"
+    "image_path": "images/questionnaire_5/Question (5).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "71c84831-746c-4f58-b210-29ad34731b3c",
@@ -2809,7 +2832,8 @@
       "c": "Si ce signal est seul, il indique au conducteur qu'il ne peut croiser qu'avec des véhicules de 2,30 m de large"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_5/Question (6).jpg"
+    "image_path": "images/questionnaire_5/Question (6).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "1f03c78f-b9c8-49cc-b69a-d186d820ea55",
@@ -2826,7 +2850,8 @@
       "c": "dans le cas le plus favorable, de 3,5 t. Une charge de 10 % au maximum du poids total peut être transmise par le timon au véhicule tracteur"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_5/Question (7).jpg"
+    "image_path": "images/questionnaire_5/Question (7).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "f6f91030-7018-4ebd-b317-de384cbf846c",
@@ -2843,7 +2868,8 @@
       "c": "Il n'existe aucune prescription relative au poids total de la remorque tirée par ce véhicule"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_5/Question (8).jpg"
+    "image_path": "images/questionnaire_5/Question (8).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "e85fe6d5-5214-4110-962a-cc52d74eb3db",
@@ -2996,7 +3022,8 @@
       "c": "Oui, les remorques à bagages sont exceptées"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_5/Question (17).jpg"
+    "image_path": "images/questionnaire_5/Question (17).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "ae5a1526-08cc-4292-9e3b-642f80bd5e7c",
@@ -3081,7 +3108,8 @@
       "c": "signifie qu'il s'agit d'un pneu rechapé"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_5/Question (22).jpg"
+    "image_path": "images/questionnaire_5/Question (22).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "2855761e-8045-45a5-80e2-536ccb7db9d2",
@@ -3268,7 +3296,8 @@
       "c": "doit se trouver en avant de l'essieu"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_5/Question (33).jpg"
+    "image_path": "images/questionnaire_5/Question (33).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "d7c8cde7-0ce7-4bd9-8659-0873af4c55b4",
@@ -3285,7 +3314,8 @@
       "c": "Ils servent au graissage central du véhicule et ils se trouvent à l'arrière du car"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_5/Question (34).jpg"
+    "image_path": "images/questionnaire_5/Question (34).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "2acb8e5c-6190-40b0-abe8-82663b174934",
@@ -3370,7 +3400,8 @@
       "c": "10 tonnes"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_5/Question (39).jpg"
+    "image_path": "images/questionnaire_5/Question (39).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "1f11b822-b282-4596-9686-29fee2edba40",
@@ -3404,7 +3435,8 @@
       "c": "S'arrêter sur le côté, arrêter de suite le moteur, ne pas quitter le véhicule, enclencher la radio"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_6/Question (1).jpg"
+    "image_path": "images/questionnaire_6/Question (1).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "a9339c5c-4abb-4011-95a5-35ef851eaeaf",
@@ -3421,7 +3453,8 @@
       "c": "Cet élément est un indicateur de charge moderne de l'essieu arrière du car"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_6/Question (2).jpg"
+    "image_path": "images/questionnaire_6/Question (2).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "101f153d-0c0e-40bd-9b21-930bf2e86fec",
@@ -3438,7 +3471,8 @@
       "c": "Cette signalisation indique au conducteur qu'il ne peut croiser que des véhicules larges de 2,30 m"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_6/Question (3).jpg"
+    "image_path": "images/questionnaire_6/Question (3).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "b46caad6-7126-4ce4-b22e-1c68cf20afba",
@@ -4118,7 +4152,8 @@
       "c": "Le passage est interdit aux autocars ainsi qu'à tous les véhicules et ensembles de véhicules qui, chargement compris, dépassent la longueur indiquée"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_7/Question (3).jpg"
+    "image_path": "images/questionnaire_7/Question (3).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "dc6717f0-0d83-4945-8993-6d7c287e3897",
@@ -4134,8 +4169,9 @@
       "b": "cylindre de frein",
       "c": "cylindre combiné \"Tristop\""
     },
-    "bonne_reponse": "a",
-    "image_path": "images/questionnaire_7/Question (4).jpg"
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_7/Question (4).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "4d45ce41-1f5a-4806-b8a1-e207b7a04f66",
@@ -6208,7 +6244,7 @@
       "b": "Oui, si ils sont équipés d'un tachygraphe analogique ou numérique",
       "c": "Oui, si le poids total ou le poids de l'ensemble dépasse 7.5 t"
     },
-    "bonne_reponse": "b",
+    "bonne_reponse": "c",
     "image_path": "images/questionnaire_10/Question (6).jpg"
   },
   {
@@ -6327,8 +6363,9 @@
       "b": "B",
       "c": "C"
     },
-    "bonne_reponse": "a",
-    "image_path": "images/questionnaire_10/Question (13).jpg"
+    "bonne_reponse": "b",
+    "image_path": "images/questionnaire_10/Question (13).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "6913fb99-90fc-4ad2-9e2b-84e40ef3fb0a",

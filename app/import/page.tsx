@@ -49,27 +49,55 @@ export default function ImportPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-6">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <Button variant="outline" onClick={() => router.push('/')}>
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Retour
-            </Button>
-            <h1 className="text-2xl font-bold text-foreground">Importer des données</h1>
+      {/* Hero Section avec image de fond */}
+      <div className="relative h-[25vh] min-h-[200px] flex items-center justify-center overflow-hidden">
+        {/* Image de fond */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: 'url(/images/bus1.jpg)',
+          }}
+        />
+        
+        {/* Overlay sombre */}
+        <div className="absolute inset-0 bg-black/50" />
+        
+        {/* Contenu centré */}
+        <div className="relative z-10 text-center text-white px-4">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="w-12 h-12 bg-primary/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+              <Upload className="h-6 w-6 text-primary" />
+            </div>
+            <h1 className="text-3xl md:text-4xl font-bold">
+              Import des données
+            </h1>
           </div>
+          <p className="text-lg opacity-90">
+            Importez vos questions et images dans l&apos;application
+          </p>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-8">
+        {/* Header avec bouton retour */}
+        <div className="flex items-center justify-between mb-8">
+          <Button variant="outline" onClick={() => router.push('/')} className="interactive-hover">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Retour à l&apos;accueil
+          </Button>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-6">
+        <div className="grid lg:grid-cols-2 gap-8">
           {/* Instructions */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5" />
-                Instructions
+          <Card className="card-elegant">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-primary/10 border-b border-primary/20">
+              <CardTitle className="flex items-center gap-3 text-xl">
+                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <FileText className="h-5 w-5 text-primary" />
+                </div>
+                Guide d&apos;importation
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-base">
                 Comment importer vos propres questions et images
               </CardDescription>
             </CardHeader>
@@ -190,100 +218,111 @@ export default function ImportPage() {
           </Card>
 
           {/* Import */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Upload className="h-5 w-5" />
+          <Card className="card-elegant">
+            <CardHeader className="bg-gradient-to-r from-green-500/5 to-green-500/10 border-b border-green-500/20">
+              <CardTitle className="flex items-center gap-3 text-xl">
+                <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
+                  <Upload className="h-5 w-5 text-green-500" />
+                </div>
                 Import des données
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-base">
                 Importez les questions depuis le fichier JSON
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="p-4 bg-primary/10 rounded-lg">
-                <div className="flex items-center gap-2 mb-2">
-                  <CheckCircle className="h-5 w-5 text-primary" />
-                  <span className="font-medium text-primary">Prêt pour l&apos;import</span>
+            <CardContent className="space-y-6">
+              {/* Statut d'import */}
+              <div className="p-6 bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl border border-primary/20">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
+                    <CheckCircle className="h-5 w-5 text-primary" />
+                  </div>
+                  <span className="font-semibold text-primary text-lg">Prêt pour l&apos;import</span>
                 </div>
-                <p className="text-sm text-primary">
-                  Le fichier <code className="bg-primary/20 px-2 py-1 rounded">config/data/questions.json</code> 
+                <p className="text-sm text-primary/80">
+                  Le fichier <code className="bg-primary/20 px-2 py-1 rounded text-primary font-mono">config/data/questions.json</code> 
                   est prêt à être importé dans la base de données.
                 </p>
               </div>
 
+              {/* Bouton d'import amélioré */}
               <Button 
                 onClick={handleImport} 
                 disabled={isImporting}
-                className="w-full"
+                className="w-full h-14 text-lg font-semibold bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-200"
                 size="lg"
               >
                 {isImporting ? (
                   <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground mr-2"></div>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-foreground mr-3"></div>
                     Import en cours...
                   </>
                 ) : (
                   <>
-                    <Upload className="h-4 w-4 mr-2" />
+                    <Upload className="h-5 w-5 mr-3" />
                     Importer les données
                   </>
                 )}
               </Button>
 
               {result && (
-                <div className={`p-4 rounded-lg ${
+                <div className={`p-6 rounded-xl border-2 ${
                   result.success 
-                    ? 'bg-primary/10 border border-primary/20' 
-                    : 'bg-destructive/10 border border-destructive/20'
+                    ? 'bg-gradient-to-r from-green-500/10 to-green-500/5 border-green-500/30' 
+                    : 'bg-gradient-to-r from-destructive/10 to-destructive/5 border-destructive/30'
                 }`}>
-                  <div className="flex items-center gap-2 mb-3">
-                    {result.success ? (
-                      <CheckCircle className="h-5 w-5 text-primary" />
-                    ) : (
-                      <AlertCircle className="h-5 w-5 text-destructive" />
-                    )}
-                    <span className={`font-medium ${
-                      result.success ? 'text-primary' : 'text-destructive'
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                      result.success ? 'bg-green-500/20' : 'bg-destructive/20'
+                    }`}>
+                      {result.success ? (
+                        <CheckCircle className="h-6 w-6 text-green-500" />
+                      ) : (
+                        <AlertCircle className="h-6 w-6 text-destructive" />
+                      )}
+                    </div>
+                    <span className={`font-bold text-lg ${
+                      result.success ? 'text-green-500' : 'text-destructive'
                     }`}>
                       {result.success ? 'Import réussi !' : 'Erreur d\'import'}
                     </span>
                   </div>
 
                   {result.success ? (
-                    <div className="space-y-3">
-                      {/* Statistiques d'import */}
-                      <div className="grid grid-cols-3 gap-3">
-                        <div className="bg-card p-3 rounded border border-border">
-                          <div className="text-2xl font-bold text-primary">{result.imported}</div>
-                          <div className="text-xs text-muted-foreground">Questions importées</div>
+                    <div className="space-y-6">
+                      {/* Statistiques d'import améliorées */}
+                      <div className="grid grid-cols-3 gap-4">
+                        <div className="bg-card p-4 rounded-xl border border-primary/20 shadow-sm">
+                          <div className="text-3xl font-bold text-primary mb-1">{result.imported}</div>
+                          <div className="text-sm text-muted-foreground font-medium">Questions importées</div>
                         </div>
-                        <div className="bg-card p-3 rounded border border-border">
-                          <div className="text-2xl font-bold text-secondary-foreground">{result.total}</div>
-                          <div className="text-xs text-muted-foreground">Questions dans le JSON</div>
+                        <div className="bg-card p-4 rounded-xl border border-border shadow-sm">
+                          <div className="text-3xl font-bold text-foreground mb-1">{result.total}</div>
+                          <div className="text-sm text-muted-foreground font-medium">Questions dans le JSON</div>
                         </div>
-                        <div className="bg-card p-3 rounded border border-border">
-                          <div className="text-2xl font-bold text-accent-foreground">{result.imagesFound}</div>
-                          <div className="text-xs text-muted-foreground">Images trouvées</div>
+                        <div className="bg-card p-4 rounded-xl border border-border shadow-sm">
+                          <div className="text-3xl font-bold text-foreground mb-1">{result.imagesFound}</div>
+                          <div className="text-sm text-muted-foreground font-medium">Images trouvées</div>
                         </div>
                       </div>
 
-                      {/* Message de succès */}
-                      <div className="bg-card p-3 rounded border border-border">
-                        <p className="text-sm text-primary font-medium">
+                      {/* Message de succès amélioré */}
+                      <div className="bg-gradient-to-r from-green-500/10 to-green-500/5 p-4 rounded-xl border border-green-500/20">
+                        <p className="text-base text-green-500 font-semibold mb-2">
                           ✅ {result.message}
                         </p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Les données ont été importées depuis <code className="bg-muted px-1 rounded">config/data/questions.json</code>
+                        <p className="text-sm text-muted-foreground">
+                          Les données ont été importées depuis <code className="bg-muted px-2 py-1 rounded font-mono">config/data/questions.json</code>
                         </p>
                       </div>
 
-                      {/* Bouton pour tester */}
+                      {/* Bouton pour tester amélioré */}
                       <Button 
                         onClick={() => router.push('/train')}
-                        className="w-full"
+                        className="w-full h-12 text-base font-semibold bg-green-500 hover:bg-green-600 text-white shadow-lg hover:shadow-xl transition-all duration-200"
                         variant="outline"
                       >
+                        <FileText className="h-5 w-5 mr-2" />
                         Tester les questions importées
                       </Button>
                     </div>

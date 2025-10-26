@@ -20,7 +20,7 @@ function AuthErrorContent() {
       case 'Verification':
         return 'Le token a expiré ou a déjà été utilisé'
       default:
-        return 'Une erreur inattendue s&apos;est produite'
+        return 'Une erreur inattendue s\'est produite'
     }
   }
 
@@ -54,7 +54,7 @@ function AuthErrorContent() {
             </Link>
             
             <Link href="/">
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full interactive-hover">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Retour à l&apos;accueil
               </Button>
@@ -68,23 +68,7 @@ function AuthErrorContent() {
 
 export default function AuthErrorPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <Card className="w-full max-w-md card-elegant">
-          <CardHeader className="text-center">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <div className="w-8 h-8 bg-destructive/10 rounded-full flex items-center justify-center">
-                <AlertCircle className="h-4 w-4 text-destructive" />
-              </div>
-              <CardTitle className="text-2xl">Erreur d&apos;authentification</CardTitle>
-            </div>
-            <CardDescription>
-              Chargement...
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      </div>
-    }>
+    <Suspense fallback={<div>Chargement...</div>}>
       <AuthErrorContent />
     </Suspense>
   )

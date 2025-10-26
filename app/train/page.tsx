@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import Image from 'next/image'
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
 import { Button } from '../../components/ui/button'
 import { Badge } from '../../components/ui/badge'
@@ -42,9 +43,16 @@ function TrainPageContent() {
   const [showFeedback, setShowFeedback] = useState(false)
   const [isImageZoomed, setIsImageZoomed] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [questionStartTime, setQuestionStartTime] = useState<number>(0)
 
   // Fonction pour extraire le numéro de l'image depuis le nom de fichier
   const extractImageNumber = (imagePath: string): number | null => {
+    // Vérification de sécurité pour éviter les erreurs si imagePath est undefined
+    if (!imagePath || typeof imagePath !== 'string') {
+      console.warn('extractImageNumber: imagePath is undefined or not a string:', imagePath);
+      return null;
+    }
+    
     const match = imagePath.match(/Question\s*\((\d+)\)\.jpg/i)
     return match ? parseInt(match[1], 10) : null
   }
@@ -54,9 +62,10 @@ function TrainPageContent() {
     return questions.filter(q => q.questionnaire === questionnaireNumber).length
   }
 
-  // Réinitialiser le zoom quand on change de question
+  // Réinitialiser le zoom et démarrer le timer quand on change de question
   useEffect(() => {
     setIsImageZoomed(false)
+    setQuestionStartTime(Date.now())
   }, [currentIndex])
 
   // Gestion de la touche Échap pour fermer le zoom
@@ -185,12 +194,15 @@ function TrainPageContent() {
 
   const saveAttempt = async (questionId: string, choix: string, correct: boolean) => {
     try {
+      // Calculer le temps passé sur cette question (en secondes)
+      const timeSpent = Math.floor((Date.now() - questionStartTime) / 1000)
+      
       await fetch('/api/attempts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ questionId, choix, correct })
+        body: JSON.stringify({ questionId, choix, correct, timeSpent })
       })
     } catch (error) {
       console.error('Erreur lors de l\'enregistrement de la tentative:', error)
@@ -247,7 +259,7 @@ function TrainPageContent() {
         <Card>
           <CardContent className="p-8">
             <p className="text-muted-foreground mb-4">Aucune question trouvée avec ces filtres.</p>
-            <Button onClick={resetFilters}>
+            <Button onClick={resetFilters} className="interactive-hover">
               Réinitialiser les filtres
             </Button>
           </CardContent>
@@ -298,12 +310,12 @@ function TrainPageContent() {
               <div className="mb-3 p-3 bg-background rounded-lg border">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium">Menu</h3>
-                  <Button variant="ghost" size="sm" onClick={() => setShowMenu(false)}>
+                  <Button variant="ghost" size="sm" onClick={() => setShowMenu(false)} className="interactive-hover">
                     <X className="h-4 w-4" />
                   </Button>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
-                  <Button variant="outline" size="sm" onClick={() => router.push('/')}>
+                  <Button variant="outline" size="sm" onClick={() => router.push('/')} className="interactive-hover">
                     <ArrowLeft className="h-4 w-4 mr-1" />
                     Accueil
                   </Button>
@@ -314,7 +326,7 @@ function TrainPageContent() {
                   >
                     {smartMode ? "🧠 Intelligent" : "📚 Standard"}
                   </Button>
-                  <Button variant="outline" size="sm" onClick={handleReset}>
+                  <Button variant="outline" size="sm" onClick={handleReset} className="interactive-hover">
                     <RotateCcw className="h-4 w-4 mr-1" />
                     Reset
                   </Button>
@@ -326,7 +338,7 @@ function TrainPageContent() {
               <div className="p-3 bg-background rounded-lg border">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium">Filtres</h3>
-                  <Button variant="ghost" size="sm" onClick={() => setShowFilters(false)}>
+                  <Button variant="ghost" size="sm" onClick={() => setShowFilters(false)} className="interactive-hover">
                     <X className="h-4 w-4" />
                   </Button>
                 </div>
@@ -390,9 +402,11 @@ function TrainPageContent() {
           <div className="w-full md:w-1/2">
             <Card className="h-48 md:h-full card-elegant relative">
               <CardContent className="p-2 md:p-4 h-full flex items-center justify-center">
-                <img 
+                <Image 
                   src={getImageUrlSync(currentQuestion.imagePath)} 
                   alt={`Question ${currentQuestion.question}`}
+                  width={800}
+                  height={600}
                   className="max-w-full max-h-48 md:max-h-full object-contain cursor-pointer transition-all duration-300"
                   onClick={() => setIsImageZoomed(!isImageZoomed)}
                 />
@@ -403,7 +417,7 @@ function TrainPageContent() {
                 </div>
                 
                 {/* Badge de notification pour le questionnaire (position sûre) */}
-                <div className="absolute top-1 right-1 bg-yellow-500 rounded-full w-10 h-10 flex items-center justify-center text-[14px] font-black text-white border-2 border-white shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300 z-10">
+                <div className="badge-questionnaire-absolute">
                   {currentQuestion.questionnaire}
                 </div>
               </CardContent>
@@ -419,9 +433,11 @@ function TrainPageContent() {
                     className="max-w-[90vw] max-h-[90vh] flex items-center justify-center relative"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <img 
+                    <Image 
                       src={getImageUrlSync(currentQuestion.imagePath)} 
                       alt={`Question ${currentQuestion.question} - Zoom`}
+                      width={1200}
+                      height={900}
                       className="max-w-full max-h-full object-contain cursor-pointer"
                       onClick={() => setIsImageZoomed(false)}
                     />
@@ -436,7 +452,7 @@ function TrainPageContent() {
                     
                     {/* Bouton de fermeture */}
                     <button
-                      className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold transition-colors"
+                      className="btn-close-modal"
                       onClick={() => setIsImageZoomed(false)}
                       aria-label="Fermer le zoom"
                     >
@@ -497,7 +513,7 @@ function TrainPageContent() {
                             ? 'question-option-incorrect' 
                             : isSelected 
                             ? 'question-option-selected' 
-                            : 'bg-muted border-border hover:bg-muted/50 hover:text-accent-foreground'
+                            : 'bg-muted border-border hover:bg-muted/50 interactive-hover'
                         }`}
                         onClick={() => !showFeedback && handleAnswerSelect(answerKey)}
                       >
@@ -569,7 +585,7 @@ function TrainPageContent() {
               <Button 
                 onClick={handleNext}
                 disabled={currentIndex === filteredQuestions.length - 1}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 interactive-hover"
               >
                 Suivant
                 <ArrowRight className="h-4 w-4" />
@@ -594,7 +610,7 @@ function TrainPageContent() {
             <Button 
               onClick={handleNext}
               disabled={currentIndex === filteredQuestions.length - 1}
-              className="flex items-center gap-2 flex-1"
+              className="flex items-center gap-2 flex-1 interactive-hover"
             >
               Suivant
               <ArrowRight className="h-4 w-4" />

@@ -6,6 +6,22 @@
    🎨 VARIABLES CSS PRINCIPALES (THÈME)
    ======================================== */
 
+/* Animation pour les notifications de trophées */
+@keyframes slide-down {
+  from {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.5s ease-out;
+}
+
 @layer base {
   /* Mode clair - Variables de couleurs principales */
   :root {
@@ -19,9 +35,9 @@
     
     /* Couleurs principales */
     --primary: 47 100% 50%;           /* 🟡 JAUNE VIF #fec800 - Actions principales */
-    --primary-foreground: 26 83.3% 14.1%; /* Texte sur fond jaune */
+    --primary-foreground: 0 0% 0%;   /* Texte noir sur fond jaune - TOUJOURS VISIBLE */
     --secondary: 47 100% 50%;         /* 🟡 JAUNE VIF #fec800 - Sélections */
-    --secondary-foreground: 26 83.3% 14.1%; /* Texte sur fond jaune */
+    --secondary-foreground: 0 0% 0%;  /* Texte noir sur fond jaune - TOUJOURS VISIBLE */
     
     /* Couleurs neutres */
     --muted: 47 13% 91%;         /* Fond neutre (gris très clair avec teinte jaune plus visible) */
@@ -29,7 +45,7 @@
     
     /* Couleurs d'accent */
     --accent: 47 100% 50%;            /* 🟡 JAUNE VIF #fec800 - Sélections, focus */
-    --accent-foreground: 26 83.3% 14.1%; /* Texte sur fond accent */
+    --accent-foreground: 0 0% 0%;     /* Texte noir sur fond jaune - TOUJOURS VISIBLE */
     
     /* Couleurs sémantiques */
     --destructive: 0 72% 51%;         /* 🔴 ROUGE - Erreurs, échecs */
@@ -46,6 +62,12 @@
     --input: 240 5.9% 90%;            /* Couleur des inputs */
     --ring: 47 100% 50%;              /* Couleur du ring de focus (jaune vif) */
     --radius: 0.5rem;                 /* Rayon des bordures arrondies */
+    
+    /* Variables supplémentaires pour cohérence */
+    --text-on-primary: 0 0% 0%;       /* Noir sur jaune - TOUJOURS VISIBLE */
+    --text-on-card: 240 10% 3.9%;     /* Texte sur carte (gris foncé) */
+    --badge-questionnaire: 47 100% 50%; /* Jaune pour badge questionnaire */
+    --badge-questionnaire-fg: 0 0% 0%; /* Noir sur badge jaune */
   }
 
   /* Mode sombre - Variables de couleurs principales */
@@ -60,9 +82,9 @@
     
     /* Couleurs principales */
     --primary: 47 100% 50%;           /* 🟡 JAUNE VIF #fec800 - Actions principales */
-    --primary-foreground: 240 10% 3.9%; /* Texte très sombre sur fond jaune */
+    --primary-foreground: 0 0% 0%;   /* Texte noir sur fond jaune - TOUJOURS VISIBLE */
     --secondary: 47 100% 50%;         /* 🟡 JAUNE VIF #fec800 - Sélections */
-    --secondary-foreground: 240 10% 3.9%; /* Texte très sombre sur fond jaune */
+    --secondary-foreground: 0 0% 0%;  /* Texte noir sur fond jaune - TOUJOURS VISIBLE */
     
     /* Couleurs neutres */
     --muted: 240 3.7% 15.9%;          /* Fond neutre (gris foncé) */
@@ -70,7 +92,7 @@
     
     /* Couleurs d'accent */
     --accent: 47 100% 50%;            /* 🟡 JAUNE VIF #fec800 - Sélections, focus */
-    --accent-foreground: 240 10% 3.9%; /* Texte très sombre sur fond accent */
+    --accent-foreground: 0 0% 0%;     /* Texte noir sur fond jaune - TOUJOURS VISIBLE */
     
     /* Couleurs sémantiques */
     --destructive: 0 84.2% 60.2%;     /* 🔴 ROUGE - Erreurs, échecs (plus clair) */
@@ -86,6 +108,12 @@
     --border: 240 3.7% 15.9%;         /* Couleur des bordures (gris foncé) */
     --input: 240 3.7% 15.9%;          /* Couleur des inputs (gris foncé) */
     --ring: 47 100% 50%;             /* Couleur du ring de focus (jaune vif) */
+    
+    /* Variables supplémentaires pour cohérence */
+    --text-on-primary: 0 0% 0%;       /* Noir sur jaune - TOUJOURS VISIBLE */
+    --text-on-card: 0 0% 98%;         /* Texte sur carte (blanc) */
+    --badge-questionnaire: 47 100% 50%; /* Jaune pour badge questionnaire */
+    --badge-questionnaire-fg: 0 0% 0%; /* Noir sur badge jaune */
   }
 }
 
@@ -498,4 +526,202 @@
   90% {
     transform: translateY(-2px);
   }
+}
+
+/* ========================================
+   🎨 CLASSES UTILITAIRES DE COULEURS
+   ======================================== */
+
+@layer utilities {
+  /* ========================================
+     🎯 BOUTONS STANDARDISÉS
+     ======================================== */
+  
+  /* Bouton primaire (jaune) - TOUJOURS avec texte noir */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
+  }
+  
+  /* Bouton secondaire (gris) - Texte adaptatif */
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+  }
+  
+  /* Bouton de succès (vert) - Texte blanc */
+  .btn-success {
+    @apply bg-success text-success-foreground hover:bg-success/90;
+  }
+  
+  /* Bouton de danger (rouge) - Texte blanc */
+  .btn-danger {
+    @apply bg-destructive text-destructive-foreground hover:bg-destructive/90;
+  }
+  
+  /* Bouton d'avertissement (orange) - Texte adaptatif */
+  .btn-warning {
+    @apply bg-warning text-warning-foreground hover:bg-warning/90;
+  }
+  
+  /* Bouton d'information (bleu) - Texte blanc */
+  .btn-info {
+    @apply bg-info text-info-foreground hover:bg-info/90;
+  }
+  
+  /* Bouton fantôme - Transparent avec texte adaptatif */
+  .btn-ghost {
+    @apply hover:bg-muted/50 hover:text-foreground;
+  }
+
+  /* ========================================
+     🏷️ BADGES STANDARDISÉS
+     ======================================== */
+  
+  /* Badge de questionnaire (jaune) - Texte noir */
+  .badge-questionnaire {
+    @apply bg-primary text-primary-foreground border border-primary/20;
+  }
+  
+  /* Badge de statut - Succès (vert) */
+  .badge-status-success {
+    @apply bg-green-500 text-white border border-green-500/20;
+  }
+  
+  /* Badge de statut - Erreur (rouge) */
+  .badge-status-error {
+    @apply bg-red-500 text-white border border-red-500/20;
+  }
+  
+  /* Badge de statut - Avertissement (orange) */
+  .badge-status-warning {
+    @apply bg-orange-500 text-white border border-orange-500/20;
+  }
+  
+  /* Badge de statut - Information (bleu) */
+  .badge-status-info {
+    @apply bg-blue-500 text-white border border-blue-500/20;
+  }
+  
+  /* Badge de numéro de question (bleu) */
+  .badge-question-number {
+    @apply bg-blue-500 text-white border border-blue-500/20;
+  }
+
+  /* ========================================
+     📝 TEXTES STANDARDISÉS
+     ======================================== */
+  
+  /* Texte toujours visible sur fond primaire (jaune) */
+  .text-primary-safe {
+    @apply text-primary-foreground;
+  }
+  
+  /* Texte optimisé pour fond sombre */
+  .text-on-dark {
+    @apply text-foreground;
+  }
+  
+  /* Texte optimisé pour fond clair */
+  .text-on-light {
+    @apply text-foreground;
+  }
+  
+  /* Texte pour labels - Toujours visible */
+  .text-label {
+    @apply text-foreground;
+  }
+  
+  /* Texte pour labels secondaires */
+  .text-label-muted {
+    @apply text-muted-foreground;
+  }
+
+  /* ========================================
+     🎨 FONDS STANDARDISÉS
+     ======================================== */
+  
+  /* Fond de carte avec contraste garanti */
+  .bg-card-safe {
+    @apply bg-card text-card-foreground;
+  }
+  
+  /* Fond de mise en évidence */
+  .bg-highlight {
+    @apply bg-accent/10 border border-accent/20;
+  }
+  
+  /* Fond de notification */
+  .bg-notification {
+    @apply bg-primary/10 border border-primary/20;
+  }
+
+         /* ========================================
+            🔧 CLASSES SPÉCIALISÉES
+            ======================================== */
+         
+         /* Badge de questionnaire avec position absolue */
+         .badge-questionnaire-absolute {
+           @apply absolute top-1 right-1 bg-primary text-primary-foreground rounded-full w-10 h-10 flex items-center justify-center text-[14px] font-black border-2 border-white shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300 z-10;
+         }
+         
+         /* Bouton de fermeture pour modales */
+         .btn-close-modal {
+           @apply absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold transition-colors;
+         }
+         
+         /* Zone de contrôle d'image */
+         .image-control-overlay {
+           @apply absolute top-2 right-2 bg-black/70 text-white px-3 py-2 rounded text-xs font-medium;
+         }
+
+         /* ========================================
+            🖱️ INTERACTIONS ET HOVER
+            ======================================== */
+         
+         /* Texte cliquable avec hover jaune (SEULEMENT si pas sur fond jaune) */
+         .text-clickable {
+           @apply cursor-pointer transition-colors duration-200;
+         }
+         
+         .text-clickable:hover {
+           @apply text-primary;
+         }
+         
+         /* Liens avec hover jaune (SEULEMENT si pas sur fond jaune) */
+         .link-hover-yellow {
+           @apply text-foreground hover:text-primary transition-colors duration-200;
+         }
+         
+         /* Boutons de navigation avec hover jaune (SEULEMENT si pas sur fond jaune) */
+         .nav-link-hover {
+           @apply text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors duration-200;
+         }
+         
+         .nav-link-hover:hover {
+           @apply text-primary !important; /* Force le texte jaune */
+         }
+         
+         /* Éléments interactifs avec hover jaune (SEULEMENT si pas sur fond jaune) */
+         .interactive-hover {
+           @apply cursor-pointer hover:text-primary transition-colors duration-200;
+         }
+         
+         .interactive-hover:hover {
+           @apply text-primary !important; /* Force le texte jaune */
+         }
+         
+         /* ========================================
+            🚫 EXCLUSIONS - Boutons sur fond jaune
+            ======================================== */
+         
+         /* Boutons avec fond jaune - PAS de changement au survol */
+         button.bg-primary:hover,
+         .bg-primary:hover,
+         [class*="bg-primary"]:hover {
+           @apply text-primary-foreground !important; /* Force le texte noir */
+         }
+         
+         /* Badges avec fond jaune - PAS de changement au survol */
+         .badge-questionnaire:hover {
+           @apply text-primary-foreground !important; /* Force le texte noir */
+         }
 }

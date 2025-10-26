@@ -5,7 +5,7 @@ Ce guide explique comment mettre à jour le fichier `questions.json` sur Vercel 
 ## 🎯 Vue d'ensemble
 
 Pour mettre à jour les questions sur votre application déployée :
-1. **Modifier** le fichier `data/questions.json` 
+1. **Modifier** le fichier `config/config/data/questions.json` 
 2. **Déployer** automatiquement via Vercel
 3. **Importer** les données via l'API
 
@@ -28,7 +28,7 @@ Pour mettre à jour les questions sur votre application déployée :
    - Cliquez sur la branche `vercel-prod` (en haut à gauche)
 
 3. **Modifier le fichier**
-   - Naviguez vers `data/questions.json`
+   - Naviguez vers `config/data/questions.json`
    - Cliquez sur l'icône crayon ✏️ "Edit this file"
 
 4. **Éditer le contenu**
@@ -75,16 +75,16 @@ Pour mettre à jour les questions sur votre application déployée :
 3. **Modifier le fichier**
    ```bash
    # Utilisez votre éditeur préféré
-   nano data/questions.json
+   nano config/data/questions.json
    # ou
-   vim data/questions.json
+   vim config/data/questions.json
    # ou
-   code data/questions.json
+   code config/data/questions.json
    ```
 
 4. **Ajouter les modifications**
    ```bash
-   git add data/questions.json
+   git add config/data/questions.json
    ```
 
 5. **Commiter**
@@ -121,7 +121,7 @@ Pour mettre à jour les questions sur votre application déployée :
    - Cliquez sur la branche `vercel-prod`
 
 3. **Ouvrir le fichier**
-   - Naviguez vers `data/questions.json`
+   - Naviguez vers `config/data/questions.json`
    - Cliquez pour ouvrir
 
 4. **Modifier le contenu**

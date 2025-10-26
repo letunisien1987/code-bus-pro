@@ -91,7 +91,7 @@ Le build devrait maintenant réussir ! ✅
    ```
 3. Cela va :
    - Créer toutes les tables
-   - Importer les questions depuis `data/questions.json`
+   - Importer les questions depuis `config/data/questions.json`
    - Corriger les chemins d'images
 
 **Option B - Via Vercel CLI (Avancé)**
@@ -118,14 +118,15 @@ npx prisma db seed
 
 ### 8️⃣ Vérifier le déploiement
 
-1. Ouvrez l'URL de votre application
-2. Vérifiez que les pages fonctionnent :
-   - **Page d'accueil** : `/`
-   - **Tableau de bord** : `/dashboard`
+1. Ouvrez l’URL de votre application déployée.
+2. Vérifiez le bon fonctionnement des pages principales :
+   - **Accueil** : `/`
+   - **Dashboard** : `/dashboard`
    - **Entraînement** : `/train`
    - **Examens** : `/exam`
    - **Import** : `/import`
-3. Testez une question pour vérifier que l'image s'affiche
+   - **Paramètres** (inclut succès et import) : `/settings`
+3. Cliquez sur une question pour vérifier que l’image s’affiche correctement et que les informations de succès/import sont visibles dans la page paramètres.
 
 ---
 

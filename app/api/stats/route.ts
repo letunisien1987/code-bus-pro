@@ -1,224 +1,253 @@
-import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma-singleton'
+import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    // Récupérer toutes les questions avec leurs tentatives
-    const questions = await prisma.question.findMany({
-      include: { 
+    console.log('🔄 Début du calcul des statistiques...')
+    
+    // Récupérer l'utilisateur connecté
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
+    }
+
+    const userId = session.user.id
+    console.log('🔍 Recherche de l\'utilisateur connecté:', userId)
+    
+    // Récupérer l'utilisateur depuis PostgreSQL avec ses tentatives
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
         attempts: {
-          orderBy: {
-            createdAt: 'desc'
+          include: {
+            question: true
+          }
+        },
+        progresses: {
+          include: {
+            question: true
           }
         }
       }
     })
 
-    // Calculer les statistiques globales
-    const totalQuestions = questions.length
-    const questionsWithAttempts = questions.filter(q => q.attempts.length > 0)
-    const attemptedQuestions = questionsWithAttempts.length
-    const totalAttempts = questions.reduce((sum, q) => sum + q.attempts.length, 0)
-    const correctAttempts = questions.reduce((sum, q) => 
-      sum + q.attempts.filter(a => a.correct).length, 0
-    )
-    const averageScore = totalAttempts > 0 
-      ? Math.round((correctAttempts / totalAttempts) * 100) 
-      : 0
-
-    // Calculer le temps d'étude (estimation: 1 minute par tentative)
-    const studyTime = Math.round((totalAttempts / 60) * 10) / 10
-
-    // Calculer la série (jours consécutifs avec au moins une tentative)
-    const dateSet = new Set(
-      questions.flatMap(q => 
-        q.attempts.map(a => new Date(a.createdAt).toDateString())
+    if (!user) {
+      console.log('❌ Utilisateur non trouvé dans PostgreSQL')
+      return NextResponse.json(
+        { error: 'Utilisateur non trouvé' },
+        { status: 404 }
       )
-    )
-    const uniqueDates = Array.from(dateSet).sort().reverse()
-    
-    let streak = 0
-    const today = new Date().toDateString()
-    const yesterday = new Date(Date.now() - 86400000).toDateString()
-    
-    if (uniqueDates.length > 0) {
-      if (uniqueDates[0] === today || uniqueDates[0] === yesterday) {
-        streak = 1
-        for (let i = 1; i < uniqueDates.length; i++) {
-          const prevDate = new Date(uniqueDates[i - 1])
-          const currDate = new Date(uniqueDates[i])
-          const diffDays = Math.round((prevDate.getTime() - currDate.getTime()) / 86400000)
-          if (diffDays === 1) {
-            streak++
-          } else {
-            break
-          }
-        }
-      }
     }
 
+    console.log('✅ Utilisateur trouvé:', user.email)
+    console.log('📊 Tentatives:', user.attempts.length)
+    console.log('📈 Progressions:', user.progresses.length)
+
+    // Récupérer toutes les questions
+    const allQuestions = await prisma.question.findMany()
+
+    // Calculer les statistiques globales
+    const totalQuestions = allQuestions.length
+    const totalAttempts = user.attempts.length
+    const correctAttempts = user.attempts.filter(a => a.correct).length
+    const attemptedQuestions = new Set(user.attempts.map(a => a.questionId)).size
+    const averageScore = totalAttempts > 0 ? Math.round((correctAttempts / totalAttempts) * 100) : 0
+    // Calculer le temps réel d'étude (entraînement + examens)
+    const trainingTime = user.attempts.reduce((total, attempt) => 
+      total + (attempt.timeSpent || 0), 0
+    ) // Temps d'entraînement en secondes
+    
+    // Temps d'examens depuis PostgreSQL au lieu de JSON
+    let examTime = 0
+    try {
+      const examHistory = await prisma.examHistory.findMany({
+        where: { userId }
+      })
+      
+      examTime = examHistory.reduce((total, exam) => 
+        total + (exam.timeSpent || 0), 0
+      )
+    } catch (error) {
+      console.error('Erreur lecture exam-history:', error)
+    }
+    
+    // Temps total en heures (arrondi)
+    const studyTime = Math.round((trainingTime + examTime) / 3600)
+    const streak = 0 // À implémenter si nécessaire
+
     // Calculer les statistiques par catégorie
-    const categoryMap = new Map<string, {
+    const categoryStats = new Map<string, {
       total: number
       attempted: number
-      attempts: number
       correct: number
-      notSeen: number
-      toReview: number
       mastered: number
+      toReview: number
+      notSeen: number
     }>()
 
-    questions.forEach(q => {
+    allQuestions.forEach(q => {
       const category = q.categorie || 'Non catégorisé'
-      if (!categoryMap.has(category)) {
-        categoryMap.set(category, {
+      if (!categoryStats.has(category)) {
+        categoryStats.set(category, {
           total: 0,
           attempted: 0,
-          attempts: 0,
           correct: 0,
-          notSeen: 0,
+          mastered: 0,
           toReview: 0,
-          mastered: 0
+          notSeen: 0
         })
       }
-      const stats = categoryMap.get(category)!
+      const stats = categoryStats.get(category)!
       stats.total++
-      
-      const attempts = q.attempts.length
-      const correctCount = q.attempts.filter(a => a.correct).length
-      const successRate = attempts > 0 ? (correctCount / attempts) : 0
+    })
 
-      if (attempts === 0) {
-        stats.notSeen++
-      } else {
+    // Analyser les tentatives par catégorie
+    user.attempts.forEach(attempt => {
+      const category = attempt.question.categorie || 'Non catégorisé'
+      const stats = categoryStats.get(category)
+      if (stats) {
         stats.attempted++
-        stats.attempts += attempts
-        stats.correct += correctCount
-        
-        if (attempts >= 2 && successRate >= 0.8) {
+        if (attempt.correct) {
+          stats.correct++
+        }
+      }
+    })
+
+    // Analyser les progressions par catégorie
+    user.progresses.forEach(progress => {
+      const category = progress.question.categorie || 'Non catégorisé'
+      const stats = categoryStats.get(category)
+      if (stats) {
+        if (progress.status === 'mastered') {
           stats.mastered++
-        } else {
+        } else if (progress.status === 'to_review') {
           stats.toReview++
         }
       }
     })
 
-    const byCategory = Array.from(categoryMap.entries()).map(([name, stats]) => ({
+    const byCategory = Array.from(categoryStats.entries()).map(([name, stats]) => ({
       name,
       total: stats.total,
       attempted: stats.attempted,
       correct: stats.correct,
-      percentage: stats.attempts > 0 
-        ? Math.round((stats.correct / stats.attempts) * 100) 
-        : 0,
-      notSeen: stats.notSeen,
+      percentage: stats.attempted > 0 ? Math.round((stats.correct / stats.attempted) * 100) : 0,
+      notSeen: stats.total - stats.attempted,
       toReview: stats.toReview,
       mastered: stats.mastered
     })).sort((a, b) => b.total - a.total)
 
     // Calculer les statistiques par questionnaire
-    const questionnaireMap = new Map<number, {
+    const questionnaireStats = new Map<number, {
       total: number
       attempted: number
-      attempts: number
       correct: number
     }>()
 
-    questions.forEach(q => {
-      const qNum = q.questionnaire
-      if (!questionnaireMap.has(qNum)) {
-        questionnaireMap.set(qNum, {
+    allQuestions.forEach(q => {
+      if (!questionnaireStats.has(q.questionnaire)) {
+        questionnaireStats.set(q.questionnaire, {
           total: 0,
           attempted: 0,
-          attempts: 0,
           correct: 0
         })
       }
-      const stats = questionnaireMap.get(qNum)!
+      const stats = questionnaireStats.get(q.questionnaire)!
       stats.total++
-      
-      if (q.attempts.length > 0) {
+    })
+
+    user.attempts.forEach(attempt => {
+      const stats = questionnaireStats.get(attempt.question.questionnaire)
+      if (stats) {
         stats.attempted++
-        stats.attempts += q.attempts.length
-        stats.correct += q.attempts.filter(a => a.correct).length
+        if (attempt.correct) {
+          stats.correct++
+        }
       }
     })
 
-    const byQuestionnaire = Array.from(questionnaireMap.entries()).map(([number, stats]) => ({
+    const byQuestionnaire = Array.from(questionnaireStats.entries()).map(([number, stats]) => ({
       number,
       total: stats.total,
       attempted: stats.attempted,
-      percentage: stats.attempts > 0 
-        ? Math.round((stats.correct / stats.attempts) * 100) 
-        : 0
+      percentage: stats.attempted > 0 ? Math.round((stats.correct / stats.attempted) * 100) : 0
     })).sort((a, b) => a.number - b.number)
 
     // Calculer les statistiques par question
-    const byQuestion = questions.map(q => {
-      const attempts = q.attempts.length
-      const correctAttempts = q.attempts.filter(a => a.correct).length
-      const successRate = attempts > 0 ? Math.round((correctAttempts / attempts) * 100) : 0
-      
-      let status: 'not_seen' | 'to_review' | 'mastered' = 'not_seen'
-      if (attempts > 0) {
-        if (attempts >= 2 && successRate >= 80) {
-          status = 'mastered'
-        } else {
-          status = 'to_review'
-        }
-      }
+    const questionStats = new Map<string, {
+      attempts: number
+      correctAttempts: number
+      lastAttempt: Date | null
+      status: string
+    }>()
 
+    user.attempts.forEach(attempt => {
+      const questionId = attempt.questionId
+      if (!questionStats.has(questionId)) {
+        questionStats.set(questionId, {
+          attempts: 0,
+          correctAttempts: 0,
+          lastAttempt: null,
+          status: 'not_seen'
+        })
+      }
+      const stats = questionStats.get(questionId)!
+      stats.attempts++
+      if (attempt.correct) {
+        stats.correctAttempts++
+      }
+      if (!stats.lastAttempt || attempt.createdAt > stats.lastAttempt) {
+        stats.lastAttempt = attempt.createdAt
+      }
+    })
+
+    // Mettre à jour les statuts depuis les progressions
+    user.progresses.forEach(progress => {
+      const stats = questionStats.get(progress.questionId)
+      if (stats) {
+        stats.status = progress.status
+      }
+    })
+
+    const byQuestion = allQuestions.map(q => {
+      const stats = questionStats.get(q.id) || {
+        attempts: 0,
+        correctAttempts: 0,
+        lastAttempt: null,
+        status: 'not_seen'
+      }
+      
       return {
         id: q.id,
         enonce: q.enonce || 'Pas d\'énoncé',
         categorie: q.categorie || 'Non catégorisé',
         questionnaire: q.questionnaire,
-        attempts,
-        correctAttempts,
-        successRate,
-        lastAttempt: q.attempts.length > 0 
-          ? q.attempts[0].createdAt.toISOString() 
-          : null,
-        status
+        attempts: stats.attempts,
+        correctAttempts: stats.correctAttempts,
+        successRate: stats.attempts > 0 ? Math.round((stats.correctAttempts / stats.attempts) * 100) : 0,
+        lastAttempt: stats.lastAttempt?.toISOString() || null,
+        status: stats.status as 'not_seen' | 'to_review' | 'mastered'
       }
     })
 
-    // Trouver les questions problématiques
+    // Questions problématiques (taux de réussite < 50% et > 3 tentatives)
     const problematicQuestions = byQuestion
-      .filter(q => q.attempts > 0 && q.successRate < 50)
+      .filter(q => q.attempts >= 3 && q.successRate < 50)
       .sort((a, b) => a.successRate - b.successRate)
       .slice(0, 10)
 
-    // Calculer l'activité récente (7 derniers jours)
-    const sevenDaysAgo = new Date(Date.now() - 7 * 86400000)
-    const recentAttempts = questions.flatMap(q => 
-      q.attempts
-        .filter(a => new Date(a.createdAt) >= sevenDaysAgo)
-        .map(a => ({
-          date: new Date(a.createdAt).toISOString().split('T')[0],
-          correct: a.correct
-        }))
-    )
-
-    const activityByDate = new Map<string, { total: number, correct: number }>()
-    recentAttempts.forEach(({ date, correct }) => {
-      if (!activityByDate.has(date)) {
-        activityByDate.set(date, { total: 0, correct: 0 })
-      }
-      const stats = activityByDate.get(date)!
-      stats.total++
-      if (correct) stats.correct++
-    })
-
-    const recentActivity = Array.from(activityByDate.entries())
-      .map(([date, stats]) => ({
-        date,
-        type: 'training' as const,
-        score: Math.round((stats.correct / stats.total) * 100),
-        questions: stats.total
-      }))
-      .sort((a, b) => b.date.localeCompare(a.date))
+    // Activité récente (dernières tentatives)
+    const recentActivity = user.attempts
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
       .slice(0, 10)
+      .map(attempt => ({
+        date: attempt.createdAt.toLocaleDateString('fr-FR'),
+        type: 'training' as const,
+        score: attempt.correct ? 100 : 0,
+        questions: 1
+      }))
 
     return NextResponse.json({
       global: {
@@ -247,4 +276,3 @@ export async function GET() {
     )
   }
 }
-

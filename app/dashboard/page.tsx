@@ -28,6 +28,7 @@ import {
   Folder
 } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface Stats {
   global: {
@@ -134,15 +135,17 @@ export default function DashboardPage() {
   const questionsByHierarchy = useMemo(() => {
     const hierarchy: Record<number, Record<string, typeof stats.byQuestion>> = {}
     
-    stats.byQuestion.forEach(q => {
-      if (!hierarchy[q.questionnaire]) {
-        hierarchy[q.questionnaire] = {}
-      }
-      if (!hierarchy[q.questionnaire][q.categorie]) {
-        hierarchy[q.questionnaire][q.categorie] = []
-      }
-      hierarchy[q.questionnaire][q.categorie].push(q)
-    })
+    if (stats.byQuestion && Array.isArray(stats.byQuestion)) {
+      stats.byQuestion.forEach(q => {
+        if (!hierarchy[q.questionnaire]) {
+          hierarchy[q.questionnaire] = {}
+        }
+        if (!hierarchy[q.questionnaire][q.categorie]) {
+          hierarchy[q.questionnaire][q.categorie] = []
+        }
+        hierarchy[q.questionnaire][q.categorie].push(q)
+      })
+    }
     
     return hierarchy
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -150,7 +153,7 @@ export default function DashboardPage() {
 
   // Fonctions de calcul des statistiques
   const getQuestionnaireStats = (questionnaireNum: number) => {
-    const questions = stats.byQuestion.filter(q => q.questionnaire === questionnaireNum)
+    const questions = stats.byQuestion?.filter(q => q.questionnaire === questionnaireNum) || []
     const totalAttempts = questions.reduce((sum, q) => sum + q.attempts, 0)
     const correctAttempts = questions.reduce((sum, q) => sum + q.correctAttempts, 0)
     const averageRate = totalAttempts > 0 ? Math.round((correctAttempts / totalAttempts) * 100) : 0
@@ -163,9 +166,9 @@ export default function DashboardPage() {
   }
 
   const getCategoryStats = (questionnaireNum: number, category: string) => {
-    const questions = stats.byQuestion.filter(q => 
+    const questions = stats.byQuestion?.filter(q => 
       q.questionnaire === questionnaireNum && q.categorie === category
-    )
+    ) || []
     const totalAttempts = questions.reduce((sum, q) => sum + q.attempts, 0)
     const correctAttempts = questions.reduce((sum, q) => sum + q.correctAttempts, 0)
     const averageRate = totalAttempts > 0 ? Math.round((correctAttempts / totalAttempts) * 100) : 0
@@ -192,20 +195,33 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-background pb-20 md:pb-0">
       {/* Header Hero */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-primary/5"></div>
+        {/* Image de fond avec overlay sombre */}
+        <div className="absolute inset-0">
+          <Image
+            src="/images/image-dashbord.jpg"
+            alt="Code Bus Dashboard Background"
+            fill
+            className="object-cover"
+            priority
+          />
+          {/* Overlay sombre pour améliorer la lisibilité */}
+          <div className="absolute inset-0 bg-black/50"></div>
+        </div>
+        
         <div className="relative container mx-auto px-4 py-12">
           <div className="text-center mb-8 md:mb-12">
             <div className="inline-flex items-center gap-2 bg-card/80 backdrop-blur-sm rounded-full px-3 md:px-4 py-2 mb-4 md:mb-6 shadow-lg">
-              <Trophy className="h-4 w-4 md:h-5 md:w-5 text-accent-foreground" />
+              <Trophy className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
               <span className="text-xs md:text-sm font-medium">
                 <span className="hidden md:inline">Tableau de bord d&apos;apprentissage</span>
                 <span className="md:hidden">Dashboard</span>
               </span>
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-2 md:mb-4">
-              Votre parcours <span className="text-primary">Code Bus</span>
+            
+            <h1 className="text-3xl md:text-5xl font-bold text-white mb-2 md:mb-4 drop-shadow-lg">
+              Votre parcours <span className="text-yellow-400">Code Bus</span>
             </h1>
-            <p className="text-base md:text-xl text-muted-foreground max-w-3xl mx-auto px-4 md:px-0">
+            <p className="text-base md:text-xl text-white/90 max-w-3xl mx-auto px-4 md:px-0 drop-shadow-md">
               Analysez vos progrès, identifiez vos points forts et optimisez votre préparation 
               au code de la route avec des insights personnalisés.
             </p>
@@ -235,10 +251,10 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs md:text-sm font-medium text-muted-foreground">Questions étudiées</p>
-                    <p className="text-2xl md:text-3xl font-bold text-secondary-foreground">{stats.global?.completedQuestions || 0}</p>
+                    <p className="text-2xl md:text-3xl font-bold text-foreground">{stats.global?.completedQuestions || 0}</p>
                   </div>
                   <div className="h-8 w-8 md:h-12 md:w-12 bg-secondary/10 rounded-full flex items-center justify-center">
-                    <BookOpen className="h-4 w-4 md:h-6 md:w-6 text-secondary-foreground" />
+                    <BookOpen className="h-4 w-4 md:h-6 md:w-6 text-foreground" />
                   </div>
                 </div>
                 <div className="mt-2 md:mt-4">
@@ -254,10 +270,10 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs md:text-sm font-medium text-muted-foreground">Série actuelle</p>
-                    <p className="text-2xl md:text-3xl font-bold text-accent-foreground">{stats.global?.streak || 0} jours</p>
+                    <p className="text-2xl md:text-3xl font-bold text-foreground">{stats.global?.streak || 0} jours</p>
                   </div>
                   <div className="h-8 w-8 md:h-12 md:w-12 bg-accent/10 rounded-full flex items-center justify-center">
-                    <Zap className="h-4 w-4 md:h-6 md:w-6 text-accent-foreground" />
+                    <Zap className="h-4 w-4 md:h-6 md:w-6 text-foreground" />
                   </div>
                 </div>
                 <div className="mt-2 md:mt-4">
@@ -285,6 +301,81 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* Indicateur "Prêt pour l'examen" - Seulement si les conditions sont remplies */}
+      {(() => {
+        // Vérifier que les données sont chargées
+        if (!stats.global || !stats.byCategory) {
+          return null
+        }
+        
+        // Calculer si l'utilisateur est prêt pour l'examen
+        const hasEnoughExams = stats.global.totalAttempts >= 5 // Au moins 5 examens
+        const hasGoodExamScores = stats.global.averageScore >= 90 // Score moyen >= 90%
+        const hasCategoryMastery = stats.byCategory.every(cat => 
+          cat.attempted > 0 && cat.percentage >= 80 // Toutes catégories >= 80%
+        )
+        const isExamReady = hasEnoughExams && hasGoodExamScores && hasCategoryMastery
+
+        if (!isExamReady) {
+          // Afficher les conditions manquantes
+          return (
+            <div className="container mx-auto px-4 py-6">
+              <Card className="card-elegant bg-gradient-to-r from-blue-500/10 to-blue-500/5 border-blue-500/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center">
+                      <Target className="h-8 w-8 text-blue-500" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-blue-500">Préparation à l&apos;examen</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Conditions pour être prêt pour l&apos;examen officiel
+                      </p>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        <Badge variant={hasEnoughExams ? "default" : "secondary"} className="text-xs">
+                          {hasEnoughExams ? "✓" : "○"} 5 examens passés
+                        </Badge>
+                        <Badge variant={hasGoodExamScores ? "default" : "secondary"} className="text-xs">
+                          {hasGoodExamScores ? "✓" : "○"} Score moyen ≥90%
+                        </Badge>
+                        <Badge variant={hasCategoryMastery ? "default" : "secondary"} className="text-xs">
+                          {hasCategoryMastery ? "✓" : "○"} Toutes catégories ≥80%
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )
+        }
+
+        // Afficher le message de succès si toutes les conditions sont remplies
+        return (
+          <div className="container mx-auto px-4 py-6">
+            <Card className="card-elegant bg-gradient-to-r from-green-500/10 to-green-500/5 border-green-500/30">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center">
+                    <CheckCircle className="h-8 w-8 text-green-500" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-green-500">Vous êtes prêt !</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Vous avez atteint le niveau requis pour passer l&apos;examen officiel
+                    </p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <Badge variant="secondary" className="text-xs">5 examens &gt;90%</Badge>
+                      <Badge variant="secondary" className="text-xs">Toutes catégories &gt;80%</Badge>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )
+      })()}
 
       {/* Contenu principal */}
       <div className="container mx-auto px-2 md:px-4 pb-8 md:pb-12">
@@ -348,8 +439,8 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {stats.byCategory.length > 0 ? (
-                    stats.byCategory.map((category, index) => (
+                  {stats.byCategory?.length > 0 ? (
+                    (stats.byCategory || []).map((category, index) => (
                       <div key={index} className="flex items-center justify-between p-4 bg-muted rounded-lg">
                         <div className="flex items-center gap-3">
                           <div className="h-10 w-10 bg-primary/10 rounded-full flex items-center justify-center">
@@ -402,7 +493,7 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {stats.recentActivity.map((activity, index) => (
+                  {(stats.recentActivity || []).map((activity, index) => (
                     <div key={index} className="flex items-center justify-between p-4 bg-muted rounded-lg">
                       <div className="flex items-center gap-3">
                         <div className={`h-10 w-10 rounded-full flex items-center justify-center ${
@@ -436,7 +527,7 @@ export default function DashboardPage() {
           {activeTab === "categories" && (
             <div className="space-y-4 md:space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {stats.byCategory.length > 0 ? (
+              {stats.byCategory?.length > 0 ? (
                 stats.byCategory.map((category, index) => (
                   <Card 
                     key={index} 
@@ -528,8 +619,8 @@ export default function DashboardPage() {
           {activeTab === "questionnaires" && (
             <div className="space-y-4 md:space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-              {stats.byQuestionnaire.length > 0 ? (
-                stats.byQuestionnaire.map((questionnaire, index) => (
+              {stats.byQuestionnaire?.length > 0 ? (
+                (stats.byQuestionnaire || []).map((questionnaire, index) => (
                   <Card 
                     key={index} 
                     className="card-elegant hover:shadow-2xl transition-all duration-300 cursor-pointer group"
@@ -823,9 +914,9 @@ export default function DashboardPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                {stats.problematicQuestions.length > 0 ? (
+                {stats.problematicQuestions?.length > 0 ? (
                   <div className="space-y-3">
-                    {stats.problematicQuestions.map((question, index) => (
+                    {(stats.problematicQuestions || []).map((question, index) => (
                       <div key={index} className="flex items-center justify-between p-3 bg-destructive/10 rounded-lg border border-destructive/20">
                         <div className="flex items-center gap-3 flex-1">
                           <div className="h-8 w-8 bg-destructive/20 rounded-full flex items-center justify-center text-xs font-bold text-destructive">
@@ -880,7 +971,7 @@ export default function DashboardPage() {
                     </Button>
                   </Link>
                   <Link href="/exam" className="w-full sm:w-auto">
-                    <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                    <Button variant="outline" size="lg" className="w-full sm:w-auto interactive-hover">
                       <FileText className="h-4 w-4 md:h-5 md:w-5 mr-2" />
                       Examen
                     </Button>

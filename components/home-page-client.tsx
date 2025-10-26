@@ -118,8 +118,78 @@ export default function HomePageClient() {
           </div>
         </div>
         
+        {/* Actions rapides pour utilisateur connecté */}
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold mb-4">Actions rapides</h2>
+            <p className="text-lg text-muted-foreground">
+              Continuez votre apprentissage ou testez vos connaissances
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <Link href="/train">
+              <Card className="card-elegant hover:shadow-lg transition-shadow cursor-pointer">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <BookOpen className="h-6 w-6 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold mb-1">Entraînement</h3>
+                      <p className="text-sm text-muted-foreground">Questions adaptatives</p>
+                    </div>
+                    <ArrowRight className="h-5 w-5 text-muted-foreground" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+            
+            <Link href="/exam">
+              <Card className="card-elegant hover:shadow-lg transition-shadow cursor-pointer">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center">
+                      <FileText className="h-6 w-6 text-green-500" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold mb-1">Examen</h3>
+                      <p className="text-sm text-muted-foreground">Test chronométré</p>
+                    </div>
+                    <ArrowRight className="h-5 w-5 text-muted-foreground" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+            
+            <Link href="/dashboard">
+              <Card className="card-elegant hover:shadow-lg transition-shadow cursor-pointer">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                      <BarChart3 className="h-6 w-6 text-blue-500" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold mb-1">Tableau de bord</h3>
+                      <p className="text-sm text-muted-foreground">Statistiques détaillées</p>
+                    </div>
+                    <ArrowRight className="h-5 w-5 text-muted-foreground" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
+        </div>
+        
         {/* Statistiques pour utilisateur connecté */}
         <div className="container mx-auto px-4 py-8">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold mb-4">Vos statistiques</h2>
+            <p className="text-lg text-muted-foreground">
+              Suivez votre progression et vos performances
+            </p>
+          </div>
+          
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <Card className="card-elegant">
               <CardContent className="p-6">
@@ -172,6 +242,144 @@ export default function HomePageClient() {
                   <div>
                     <p className="text-2xl font-bold">{Math.round(stats?.global?.averageScore || 0)}%</p>
                     <p className="text-sm text-muted-foreground">Score moyen</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+        
+        {/* Section derniers trophées */}
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold mb-4">Derniers trophées</h2>
+            <p className="text-lg text-muted-foreground">
+              Vos récents succès et accomplissements
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-6">
+            <Card className="card-elegant">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center text-2xl">
+                    🏆
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">Premier pas</h3>
+                    <p className="text-sm text-muted-foreground">Continuez votre progression</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="card-elegant">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-2xl">
+                    🔥
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">Série en cours</h3>
+                    <p className="text-sm text-muted-foreground">Maintenez votre élan</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="card-elegant">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-gray-300 to-gray-500 rounded-full flex items-center justify-center text-2xl">
+                    📚
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">Apprentissage</h3>
+                    <p className="text-sm text-muted-foreground">Chaque question compte</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <div className="text-center mt-6">
+            <Link href="/achievements">
+              <Button variant="outline" className="interactive-hover">
+                <Trophy className="h-4 w-4 mr-2" />
+                Voir tous les trophées
+              </Button>
+            </Link>
+          </div>
+        </div>
+        
+        {/* Section recommandations */}
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold mb-4">Recommandations</h2>
+            <p className="text-lg text-muted-foreground">
+              Optimisez votre apprentissage avec nos suggestions
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Card className="card-elegant">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-orange-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Brain className="h-5 w-5 text-orange-500" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-2">Entraînement quotidien</h3>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Pratiquez 15-20 minutes par jour pour maintenir vos acquis
+                    </p>
+                    <Link href="/train">
+                      <Button size="sm" variant="outline" className="interactive-hover">
+                        Commencer
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="card-elegant">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Zap className="h-5 w-5 text-purple-500" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-2">Test rapide</h3>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Évaluez vos connaissances avec un examen de 10 questions
+                    </p>
+                    <Link href="/exam">
+                      <Button size="sm" variant="outline" className="interactive-hover">
+                        Tester
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="card-elegant">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-red-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Shield className="h-5 w-5 text-red-500" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-2">Points faibles</h3>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Concentrez-vous sur les domaines qui nécessitent plus d&apos;attention
+                    </p>
+                    <Link href="/dashboard">
+                      <Button size="sm" variant="outline" className="interactive-hover">
+                        Analyser
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </CardContent>

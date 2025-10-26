@@ -20,7 +20,7 @@ export default function NotFound() {
                 Retour à l&apos;accueil
               </Link>
             </Button>
-            <Button variant="outline" asChild className="flex-1">
+            <Button variant="outline" asChild className="flex-1 interactive-hover">
               <Link href="/dashboard">
                 Tableau de bord
               </Link>

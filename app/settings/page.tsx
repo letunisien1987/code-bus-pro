@@ -87,7 +87,7 @@ export default function SettingsPage() {
             </Link>
             
             <Link href="/json-editor">
-              <Button variant="outline" className="w-full h-16 flex items-center gap-3">
+              <Button variant="outline" className="w-full h-16 flex items-center gap-3 interactive-hover">
                 <FileJson className="h-6 w-6" />
                 <div className="text-left">
                   <div className="font-semibold">Éditeur JSON</div>
