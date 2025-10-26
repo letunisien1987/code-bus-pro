@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -985,9 +986,11 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                   className="w-[28rem] h-[21rem] md:w-[36rem] md:h-[27rem] lg:w-[48rem] lg:h-[36rem] border rounded-lg overflow-hidden bg-muted cursor-pointer relative hover:ring-2 hover:ring-primary/50 transition-all"
                   onClick={() => setIsImageZoomed(true)}
                 >
-                  <img 
+                  <Image 
                     src={currentImagePath} 
                     alt={hoveredOption ? `Réponses Questionnaire ${question.questionnaire}` : `Question ${question.id}`}
+                    width={800}
+                    height={600}
                     className="w-full h-full object-contain"
                     style={getImageStyle()}
                   />
@@ -1446,9 +1449,11 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
               className="max-w-[90vw] max-h-[90vh] flex flex-col items-center justify-center relative"
               onClick={(e) => e.stopPropagation()}
             >
-              <img 
+              <Image 
                 src={getImageUrlSync(question.image_path)} 
                 alt={`Question ${question.id} - Zoom`}
+                width={1200}
+                height={900}
                 className="max-w-full max-h-full object-contain"
               />
               
@@ -1600,9 +1605,11 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                   e.currentTarget.dataset.dragging = 'false'
                 }}
               >
-                <img
+                <Image
                   src={getImageUrlSync(question.image_path)}
                   alt={`Question ${question.id}`}
+                  width={800}
+                  height={600}
                   className="w-full h-full object-contain transition-transform duration-200 cursor-grab active:cursor-grabbing"
                   style={{ transform: 'scale(1) translate(0px, 0px)' }}
                   data-scale="1"
@@ -1805,9 +1812,11 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
           className="max-w-[90vw] max-h-[90vh] flex items-center justify-center relative"
           onClick={(e) => e.stopPropagation()}
         >
-          <img 
+          <Image 
             src={getImageUrlSync(question.image_path)} 
             alt={`Question ${question.id} - Zoom`}
+            width={1200}
+            height={900}
             className="max-w-full max-h-full object-contain cursor-pointer"
             onClick={() => setIsImageZoomed(false)}
           />

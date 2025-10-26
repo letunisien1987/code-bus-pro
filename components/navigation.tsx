@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useSession, signIn, signOut } from 'next-auth/react'
 import { Button } from './ui/button'
@@ -39,9 +40,11 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
-            <img 
+            <Image 
               src="/images/logo_codeBus_claire.png" 
               alt="Code Bus Logo" 
+              width={64}
+              height={64}
               className="h-16 w-16 object-contain"
             />
             <span className="hidden lg:block font-black text-foreground text-xl tracking-tight" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
@@ -84,9 +87,11 @@ export default function Navigation() {
                 {/* Informations utilisateur */}
                 <div className="hidden sm:flex items-center gap-2 text-sm">
                   {session.user?.image && (
-                    <img 
+                    <Image 
                       src={session.user.image} 
                       alt="Avatar" 
+                      width={24}
+                      height={24}
                       className="w-6 h-6 rounded-full"
                     />
                   )}
@@ -175,8 +180,10 @@ export default function Navigation() {
                   {/* Informations utilisateur mobile */}
                   <div className="flex items-center gap-2 text-sm p-2 bg-muted rounded">
                     {session.user?.image && (
-                      <img 
+                      <Image 
                         src={session.user.image} 
+                        width={24}
+                        height={24}
                         alt="Avatar" 
                         className="w-6 h-6 rounded-full"
                       />

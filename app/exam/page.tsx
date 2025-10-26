@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
 import { Button } from '../../components/ui/button'
 import { Badge } from '../../components/ui/badge'
@@ -1238,9 +1239,11 @@ export default function ExamPage() {
             <div className="w-full md:w-1/2">
               <Card className="h-64 md:h-full card-elegant relative">
                 <CardContent className="p-2 md:p-4 h-full flex items-center justify-center">
-                  <img 
+                  <Image 
                     src={getImageUrlSync(currentReviewQuestion.imagePath)} 
                     alt={`Question ${currentReviewQuestion.question}`}
+                    width={800}
+                    height={600}
                     className="max-w-full max-h-60 md:max-h-full object-contain cursor-pointer transition-all duration-300"
                     onClick={() => setIsImageZoomed(!isImageZoomed)}
                   />
@@ -1267,9 +1270,11 @@ export default function ExamPage() {
                     className="max-w-[90vw] max-h-[90vh] flex items-center justify-center relative"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <img 
+                    <Image 
                       src={getImageUrlSync(currentReviewQuestion.imagePath)} 
                       alt={`Question ${currentReviewQuestion.question} - Zoom`}
+                      width={1200}
+                      height={900}
                       className="max-w-full max-h-full object-contain cursor-pointer"
                       onClick={() => setIsImageZoomed(false)}
                     />
@@ -1686,9 +1691,11 @@ export default function ExamPage() {
                   
                   {/* Image centrée */}
                   <div className="flex-1 flex items-center justify-center relative">
-                    <img 
+                    <Image 
                       src={getImageUrlSync(currentQuestion.imagePath)} 
                       alt={`Question ${currentQuestion.question}`}
+                      width={800}
+                      height={600}
                       className="max-w-full max-h-full object-contain cursor-pointer transition-all duration-300"
                       onClick={() => setIsImageZoomed(!isImageZoomed)}
                     />
@@ -1716,9 +1723,11 @@ export default function ExamPage() {
                     className="max-w-[90vw] max-h-[90vh] flex items-center justify-center relative"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <img 
+                    <Image 
                       src={getImageUrlSync(currentQuestion.imagePath)} 
                       alt={`Question ${currentQuestion.question} - Zoom`}
+                      width={1200}
+                      height={900}
                       className="max-w-full max-h-full object-contain cursor-pointer"
                       onClick={() => setIsImageZoomed(false)}
                     />

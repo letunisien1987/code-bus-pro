@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import Image from 'next/image'
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
 import { Button } from '../../components/ui/button'
 import { Badge } from '../../components/ui/badge'
@@ -396,9 +397,11 @@ function TrainPageContent() {
           <div className="w-full md:w-1/2">
             <Card className="h-48 md:h-full card-elegant relative">
               <CardContent className="p-2 md:p-4 h-full flex items-center justify-center">
-                <img 
+                <Image 
                   src={getImageUrlSync(currentQuestion.imagePath)} 
                   alt={`Question ${currentQuestion.question}`}
+                  width={800}
+                  height={600}
                   className="max-w-full max-h-48 md:max-h-full object-contain cursor-pointer transition-all duration-300"
                   onClick={() => setIsImageZoomed(!isImageZoomed)}
                 />
@@ -425,9 +428,11 @@ function TrainPageContent() {
                     className="max-w-[90vw] max-h-[90vh] flex items-center justify-center relative"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <img 
+                    <Image 
                       src={getImageUrlSync(currentQuestion.imagePath)} 
                       alt={`Question ${currentQuestion.question} - Zoom`}
+                      width={1200}
+                      height={900}
                       className="max-w-full max-h-full object-contain cursor-pointer"
                       onClick={() => setIsImageZoomed(false)}
                     />
