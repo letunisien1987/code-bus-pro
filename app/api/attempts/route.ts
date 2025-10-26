@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from '../auth/[...nextauth]/route'
+import { authOptions } from '@/lib/auth'
 import { checkAndUnlockAchievements } from '../../../lib/achievements/checker'
 import fs from 'fs'
 import path from 'path'
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     fs.writeFileSync(ATTEMPTS_FILE, JSON.stringify(attempts, null, 2))
 
     // Vérifier les trophées
-    let newAchievements = []
+    let newAchievements: any[] = []
     try {
       newAchievements = await checkAndUnlockAchievements(userId)
     } catch (error) {

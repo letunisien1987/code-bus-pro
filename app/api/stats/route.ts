@@ -21,7 +21,7 @@ export async function GET() {
 
     // Calculer les statistiques par catégorie (version simplifiée)
     const categoryMap = new Map<string, number>()
-    questions.forEach(q => {
+    questions.forEach((q: any) => {
       const category = q.categorie || 'Non catégorisé'
       categoryMap.set(category, (categoryMap.get(category) || 0) + 1)
     })
@@ -39,7 +39,7 @@ export async function GET() {
 
     // Calculer les statistiques par questionnaire (version simplifiée)
     const questionnaireMap = new Map<number, number>()
-    questions.forEach(q => {
+    questions.forEach((q: any) => {
       const qNum = q.questionnaire
       questionnaireMap.set(qNum, (questionnaireMap.get(qNum) || 0) + 1)
     })
@@ -52,7 +52,7 @@ export async function GET() {
     })).sort((a, b) => a.number - b.number)
 
     // Calculer les statistiques par question (version simplifiée)
-    const byQuestion = questions.map(q => ({
+    const byQuestion = questions.map((q: any) => ({
       id: q.id,
       enonce: q.enonce || 'Pas d\'énoncé',
       categorie: q.categorie || 'Non catégorisé',

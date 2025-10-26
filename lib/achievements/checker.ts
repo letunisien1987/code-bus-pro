@@ -231,14 +231,14 @@ async function getUserStats(userId: string) {
   const questionnaireStats: Record<string, { correct: number, total: number }> = {}
   
   // Initialiser les stats
-  const categories = [...new Set(questions.map((q: any) => q.categorie).filter(Boolean))]
-  const questionnaires = [...new Set(questions.map((q: any) => q.questionnaire.toString()))]
+  const categories = Array.from(new Set(questions.map((q: any) => q.categorie).filter(Boolean))) as string[]
+  const questionnaires = Array.from(new Set(questions.map((q: any) => q.questionnaire.toString()))) as string[]
   
-  categories.forEach(cat => {
+  categories.forEach((cat: string) => {
     categoryStats[cat] = { correct: 0, total: 0 }
   })
   
-  questionnaires.forEach(q => {
+  questionnaires.forEach((q: string) => {
     questionnaireStats[q] = { correct: 0, total: 0 }
   })
   
@@ -264,10 +264,10 @@ async function getUserStats(userId: string) {
   // Compter les scores de performance
   const performanceScores = examHistory.map((e: any) => e.performanceScore || 0)
   const maxPerformanceScore = Math.max(...performanceScores, 0)
-  const score700Count = performanceScores.filter(s => s >= 700).length
-  const score800Count = performanceScores.filter(s => s >= 800).length
-  const score900Count = performanceScores.filter(s => s >= 900).length
-  const score1000Count = performanceScores.filter(s => s >= 1000).length
+  const score700Count = performanceScores.filter((s: number) => s >= 700).length
+  const score800Count = performanceScores.filter((s: number) => s >= 800).length
+  const score900Count = performanceScores.filter((s: number) => s >= 900).length
+  const score1000Count = performanceScores.filter((s: number) => s >= 1000).length
   const speedBonusMaxCount = examHistory.filter((e: any) => e.speedBonus === 300).length
 
   return {

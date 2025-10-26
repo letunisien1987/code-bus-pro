@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from '../auth/[...nextauth]/route'
+import { authOptions } from '@/lib/auth'
 import fs from 'fs'
 import path from 'path'
 
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     }
     
     // Trier par date décroissante
-    history.sort((a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime())
+    history.sort((a: any, b: any) => new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime())
     
     return NextResponse.json({ history })
   } catch (error) {

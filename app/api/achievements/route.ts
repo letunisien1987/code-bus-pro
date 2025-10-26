@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { ACHIEVEMENTS } from '@/lib/achievements/definitions'
-import { authOptions } from '../auth/[...nextauth]/route'
+import { authOptions } from '@/lib/auth'
 import fs from 'fs'
 import path from 'path'
 
