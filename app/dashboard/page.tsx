@@ -307,9 +307,9 @@ export default function DashboardPage() {
                       <Target className="h-8 w-8 text-blue-500" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-blue-500">Préparation à l'examen</h3>
+                      <h3 className="text-xl font-bold text-blue-500">Préparation à l&apos;examen</h3>
                       <p className="text-sm text-muted-foreground">
-                        Conditions pour être prêt pour l'examen officiel
+                        Conditions pour être prêt pour l&apos;examen officiel
                       </p>
                       <div className="flex flex-wrap gap-2 mt-2">
                         <Badge variant={hasEnoughExams ? "default" : "secondary"} className="text-xs">
@@ -342,7 +342,7 @@ export default function DashboardPage() {
                   <div>
                     <h3 className="text-xl font-bold text-green-500">Vous êtes prêt !</h3>
                     <p className="text-sm text-muted-foreground">
-                      Vous avez atteint le niveau requis pour passer l'examen officiel
+                      Vous avez atteint le niveau requis pour passer l&apos;examen officiel
                     </p>
                     <div className="flex items-center gap-2 mt-2">
                       <Badge variant="secondary" className="text-xs">5 examens &gt;90%</Badge>

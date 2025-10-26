@@ -373,7 +373,7 @@ export default function HomePageClient() {
                   <div>
                     <h3 className="font-semibold mb-2">Points faibles</h3>
                     <p className="text-sm text-muted-foreground mb-3">
-                      Concentrez-vous sur les domaines qui nécessitent plus d'attention
+                      Concentrez-vous sur les domaines qui nécessitent plus d&apos;attention
                     </p>
                     <Link href="/dashboard">
                       <Button size="sm" variant="outline" className="interactive-hover">

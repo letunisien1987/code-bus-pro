@@ -126,7 +126,7 @@ export default function AchievementsPage() {
           <section className="mb-12">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
               <Target className="h-6 w-6 text-primary" />
-              Tes trophées d'examens
+              Tes trophées d&apos;examens
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {groupedByCategory.exam.map(achievement => (
@@ -156,7 +156,7 @@ export default function AchievementsPage() {
           <section className="mb-12">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
               <Target className="h-6 w-6 text-primary" />
-              Tes trophées d'entraînement
+              Tes trophées d&apos;entraînement
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {groupedByCategory.training.map(achievement => (
@@ -201,7 +201,7 @@ export default function AchievementsPage() {
           <section className="mb-12">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
               <CheckCircle className="h-6 w-6 text-primary" />
-              Préparation à l'examen
+              Préparation à l&apos;examen
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {groupedByCategory.readiness.map(achievement => (

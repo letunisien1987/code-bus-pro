@@ -73,7 +73,7 @@ export default function ImportPage() {
             </h1>
           </div>
           <p className="text-lg opacity-90">
-            Importez vos questions et images dans l'application
+            Importez vos questions et images dans l&apos;application
           </p>
         </div>
       </div>
@@ -95,7 +95,7 @@ export default function ImportPage() {
                 <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                   <FileText className="h-5 w-5 text-primary" />
                 </div>
-                Guide d'importation
+                Guide d&apos;importation
               </CardTitle>
               <CardDescription className="text-base">
                 Comment importer vos propres questions et images
@@ -197,7 +197,7 @@ export default function ImportPage() {
                   <div className="flex items-start gap-2">
                     <Badge variant="outline" className="text-xs">3</Badge>
                     <p className="text-sm text-muted-foreground">
-                      Utilisez l'éditeur JSON pour valider et corriger vos données
+                      Utilisez l&apos;éditeur JSON pour valider et corriger vos données
                     </p>
                   </div>
                   <div className="flex items-start gap-2">
@@ -237,7 +237,7 @@ export default function ImportPage() {
                   <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
                     <CheckCircle className="h-5 w-5 text-primary" />
                   </div>
-                  <span className="font-semibold text-primary text-lg">Prêt pour l'import</span>
+                  <span className="font-semibold text-primary text-lg">Prêt pour l&apos;import</span>
                 </div>
                 <p className="text-sm text-primary/80">
                   Le fichier <code className="bg-primary/20 px-2 py-1 rounded text-primary font-mono">config/data/questions.json</code> 

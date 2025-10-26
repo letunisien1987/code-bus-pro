@@ -115,7 +115,7 @@ export default function SignUpPage() {
             <CardTitle className="text-2xl">Créer un compte</CardTitle>
           </div>
           <CardDescription>
-            Inscrivez-vous pour accéder à l'application
+            Inscrivez-vous pour accéder à l&apos;application
           </CardDescription>
         </CardHeader>
         
@@ -268,7 +268,7 @@ export default function SignUpPage() {
               onClick={() => router.push('/')}
               className="text-sm"
             >
-              ← Retour à l'accueil
+              ← Retour à l&apos;accueil
             </Button>
           </div>
         </CardContent>
