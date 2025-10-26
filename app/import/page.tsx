@@ -83,7 +83,7 @@ export default function ImportPage() {
         <div className="flex items-center justify-between mb-8">
           <Button variant="outline" onClick={() => router.push('/')} className="interactive-hover">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Retour à l'accueil
+            Retour à l&apos;accueil
           </Button>
         </div>
 
