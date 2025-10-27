@@ -696,7 +696,8 @@
       "c": "Avec une corde ou une barre"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_2/Question (2).jpg"
+    "image_path": "images/questionnaire_2/Question (2).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "157bed6e-f1e6-4c50-8e15-8ebfc70bff1d",
@@ -4151,7 +4152,8 @@
       "c": "Le passage est interdit aux autocars ainsi qu'à tous les véhicules et ensembles de véhicules qui, chargement compris, dépassent la longueur indiquée"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_7/Question (3).jpg"
+    "image_path": "images/questionnaire_7/Question (3).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "dc6717f0-0d83-4945-8993-6d7c287e3897",
@@ -4167,8 +4169,9 @@
       "b": "cylindre de frein",
       "c": "cylindre combiné \"Tristop\""
     },
-    "bonne_reponse": "a",
-    "image_path": "images/questionnaire_7/Question (4).jpg"
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_7/Question (4).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "4d45ce41-1f5a-4806-b8a1-e207b7a04f66",

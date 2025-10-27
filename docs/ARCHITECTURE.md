@@ -69,8 +69,7 @@ routebus/
 │
 ├── prisma/                       # Configuration Prisma
 │   ├── schema.prisma            # Schéma de base de données
-│   ├── seed.ts                  # Script de seed
-│   └── dev.db                   # Base SQLite locale
+│   └── seed.ts                  # Script de seed
 │
 ├── public/                       # Assets statiques
 │   └── images/                  # Images des questions

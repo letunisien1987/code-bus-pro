@@ -34,9 +34,9 @@ Application Next.js moderne pour s'entraîner au code de la route, spécialement
 
 ## 🛠️ Stack technique
 
-- **Frontend**: Next.js 14 (App Router) + TypeScript
+- **Frontend**: Next.js 15.5.6 (App Router) + TypeScript
 - **Styling**: TailwindCSS + shadcn/ui
-- **Base de données**: Prisma + SQLite (prêt pour PostgreSQL)
+- **Base de données**: Prisma + PostgreSQL (Neon)
 - **Validation**: react-hook-form + zod
 - **Icônes**: Lucide React
 - **Linting**: ESLint + Prettier
@@ -111,8 +111,10 @@ npm run reset-db     # Réinitialiser la DB
 ### Variables d'environnement
 
 ```env
-DATABASE_URL="file:./dev.db"
+DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-secret-here"
+NEXTAUTH_URL="http://localhost:3000"
 ```
 
 ### Structure des questions

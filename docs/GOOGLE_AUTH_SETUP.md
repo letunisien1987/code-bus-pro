@@ -44,7 +44,7 @@ Après création, vous obtiendrez :
 
 ### 1. Variables d'environnement
 
-Ajoutez ces variables dans `.env.local` :
+Ajoutez ces variables dans `.env` :
 
 ```bash
 # Google OAuth

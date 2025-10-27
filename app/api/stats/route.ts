@@ -1,18 +1,24 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     console.log('🔄 Début du calcul des statistiques...')
     
-    // Pour le moment, utiliser l'utilisateur de test
-    // TODO: Implémenter l'authentification réelle
-    const testUserEmail = 'test@example.com'
+    // Récupérer l'utilisateur connecté
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
+    }
 
-    // Récupérer l'utilisateur depuis la base de données
-    console.log('🔍 Recherche de l\'utilisateur:', testUserEmail)
+    const userId = session.user.id
+    console.log('🔍 Recherche de l\'utilisateur connecté:', userId)
+    
+    // Récupérer l'utilisateur depuis PostgreSQL avec ses tentatives
     const user = await prisma.user.findUnique({
-      where: { email: testUserEmail },
+      where: { id: userId },
       include: {
         attempts: {
           include: {
@@ -28,7 +34,7 @@ export async function GET() {
     })
 
     if (!user) {
-      console.log('❌ Utilisateur non trouvé')
+      console.log('❌ Utilisateur non trouvé dans PostgreSQL')
       return NextResponse.json(
         { error: 'Utilisateur non trouvé' },
         { status: 404 }
@@ -48,7 +54,27 @@ export async function GET() {
     const correctAttempts = user.attempts.filter(a => a.correct).length
     const attemptedQuestions = new Set(user.attempts.map(a => a.questionId)).size
     const averageScore = totalAttempts > 0 ? Math.round((correctAttempts / totalAttempts) * 100) : 0
-    const studyTime = Math.round(totalAttempts * 0.5) // Estimation: 30 secondes par tentative
+    // Calculer le temps réel d'étude (entraînement + examens)
+    const trainingTime = user.attempts.reduce((total, attempt) => 
+      total + (attempt.timeSpent || 0), 0
+    ) // Temps d'entraînement en secondes
+    
+    // Temps d'examens depuis PostgreSQL au lieu de JSON
+    let examTime = 0
+    try {
+      const examHistory = await prisma.examHistory.findMany({
+        where: { userId }
+      })
+      
+      examTime = examHistory.reduce((total, exam) => 
+        total + (exam.timeSpent || 0), 0
+      )
+    } catch (error) {
+      console.error('Erreur lecture exam-history:', error)
+    }
+    
+    // Temps total en heures (arrondi)
+    const studyTime = Math.round((trainingTime + examTime) / 3600)
     const streak = 0 // À implémenter si nécessaire
 
     // Calculer les statistiques par catégorie

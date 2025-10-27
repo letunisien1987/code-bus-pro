@@ -10,7 +10,7 @@
 - ✅ **Serveur de développement** : `http://localhost:3000`
 - ✅ **Pages principales** : `/`, `/exam`, `/train`, `/dashboard`, `/settings`
 - ✅ **API routes** : questions, smart-select, stats, attempts, import, setup
-- ✅ **Base de données** : SQLite local configuré
+- ✅ **Base de données** : PostgreSQL (Neon) configuré
 - ✅ **Thème** : Sombre/clair avec next-themes
 - ✅ **Responsive** : Mobile et desktop optimisés
 - ✅ **Navigation** : Fixe et intelligente
@@ -18,8 +18,8 @@
 ### **Corrections majeures appliquées :**
 1. **Migration Next.js** : 14.0.4 → 15.5.6 (sécurité et performance)
 2. **Erreurs 500 résolues** : Cache webpack corrompu nettoyé
-3. **Base de données** : PostgreSQL → SQLite pour le développement local
-4. **Schéma Prisma** : Enums convertis en strings (compatibilité SQLite)
+3. **Base de données** : Migration vers PostgreSQL (Neon) en production
+4. **Schéma Prisma** : Enums convertis en strings (compatibilité PostgreSQL)
 5. **Suspense boundary** : Ajouté pour useSearchParams (Next.js 15)
 6. **Page 404** : Créée (not-found.tsx)
 7. **Configuration VS Code** : Warnings TailwindCSS supprimés

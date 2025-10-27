@@ -73,8 +73,8 @@ npx prisma db seed
 
 ---
 
-## 👩‍💻 Développement local (SQLite)
-- `.env`: `DATABASE_URL="file:./dev.db"`
+## 👩‍💻 Développement local (PostgreSQL)
+- `.env`: `DATABASE_URL="postgresql://..."` (Neon ou PostgreSQL local)
 - Scripts utiles:
   - `npm run db:push` — synchroniser le schéma
   - `npm run db:seed` — peupler les questions

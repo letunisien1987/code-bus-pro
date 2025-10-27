@@ -16,7 +16,7 @@ L'application utilise **NextAuth.js** avec les fonctionnalités suivantes :
 
 ### 1. Variables d'environnement
 
-Ajoutez ces variables dans `.env.local` :
+Ajoutez ces variables dans `.env` :
 
 ```bash
 # NextAuth

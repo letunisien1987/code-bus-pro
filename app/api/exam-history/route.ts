@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
-import fs from 'fs'
-import path from 'path'
-
-const HISTORY_FILE = path.join(process.cwd(), 'data', 'exam-history.json')
+import { prisma } from '@/lib/prisma'
 
 export async function GET(request: NextRequest) {
   const session = await getServerSession(authOptions)
@@ -15,19 +12,18 @@ export async function GET(request: NextRequest) {
   const userId = session.user.id
   
   try {
-    let history = []
-    if (fs.existsSync(HISTORY_FILE)) {
-      const data = fs.readFileSync(HISTORY_FILE, 'utf-8')
-      const allHistory = JSON.parse(data)
-      history = allHistory.filter((h: any) => h.userId === userId)
-    }
-    
-    // Trier par date décroissante
-    history.sort((a: any, b: any) => new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime())
+    // Lire depuis PostgreSQL avec les réponses détaillées
+    const history = await prisma.examHistory.findMany({
+      where: { userId },
+      include: {
+        answers: true  // Inclure les réponses détaillées
+      },
+      orderBy: { completedAt: 'desc' }
+    })
     
     return NextResponse.json({ history })
   } catch (error) {
-    console.error('Erreur lors de la récupération de l\'historique:', error)
+    console.error('Erreur lecture historique:', error)
     return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })
   }
 }
@@ -39,28 +35,42 @@ export async function POST(request: NextRequest) {
   }
   
   const userId = session.user.id
-  const examData = await request.json()
+  const data = await request.json()
   
   try {
-    let history = []
-    if (fs.existsSync(HISTORY_FILE)) {
-      const data = fs.readFileSync(HISTORY_FILE, 'utf-8')
-      history = JSON.parse(data)
+    // Enregistrer dans PostgreSQL avec les réponses détaillées
+    const examHistory = await prisma.examHistory.create({
+      data: {
+        userId,
+        score: data.score,
+        percentage: data.percentage,
+        total: data.total,
+        correct: data.correct,
+        incorrect: data.incorrect,
+        timeSpent: data.timeSpent || 0,
+        performanceScore: data.performanceScore,
+        accuracyScore: data.accuracyScore,
+        speedBonus: data.speedBonus,
+        avgTimePerQuestion: data.avgTimePerQuestion,
+        performanceBadge: data.performanceBadge
+      }
+    })
+    
+    // Sauvegarder les réponses individuelles
+    if (data.answers && Array.isArray(data.answers)) {
+      await prisma.examAnswer.createMany({
+        data: data.answers.map((answer: any) => ({
+          examHistoryId: examHistory.id,
+          questionId: answer.questionId,
+          choix: answer.answer || answer.choix,
+          correct: answer.correct
+        }))
+      })
     }
     
-    const newEntry = {
-      id: `${userId}_${Date.now()}`,
-      userId,
-      ...examData,
-      completedAt: new Date().toISOString()
-    }
-    
-    history.push(newEntry)
-    fs.writeFileSync(HISTORY_FILE, JSON.stringify(history, null, 2))
-    
-    return NextResponse.json({ success: true, entry: newEntry })
+    return NextResponse.json({ success: true, entry: examHistory })
   } catch (error) {
-    console.error('Erreur lors de la sauvegarde de l\'historique:', error)
+    console.error('Erreur sauvegarde historique:', error)
     return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })
   }
 }

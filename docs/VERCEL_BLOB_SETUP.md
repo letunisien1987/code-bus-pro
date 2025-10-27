@@ -11,7 +11,7 @@ Ce document explique comment configurer et utiliser Vercel Blob pour stocker et 
 
 ## 2. Configuration des variables d'environnement
 
-### Local (.env.local)
+### Local (.env)
 ```bash
 BLOB_READ_WRITE_TOKEN=vercel_blob_rw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```

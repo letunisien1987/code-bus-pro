@@ -2,10 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { checkAndUnlockAchievements } from '../../../lib/achievements/checker'
-import fs from 'fs'
-import path from 'path'
-
-const ATTEMPTS_FILE = path.join(process.cwd(), 'data', 'user-attempts.json')
+import { prisma } from '@/lib/prisma'
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,31 +11,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
     }
 
-    const { questionId, choix, correct } = await request.json()
+    const { questionId, choix, correct, timeSpent } = await request.json()
     const userId = session.user.id
 
-    // Lire les tentatives existantes
-    let attempts = []
-    if (fs.existsSync(ATTEMPTS_FILE)) {
-      const data = fs.readFileSync(ATTEMPTS_FILE, 'utf-8')
-      attempts = JSON.parse(data)
-    }
-
-    // Créer la nouvelle tentative
-    const attempt = {
-      id: `attempt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      questionId,
-      choix,
-      correct,
-      userId,
-      createdAt: new Date().toISOString()
-    }
-
-    // Ajouter la tentative
-    attempts.push(attempt)
-
-    // Sauvegarder
-    fs.writeFileSync(ATTEMPTS_FILE, JSON.stringify(attempts, null, 2))
+    // Créer la tentative dans PostgreSQL
+    const attempt = await prisma.attempt.create({
+      data: {
+        userId,
+        questionId,
+        choix,
+        correct,
+        timeSpent: timeSpent || null // Temps en secondes, optionnel
+      }
+    })
 
     // Vérifier les trophées
     let newAchievements: any[] = []

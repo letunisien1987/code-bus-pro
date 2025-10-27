@@ -107,7 +107,7 @@ vercel login
 vercel link
 
 # Récupérer les variables d'environnement
-vercel env pull .env.local
+vercel env pull .env
 
 # Pousser le schéma
 npx prisma db push
