@@ -6,9 +6,8 @@ import Image from 'next/image'
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
 import { Button } from '../../components/ui/button'
 import { Badge } from '../../components/ui/badge'
-import { Progress } from '../../components/ui/progress'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../components/ui/tabs'
+import { Tabs, TabsContent } from '../../components/ui/tabs'
 import { ThemeToggle } from '../../components/theme-toggle'
 import { ArrowLeft, ArrowRight, CheckCircle, Clock, RotateCcw, LogOut, ChevronLeft, ChevronRight, XCircle } from 'lucide-react'
 import { getImageUrlSync } from '@/lib/blob-helper'
@@ -109,6 +108,80 @@ interface ExamHistoryEntry {
 
 // Composant pour afficher l'historique des examens
 function ExamHistoryView({ history, onExamClick, questions }: { history: ExamHistoryEntry[], onExamClick: (exam: ExamHistoryEntry) => void, questions: Question[] }) {
+  // Calendrier: états et dérivés
+  const [currentMonth, setCurrentMonth] = useState(() => {
+    const now = new Date()
+    return new Date(now.getFullYear(), now.getMonth(), 1)
+  })
+  const [selectedDate, setSelectedDate] = useState<string | null>(null)
+
+  const toKey = (d: Date) => {
+    const y = d.getFullYear()
+    const m = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    return `${y}-${m}-${day}`
+  }
+
+  const countsByDay: Record<string, { count: number, exams: ExamHistoryEntry[] }> = {}
+  for (const exam of history) {
+    const d = new Date(exam.completedAt)
+    const key = toKey(d)
+    if (!countsByDay[key]) countsByDay[key] = { count: 0, exams: [] }
+    countsByDay[key].count += 1
+    countsByDay[key].exams.push(exam)
+  }
+
+  const startOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)
+  const endOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0)
+
+  const startWeekDay = ((startOfMonth.getDay() + 6) % 7) // Lundi=0
+  const daysInMonth = endOfMonth.getDate()
+
+  const prevMonthLastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 0).getDate()
+  const cells: { date: Date, inMonth: boolean }[] = []
+
+  for (let i = startWeekDay - 1; i >= 0; i--) {
+    const d = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, prevMonthLastDay - i)
+    cells.push({ date: d, inMonth: false })
+  }
+  for (let day = 1; day <= daysInMonth; day++) {
+    const d = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
+    cells.push({ date: d, inMonth: true })
+  }
+  while (cells.length % 7 !== 0) {
+    const last = cells[cells.length - 1].date
+    const d = new Date(last.getFullYear(), last.getMonth(), last.getDate() + 1)
+    cells.push({ date: d, inMonth: false })
+  }
+
+  const monthLabel = new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(currentMonth)
+  const weekDays = ['L', 'M', 'M', 'J', 'V', 'S', 'D']
+
+  const handlePrevMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))
+  }
+  const handleNextMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))
+  }
+
+  const parseDateKey = (key: string) => {
+    const [y, m, d] = key.split('-').map(Number)
+    return new Date(y, m - 1, d)
+  }
+  const filteredHistory = selectedDate ? (countsByDay[selectedDate]?.exams || []) : history
+  const chartData = filteredHistory.slice(0, 8).reverse().map((exam) => {
+    const d = new Date(exam.completedAt)
+    const label = `${d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' })} ${d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}`
+    const avg = exam.avgTimePerQuestion || Math.round((exam.timeSpent || 0) / (exam.total || 1))
+    return {
+      label,
+      percentage: exam.percentage,
+      performanceScore: exam.performanceScore || 0,
+      avgTimePerQuestion: avg,
+      passed: exam.percentage >= 90
+    }
+  })
+
   if (history.length === 0) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
@@ -119,15 +192,85 @@ function ExamHistoryView({ history, onExamClick, questions }: { history: ExamHis
     )
   }
 
-  const chartData = history.slice(0, 8).reverse().map((exam, index) => ({
-    index: index + 1,
-    percentage: exam.percentage,
-    performanceScore: exam.performanceScore || 0,
-    passed: exam.percentage >= 90
-  }))
-
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* Calendrier de filtre visuel */}
+      <Card className="mb-6">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-sm md:text-base">Calendrier des examens</CardTitle>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handlePrevMonth}
+                className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-muted"
+                aria-label="Mois précédent"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter') handlePrevMonth() }}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <span className="text-sm font-medium text-foreground capitalize">{monthLabel}</span>
+              <button
+                onClick={handleNextMonth}
+                className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-muted"
+                aria-label="Mois suivant"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleNextMonth() }}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-7 gap-2 mb-2">
+            {weekDays.map((d, i) => (
+              <div key={`${d}-${i}`} className="text-center text-[11px] md:text-xs text-muted-foreground">{d}</div>
+            ))}
+          </div>
+          <div className="grid grid-cols-7 gap-1 md:gap-2">
+            {cells.map(({ date, inMonth }) => {
+              const key = toKey(date)
+              const count = countsByDay[key]?.count || 0
+              const isSelected = selectedDate === key
+              return (
+                <button
+                  key={key}
+                  onClick={() => setSelectedDate(isSelected ? null : key)}
+                  aria-label={`Jour ${date.getDate()} ${inMonth ? '' : '(hors mois)'} - ${count} examen(s)`}
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === 'Enter') setSelectedDate(isSelected ? null : key) }}
+                  className={`h-10 md:h-12 rounded-lg border text-xs md:text-sm flex flex-col items-center justify-center transition-all ${
+                    inMonth ? 'bg-background border-border hover:bg-muted' : 'bg-muted/30 border-border text-muted-foreground'
+                  } ${isSelected ? 'ring-2 ring-primary ring-offset-2' : ''}`}
+                >
+                  <span className="font-medium">{date.getDate()}</span>
+                  {count > 0 && (
+                    <span className="mt-0.5 px-1 rounded bg-primary text-primary-foreground text-[10px]">
+                      {count}
+                    </span>
+                  )}
+                </button>
+              )
+            })}
+          </div>
+          {selectedDate && (
+            <div className="mt-3 flex items-center justify-between">
+              <span className="text-xs md:text-sm text-muted-foreground">
+                Filtre actif: {parseDateKey(selectedDate).toLocaleDateString('fr-FR')} ({countsByDay[selectedDate]?.count || 0} examen(s))
+              </span>
+              <button
+                onClick={() => setSelectedDate(null)}
+                className="text-xs md:text-sm text-primary hover:underline"
+                aria-label="Effacer le filtre"
+              >
+                Effacer le filtre
+              </button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
       {/* Graphique de progression */}
       <Card className="mb-8">
         <CardHeader>
@@ -152,13 +295,11 @@ function ExamHistoryView({ history, onExamClick, questions }: { history: ExamHis
             
             {/* Barres - utiliser couleurs semantiques du theme */}
             <div className="absolute left-12 right-0 top-0 bottom-8 flex items-end justify-around gap-2">
-              {chartData.map((data) => {
-                // Calculer la hauteur en pixels (h-64 = 256px, moins 32px pour les labels = 224px)
+              {chartData.map((data, idx) => {
                 const maxHeight = 224
-                const barHeight = Math.max((data.percentage / 100) * maxHeight, 4) // Minimum 4px pour visibilité
-                
+                const barHeight = Math.max((data.percentage / 100) * maxHeight, 4)
                 return (
-                  <div key={data.index} className="flex-1 flex flex-col items-center">
+                  <div key={`${data.label}-${idx}`} className="flex-1 flex flex-col items-center">
                     <div 
                       className={`w-full rounded-t transition-all ${
                         data.percentage >= 95 ? 'bg-success dark:bg-success' :
@@ -168,7 +309,8 @@ function ExamHistoryView({ history, onExamClick, questions }: { history: ExamHis
                       }`}
                       style={{ height: `${barHeight}px` }}
                     />
-                    <span className="text-xs mt-2 text-foreground">{data.index}</span>
+                    <span className="text-[10px] mt-1 text-muted-foreground">{Math.round(data.percentage)}% • {data.avgTimePerQuestion}s/q</span>
+                    <span className="text-[10px] mt-0.5 text-foreground">{data.label}</span>
                   </div>
                 )
               })}
@@ -185,7 +327,7 @@ function ExamHistoryView({ history, onExamClick, questions }: { history: ExamHis
 
       {/* Grille de resultats */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {history.map((exam) => (
+        {filteredHistory.map((exam) => (
           <ExamHistoryCard key={exam.id} exam={exam} onExamClick={onExamClick} questions={questions} />
         ))}
       </div>
@@ -222,7 +364,7 @@ function ExamHistoryCard({ exam, onExamClick, questions }: { exam: ExamHistoryEn
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
-    return date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit' })
+    return date.toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' })
   }
 
   const getBadgeIcon = (badge: string) => {
@@ -356,24 +498,19 @@ export default function ExamPage() {
   const [showRestorePrompt, setShowRestorePrompt] = useState(false)
   const [savedExamState, setSavedExamState] = useState<any>(null)
 
-  // Fonction pour extraire le numéro de l'image depuis le nom de fichier
   const extractImageNumber = (imagePath: string): number | null => {
-    // Vérification de sécurité pour éviter les erreurs si imagePath est undefined
     if (!imagePath || typeof imagePath !== 'string') {
       console.warn('extractImageNumber: imagePath is undefined or not a string:', imagePath);
       return null;
     }
-    
     const match = imagePath.match(/Question\s*\((\d+)\)\.jpg/i)
     return match ? parseInt(match[1], 10) : null
   }
 
-  // Fonction pour calculer le nombre total de questions dans un questionnaire
   const getTotalQuestionsInQuestionnaire = (questionnaireNumber: number): number => {
     return questions.filter(q => q.questionnaire === questionnaireNumber).length
   }
   
-  // Charger l'historique des examens
   useEffect(() => {
     if (activeTab === 'history') {
       fetch('/api/exam-history')
@@ -383,26 +520,22 @@ export default function ExamPage() {
     }
   }, [activeTab])
 
-  // Réinitialiser le zoom quand on change de question
   useEffect(() => {
     setIsImageZoomed(false)
   }, [currentIndex])
 
-  // Gestion de la touche Échap pour fermer le zoom
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && isImageZoomed) {
         setIsImageZoomed(false)
       }
     }
-
     if (isImageZoomed) {
       document.addEventListener('keydown', handleKeyDown)
       return () => document.removeEventListener('keydown', handleKeyDown)
     }
   }, [isImageZoomed])
 
-  // Fonction de sauvegarde avec useCallback
   const saveExamState = useCallback(() => {
     if (state === 'running') {
       const examState = {
@@ -430,7 +563,6 @@ export default function ExamPage() {
     }
   }, [state, examQuestions, currentIndex, answers, timeLeft, examStartTime, markedForReview])
 
-  // Sauvegarde automatique sur événements
   useEffect(() => {
     if (state === 'running' && Object.keys(answers).length > 0) {
       saveExamState()
@@ -455,17 +587,12 @@ export default function ExamPage() {
     }
   }, [state, saveExamState])
 
-  // Protections contre les sorties accidentelles
   useEffect(() => {
     if (state === 'running') {
       window.history.pushState(null, '', window.location.href)
-      
       const handlePopState = () => {
         window.history.pushState(null, '', window.location.href)
-        // Pas de confirmation, juste empêcher le retour
-        // L'examen est sauvegardé automatiquement
       }
-      
       window.addEventListener('popstate', handlePopState)
       return () => window.removeEventListener('popstate', handlePopState)
     }
@@ -478,7 +605,6 @@ export default function ExamPage() {
         event.returnValue = 'Votre examen sera automatiquement sauvegardé. Vous pourrez le reprendre à tout moment.'
         return event.returnValue
       }
-      
       window.addEventListener('beforeunload', handleBeforeUnload)
       return () => window.removeEventListener('beforeunload', handleBeforeUnload)
     }
@@ -487,27 +613,21 @@ export default function ExamPage() {
   useEffect(() => {
     if (state === 'running') {
       const handleKeyDown = (event: KeyboardEvent) => {
-        // Bloquer F5 et Ctrl+R mais permettre le rechargement
         if (event.key === 'F5' || (event.ctrlKey && event.key === 'r')) {
-          // L'examen sera sauvegardé et rechargé
           return true
         }
       }
-      
       window.addEventListener('keydown', handleKeyDown)
       return () => window.removeEventListener('keydown', handleKeyDown)
     }
   }, [state])
   
-  // Type et état pour les filtres de questions
   type QuestionFilter = 'all' | 'answered' | 'review' | 'unanswered'
   const [questionFilter, setQuestionFilter] = useState<QuestionFilter>('all')
 
   useEffect(() => {
     const initializeExam = async () => {
       await fetchQuestions()
-      
-      // Vérifier s'il y a un examen sauvegardé immédiatement au chargement
       const saved = restoreExamState()
       if (saved) {
         setSavedExamState(saved)
@@ -515,12 +635,11 @@ export default function ExamPage() {
       }
       setLoading(false)
     }
-    
     initializeExam()
   }, [])
 
   useEffect(() => {
-    let interval: NodeJS.Timeout
+    let interval: ReturnType<typeof setInterval>
     if (state === 'running' && timeLeft > 0) {
       interval = setInterval(() => {
         setTimeLeft(timeLeft - 1)
@@ -529,47 +648,34 @@ export default function ExamPage() {
       finishExam()
     }
     return () => clearInterval(interval)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, timeLeft])
 
-  // Fonction utilitaire pour calculer la pagination - Toujours 10 par page
   const getQuestionsPerPage = (totalQuestions: number, isMobile: boolean) => {
-    return 10 // Toujours 10 questions par page
+    return 10
   }
 
-  // Naviguer automatiquement à la page contenant la question actuelle SEULEMENT quand currentIndex change
   useEffect(() => {
     if (examQuestions.length === 0 || isManualPageChange) return
-    
     const answeredIds = new Set(Object.keys(answers))
     const reviewIds = markedForReview
-
     const filteredQuestions = examQuestions.filter((q) => {
       if (questionFilter === 'all') return true
       if (questionFilter === 'answered') return answeredIds.has(q.id)
       if (questionFilter === 'review') return reviewIds.has(q.id)
       return !answeredIds.has(q.id)
     })
-
     if (filteredQuestions.length === 0) return
-    
     const currentQuestionId = examQuestions[currentIndex]?.id
     const filteredIndex = filteredQuestions.findIndex(q => q.id === currentQuestionId)
-    
-    // Si la question courante n'est pas dans le filtre, ne rien faire
     if (filteredIndex === -1) return
-    
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
     const perPage = getQuestionsPerPage(filteredQuestions.length, isMobile)
     const questionPage = Math.floor(filteredIndex / perPage)
-    
-    // Changer de page seulement si nécessaire
     if (questionPage !== currentPage && questionPage >= 0) {
       setCurrentPage(questionPage)
     }
   }, [currentIndex, examQuestions, isManualPageChange, answers, markedForReview, questionFilter, currentPage])
 
-  // Reset du flag de changement manuel après un délai
   useEffect(() => {
     if (isManualPageChange) {
       const timer = setTimeout(() => setIsManualPageChange(false), 200)
@@ -577,12 +683,10 @@ export default function ExamPage() {
     }
   }, [isManualPageChange])
 
-  // Réinitialiser la page quand le filtre change
   useEffect(() => {
     setCurrentPage(0)
     setIsManualPageChange(false)
   }, [questionFilter])
-
 
   const fetchQuestions = async () => {
     try {
@@ -598,7 +702,6 @@ export default function ExamPage() {
 
   const startExam = async (questionCount: number) => {
     try {
-      // Utiliser la sélection intelligente au lieu du mélange aléatoire
       const response = await fetch('/api/questions', {
         method: 'POST',
         headers: {
@@ -609,31 +712,24 @@ export default function ExamPage() {
           count: questionCount
         })
       })
-
       if (!response.ok) {
         throw new Error('Erreur lors de la sélection des questions')
       }
-
       const data = await response.json()
-      
       if (data.success) {
         setExamQuestions(data.questions)
-        setTimeLeft(questionCount * 60) // 1 minute par question
+        setTimeLeft(questionCount * 60)
         setState('running')
         setCurrentIndex(0)
         setAnswers({})
         setSelectedAnswer(null)
-        setExamStartTime(Date.now()) // Enregistrer l'heure de début
-        
-        // Log des métadonnées pour le debug (optionnel)
+        setExamStartTime(Date.now())
         console.log('Questions sélectionnées intelligemment:', data.metadata)
       } else {
         throw new Error(data.error || 'Erreur lors de la sélection')
       }
     } catch (error) {
       console.error('Erreur lors de la sélection intelligente, fallback vers sélection aléatoire:', error)
-      
-      // Fallback vers la sélection aléatoire en cas d'erreur
       const shuffled = [...questions].sort(() => Math.random() - 0.5)
       const selected = shuffled.slice(0, questionCount)
       setExamQuestions(selected)
@@ -687,10 +783,7 @@ export default function ExamPage() {
     const correct = examQuestions.filter(q => answers[q.id] === q.bonneReponse).length
     const incorrect = examQuestions.length - correct
     const score = Math.round((correct / examQuestions.length) * 100)
-    
-    // Calculer le temps réel passé sur l'examen
     const timeSpent = examStartTime ? Math.floor((Date.now() - examStartTime) / 1000) : 0
-
     const examResult: ExamResult = {
       score,
       total: examQuestions.length,
@@ -703,15 +796,12 @@ export default function ExamPage() {
         correct: answers[q.id] === q.bonneReponse
       }))
     }
-
-    // Sauvegarder dans l'historique
     try {
       const performanceData = calculatePerformanceScore(
         examResult.correct,
         examResult.total,
         examResult.timeSpent
       )
-
       const examData = {
         score: examResult.score,
         percentage: (examResult.correct / examResult.total) * 100,
@@ -720,10 +810,8 @@ export default function ExamPage() {
         incorrect: examResult.incorrect,
         timeSpent: examResult.timeSpent,
         answers: examResult.answers,
-        // NOUVEAUX CHAMPS
         ...performanceData
       }
-
       await fetch('/api/exam-history', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -733,13 +821,10 @@ export default function ExamPage() {
     } catch (error) {
       console.error('❌ Erreur sauvegarde historique:', error)
     }
-
-    // Enregistrer toutes les tentatives dans la base de données
     try {
       const savePromises = examQuestions.map(q => {
         const userAnswer = answers[q.id] || ''
         const isCorrect = userAnswer === q.bonneReponse
-        
         return fetch('/api/attempts', {
           method: 'POST',
           headers: {
@@ -752,15 +837,13 @@ export default function ExamPage() {
           })
         })
       })
-
       await Promise.all(savePromises)
       console.log('✅ Toutes les tentatives ont été enregistrées')
     } catch (error) {
       console.error('❌ Erreur lors de l\'enregistrement des tentatives:', error)
     }
-
     setResult(examResult)
-    clearExamState() // Supprimer la sauvegarde
+    clearExamState()
     setState('finished')
   }
 
@@ -776,8 +859,6 @@ export default function ExamPage() {
     setMarkedForReview(new Set())
     setExamStartTime(null)
   }
-
-  // Fonctions de sauvegarde et restauration
 
   const restoreExamState = () => {
     const saved = localStorage.getItem('exam_state')
@@ -798,8 +879,6 @@ export default function ExamPage() {
 
   const handleRestoreExam = () => {
     if (!savedExamState) return
-    
-    // Restaurer toutes les questions avec leurs données complètes
     setExamQuestions(savedExamState.examQuestions)
     setCurrentIndex(savedExamState.currentIndex)
     setAnswers(savedExamState.answers)
@@ -814,19 +893,15 @@ export default function ExamPage() {
     clearExamState()
     setSavedExamState(null)
     setShowRestorePrompt(false)
-    // L'utilisateur peut maintenant choisir le nombre de questions
-    // L'état reste en 'setup' pour permettre la sélection
   }
 
   const getExamStats = () => {
     if (!savedExamState) return null
-    
     const totalQuestions = savedExamState.examQuestions.length
     const answeredQuestions = Object.keys(savedExamState.answers).length
     const timeSpentSeconds = savedExamState.totalTime
     const timeSpentMinutes = Math.floor(timeSpentSeconds / 60)
     const startDate = new Date(savedExamState.startTime)
-    
     return {
       totalQuestions,
       answeredQuestions,
@@ -844,15 +919,12 @@ export default function ExamPage() {
   }
 
   const confirmExitExam = () => {
-    // NE PLUS appeler clearExamState() ici
-    // L'examen reste sauvegardé par défaut
-    // NE PLUS appeler resetExam() non plus pour garder la sauvegarde
     setShowExitConfirm(false)
     router.push('/')
   }
 
   const abandonExam = () => {
-    clearExamState() // Supprimer la sauvegarde
+    clearExamState()
     resetExam()
     setShowExitConfirm(false)
     router.push('/')
@@ -862,30 +934,23 @@ export default function ExamPage() {
     setShowExitConfirm(false)
   }
 
-  // Fonction pour détecter si le contenu est scrollable et si on n'est pas en bas
   const checkScrollable = () => {
     const mainContent = document.querySelector('.exam-main-content')
     if (mainContent) {
       const isScrollable = mainContent.scrollHeight > mainContent.clientHeight
-      const isAtBottom = mainContent.scrollTop + mainContent.clientHeight >= mainContent.scrollHeight - 20 // 20px de tolérance
+      const isAtBottom = mainContent.scrollTop + mainContent.clientHeight >= mainContent.scrollHeight - 20
       setShowScrollIndicator(isScrollable && !isAtBottom)
     }
   }
 
-  // Vérifier le scroll au chargement et au redimensionnement
   useEffect(() => {
-    // Attendre que le DOM soit mis à jour
     const timer = setTimeout(() => {
       checkScrollable()
     }, 100)
-    
     const mainContent = document.querySelector('.exam-main-content')
-    
-    // Ajouter listener pour le scroll
     if (mainContent) {
       mainContent.addEventListener('scroll', checkScrollable)
     }
-    
     window.addEventListener('resize', checkScrollable)
     return () => {
       clearTimeout(timer)
@@ -896,7 +961,6 @@ export default function ExamPage() {
     }
   }, [examQuestions, currentIndex, reviewIndex])
 
-  // Raccourcis clavier
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (state === 'running') {
@@ -917,13 +981,10 @@ export default function ExamPage() {
         }
       }
     }
-
     window.addEventListener('keydown', handleKeyPress)
     return () => window.removeEventListener('keydown', handleKeyPress)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, currentIndex, examQuestions.length, reviewIndex, result])
 
-  // Barre de navigation
   const NavigationBar = () => (
     <nav className="bg-background border-b border-border">
       <div className="container mx-auto px-4 py-3">
@@ -975,7 +1036,6 @@ export default function ExamPage() {
     )
   }
 
-  // Afficher un écran de chargement si on vérifie la sauvegarde
   if (state === 'setup' && loading) {
     return (
       <div className="h-screen bg-background flex items-center justify-center">
@@ -996,7 +1056,6 @@ export default function ExamPage() {
           <div className="bg-card border-b">
             <div className="container mx-auto px-4 py-6">
               <div className="flex items-center justify-between">
-                {/* Titre principal */}
                 <div className="flex flex-col">
                   <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
                     Mes Examens
@@ -1006,7 +1065,6 @@ export default function ExamPage() {
                   </p>
                 </div>
                 
-                {/* Bouton Nouveau test stylé à droite */}
                 <Button
                   onClick={() => setActiveTab('setup')}
                   className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
@@ -1053,7 +1111,6 @@ export default function ExamPage() {
                 </CardContent>
               </Card>
               
-              {/* Modal de reprise d'examen */}
               {showRestorePrompt && savedExamState && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                   <Card className="w-full max-w-lg card-elegant">
@@ -1145,18 +1202,13 @@ export default function ExamPage() {
               questions={questions}
               onExamClick={(exam) => {
                 console.log('onExamClick appelé avec:', exam.id)
-                // Récupérer les questions correspondantes à cet examen
                 const examQuestionsFromHistory = exam.answers.map(answer => 
                   questions.find(q => q.id === answer.questionId)
                 ).filter(Boolean) as Question[]
-                
-                // Si on ne peut pas récupérer les questions, afficher un message
                 if (examQuestionsFromHistory.length === 0) {
                   alert('Les détails de cet examen ne sont plus disponibles. Vous pouvez recommencer un nouvel examen.')
                   return
                 }
-                
-                // Simuler un résultat d'examen terminé
                 const examResult: ExamResult = {
                   score: exam.score,
                   correct: exam.correct,
@@ -1165,11 +1217,10 @@ export default function ExamPage() {
                   timeSpent: exam.timeSpent,
                   answers: exam.answers.map((a: any) => ({
                     questionId: a.questionId,
-                    answer: a.choix,  // Utiliser 'choix' au lieu de 'answer'
+                    answer: a.choix,
                     correct: a.correct
                   }))
                 }
-                
                 setExamQuestions(examQuestionsFromHistory)
                 setResult(examResult)
                 setState('finished')
@@ -1192,7 +1243,6 @@ export default function ExamPage() {
       <div className="h-screen bg-background flex flex-col overflow-hidden">
         <NavigationBar />
         <div className="flex-1 flex flex-col">
-          {/* Header avec score et navigation */}
           <Card className="m-2 md:m-4 mb-2 card-elegant">
             <CardContent className="p-2 md:p-4">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-2 md:mb-3 gap-3 md:gap-0">
@@ -1239,9 +1289,7 @@ export default function ExamPage() {
             </CardContent>
           </Card>
 
-          {/* Contenu principal - Layout responsive */}
           <div className="flex-1 flex flex-col md:flex-row mx-2 md:mx-4 pb-20 md:pb-24 gap-4">
-            {/* Image - responsive */}
             <div className="w-full md:w-1/2">
               <Card className="h-64 md:h-full card-elegant relative">
                 <CardContent className="p-2 md:p-4 h-full flex items-center justify-center">
@@ -1253,20 +1301,15 @@ export default function ExamPage() {
                     className="max-w-full max-h-60 md:max-h-full object-contain cursor-pointer transition-all duration-300"
                     onClick={() => setIsImageZoomed(!isImageZoomed)}
                   />
-                  
-                  {/* Badge principal avec numéro de question */}
                   <div className="absolute top-2 left-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
-                    <div className="font-black text-xl leading-none">{extractImageNumber(currentReviewQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentReviewQuestion.questionnaire)}</div>
+                    <div className="font-black text-xl leading-none">{extractImageNumber(currentReviewQuestion.imagePath) || '?'}{`/`}{getTotalQuestionsInQuestionnaire(currentReviewQuestion.questionnaire)}</div>
                   </div>
-                  
-                  {/* Badge de notification pour le questionnaire (position sûre) */}
                   <div className="badge-questionnaire-absolute">
                     {currentReviewQuestion.questionnaire}
                   </div>
                 </CardContent>
               </Card>
               
-              {/* Overlay de zoom séparé */}
               {isImageZoomed && (
                 <div 
                   className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
@@ -1284,16 +1327,12 @@ export default function ExamPage() {
                       className="max-w-full max-h-full object-contain cursor-pointer"
                       onClick={() => setIsImageZoomed(false)}
                     />
-                    
-                    {/* Badge avec numéro d'image et questionnaire dans le zoom */}
                     <div className="absolute top-2 left-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
                       <div className="flex items-center gap-2">
                         <div className="font-black text-xl leading-none">{currentReviewQuestion.questionnaire}</div>
-                        <div className="text-[11px] opacity-80 font-bold">{extractImageNumber(currentReviewQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentReviewQuestion.questionnaire)}</div>
+                        <div className="text-[11px] opacity-80 font-bold">{extractImageNumber(currentReviewQuestion.imagePath) || '?'}{`/`}{getTotalQuestionsInQuestionnaire(currentReviewQuestion.questionnaire)}</div>
                       </div>
                     </div>
-                    
-                    {/* Bouton de fermeture */}
                     <button
                       className="btn-close-modal"
                       onClick={() => setIsImageZoomed(false)}
@@ -1306,7 +1345,6 @@ export default function ExamPage() {
               )}
             </div>
 
-            {/* Question et réponses - responsive */}
             <div className="w-full md:w-1/2 flex flex-col">
               <Card className="flex-1 card-elegant">
                 <CardHeader className="pb-2 md:pb-3">
@@ -1332,20 +1370,15 @@ export default function ExamPage() {
                   <p className="text-sm md:text-base text-foreground font-medium break-words whitespace-pre-wrap">
                     {currentReviewQuestion.enonce}
                   </p>
-
                   <div className="space-y-1 md:space-y-2">
                     {['A', 'B', 'C', 'D'].map((option, index) => {
                       const optionKey = `option${option}` as keyof Question
                       const optionValue = currentReviewQuestion[optionKey] as string
                       const answerKey = option.toLowerCase()
-                      
-                      // Ne pas afficher l'option si elle n'existe pas
                       if (!optionValue) return null
-                      
                       const isCorrect = answerKey === currentReviewQuestion.bonneReponse
                       const isUserAnswer = currentAnswer?.answer === answerKey
                       const isWrong = isUserAnswer && !isCorrect
-
                       return (
                         <div
                           key={option}
@@ -1387,8 +1420,6 @@ export default function ExamPage() {
                       )
                     })}
                   </div>
-
-                  {/* Résumé de la réponse */}
                   <div className="mt-2 md:mt-4 p-2 md:p-3 bg-muted/30 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div>
@@ -1412,8 +1443,6 @@ export default function ExamPage() {
                   </div>
                 </CardContent>
               </Card>
-
-              {/* Actions - masquées sur mobile */}
               <div className="hidden md:flex justify-between mt-4">
                 <Button onClick={resetExam} variant="outline" className="interactive-hover">
                   <RotateCcw className="h-4 w-4 mr-2" />
@@ -1427,7 +1456,6 @@ export default function ExamPage() {
             </div>
           </div>
 
-          {/* Indicateur de scroll intelligent */}
           {showScrollIndicator && (
             <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-40">
               <div className="bg-primary/50 text-primary-foreground w-8 h-8 rounded-full flex items-center justify-center shadow-md animate-bounce">
@@ -1436,7 +1464,6 @@ export default function ExamPage() {
             </div>
           )}
 
-          {/* Navigation fixe - visible sur toutes les tailles d'écran */}
           <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border p-3 z-50">
             <div className="flex justify-between gap-2">
               <Button
@@ -1458,7 +1485,6 @@ export default function ExamPage() {
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
-            
           </div>
         </div>
       </div>
@@ -1467,50 +1493,33 @@ export default function ExamPage() {
 
   if (state === 'running' && examQuestions.length > 0) {
     const currentQuestion = examQuestions[currentIndex]
-    const progress = ((currentIndex + 1) / examQuestions.length) * 100
-    
-    // Calculer le nombre de questions répondues
     const answeredCount = Object.keys(answers).length
     const allAnswered = answeredCount === examQuestions.length
 
-    // Configuration optimisée pour 10 questions par page
     const getButtonConfig = (totalQuestions: number) => {
-      // Toujours optimisé pour 10 questions
       return {
-        size: 'w-9 h-9 md:w-10 md:h-10',      // Boutons confortables
-        text: 'text-xs md:text-sm',            // Texte lisible
-        gap: 'gap-2 md:gap-3',                 // Espacement généreux
-        shape: 'rounded-lg'                    // Forme arrondie
+        size: 'w-9 h-9 md:w-10 md:h-10',
+        text: 'text-xs md:text-sm',
+        gap: 'gap-2 md:gap-3',
+        shape: 'rounded-lg'
       }
     }
 
-    // Déterminer l'ensemble filtré
     const answeredIds = new Set(Object.keys(answers))
     const reviewIds = markedForReview
-
     const filteredQuestions = examQuestions.filter((q) => {
       if (questionFilter === 'all') return true
       if (questionFilter === 'answered') return answeredIds.has(q.id)
       if (questionFilter === 'review') return reviewIds.has(q.id)
-      // 'unanswered'
       return !answeredIds.has(q.id)
     })
 
     const buttonConfig = getButtonConfig(filteredQuestions.length)
-
-    // IMPORTANT: mapping index global ←→ index filtré
-    // index global pour une question visible
     const getGlobalIndex = (qId: string) => examQuestions.findIndex(eq => eq.id === qId)
-
-    // Calculer le nombre de questions par page (responsive) - basé sur les questions filtrées
     const totalForPagination = filteredQuestions.length
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
     const questionsPerPage = getQuestionsPerPage(totalForPagination, isMobile)
-
-    // Calculer le nombre total de pages
     const totalPages = Math.ceil(totalForPagination / questionsPerPage)
-
-    // Questions visibles sur la page actuelle
     const startIndex = currentPage * questionsPerPage
     const endIndex = Math.min(startIndex + questionsPerPage, totalForPagination)
     const visibleQuestions = filteredQuestions.slice(startIndex, endIndex)
@@ -1519,12 +1528,9 @@ export default function ExamPage() {
       <div className="h-screen bg-background flex flex-col overflow-hidden">
         <NavigationBar />
         <div className="flex-1 flex flex-col exam-main-content overflow-y-auto">
-          {/* Header avec timer et navigation par numéros */}
           <Card className="sticky top-0 z-40 bg-background shadow-md m-2 md:m-4 mb-2 card-elegant">
             <CardContent className="p-2 md:p-4">
-              {/* Header principal - une seule ligne */}
               <div className="flex items-center justify-between gap-2 md:gap-4 flex-wrap md:flex-nowrap">
-                {/* Zone 1: Contrôles gauche */}
                 <div className="flex items-center gap-2">
                   <Button
                     variant="ghost"
@@ -1537,16 +1543,12 @@ export default function ExamPage() {
                   </Button>
                   <ThemeToggle />
                 </div>
-                
-                {/* Zone 2: Chrono */}
                 <div className="flex items-center gap-2">
                   <Clock className="h-5 w-5 md:h-6 md:w-6 text-primary" />
                   <span className="font-mono text-lg md:text-2xl font-bold text-primary">
                     {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
                   </span>
                 </div>
-                
-                {/* Zone 3: Filtres - Desktop (boutons) */}
                 <div className="hidden md:flex gap-2" role="tablist" aria-label="Filtres de questions">
                   {([
                     { key: 'all', label: 'Toutes', count: examQuestions.length },
@@ -1570,8 +1572,6 @@ export default function ExamPage() {
                     </Button>
                   ))}
                 </div>
-                
-                {/* Zone 3: Filtres - Mobile (select) */}
                 <div className="flex md:hidden">
                   <Select value={questionFilter} onValueChange={(value) => setQuestionFilter(value as QuestionFilter)}>
                     <SelectTrigger className="w-[140px] h-8">
@@ -1585,14 +1585,10 @@ export default function ExamPage() {
                     </SelectContent>
                   </Select>
                 </div>
-                
-                {/* Zone 4: Compteur */}
                 <Badge variant={allAnswered ? "default" : "secondary"} className={`text-xs font-semibold ${allAnswered ? 'badge-status-success' : 'badge-questionnaire'}`}>
                   {answeredCount} / {examQuestions.length}
                 </Badge>
               </div>
-
-              {/* Navigation par numéros de questions */}
               <div className="mt-3 md:mt-4">
                 {filteredQuestions.length === 0 ? (
                   <div className="text-center text-muted-foreground text-sm py-4">
@@ -1600,7 +1596,6 @@ export default function ExamPage() {
                   </div>
                 ) : (
                   <div className="flex w-full gap-2 px-2">
-                    {/* Flèche gauche - taille fixe */}
                     <button
                       onClick={() => {
                         if (currentPage > 0) {
@@ -1618,15 +1613,12 @@ export default function ExamPage() {
                     >
                       <ArrowLeft className="h-5 w-5 text-primary font-bold" />
                     </button>
-                    
-                    {/* Numéros de questions - prend tout l'espace restant */}
                     <div className="flex-1 flex gap-1 md:gap-2">
                       {visibleQuestions.map((q) => {
                         const index = getGlobalIndex(q.id)
                         const isAnswered = !!answers[q.id]
                         const isMarked = markedForReview.has(q.id)
                         const isCurrent = index === currentIndex
-                        
                         return (
                           <button
                             key={q.id}
@@ -1648,8 +1640,6 @@ export default function ExamPage() {
                         )
                       })}
                     </div>
-                    
-                    {/* Flèche droite - taille fixe */}
                     <button
                       onClick={() => {
                         if (currentPage < totalPages - 1) {
@@ -1673,13 +1663,10 @@ export default function ExamPage() {
             </CardContent>
           </Card>
 
-          {/* Contenu principal - Layout responsive */}
           <div className="flex-1 flex flex-col md:flex-row mx-2 md:mx-4 pb-20 md:pb-24 gap-4">
-            {/* Image - responsive */}
             <div className="w-full md:w-1/2">
               <Card className="h-64 md:h-full card-elegant relative">
                 <CardContent className="p-2 md:p-4 h-full flex flex-col">
-                  {/* Légende des états en haut */}
                   <div className="flex gap-2 mb-2 text-[10px] text-muted-foreground">
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 rounded-full bg-success"></div>
@@ -1694,8 +1681,6 @@ export default function ExamPage() {
                       <span>Non rép.</span>
                     </div>
                   </div>
-                  
-                  {/* Image centrée */}
                   <div className="flex-1 flex items-center justify-center relative">
                     <Image 
                       src={getImageUrlSync(currentQuestion.imagePath)} 
@@ -1705,13 +1690,9 @@ export default function ExamPage() {
                       className="max-w-full max-h-full object-contain cursor-pointer transition-all duration-300"
                       onClick={() => setIsImageZoomed(!isImageZoomed)}
                     />
-                    
-                    {/* Badge principal avec numéro de question */}
                     <div className="absolute top-2 left-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
-                      <div className="font-black text-xl leading-none">{extractImageNumber(currentQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentQuestion.questionnaire)}</div>
+                      <div className="font-black text-xl leading-none">{extractImageNumber(currentQuestion.imagePath) || '?'}{`/`}{getTotalQuestionsInQuestionnaire(currentQuestion.questionnaire)}</div>
                     </div>
-                    
-                    {/* Badge de notification pour le questionnaire (position sûre) */}
                     <div className="badge-questionnaire-absolute">
                       {currentQuestion.questionnaire}
                     </div>
@@ -1719,7 +1700,6 @@ export default function ExamPage() {
                 </CardContent>
               </Card>
               
-              {/* Overlay de zoom séparé */}
               {isImageZoomed && (
                 <div 
                   className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
@@ -1737,16 +1717,12 @@ export default function ExamPage() {
                       className="max-w-full max-h-full object-contain cursor-pointer"
                       onClick={() => setIsImageZoomed(false)}
                     />
-                    
-                    {/* Badge avec numéro d'image et questionnaire dans le zoom */}
                     <div className="absolute top-2 left-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
                       <div className="flex items-center gap-2">
                         <div className="text-[11px] opacity-80 font-bold">{currentQuestion.questionnaire}</div>
-                        <div className="font-black text-xl leading-none">{extractImageNumber(currentQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentQuestion.questionnaire)}</div>
+                        <div className="font-black text-xl leading-none">{extractImageNumber(currentQuestion.imagePath) || '?'}{`/`}{getTotalQuestionsInQuestionnaire(currentQuestion.questionnaire)}</div>
                       </div>
                     </div>
-                    
-                    {/* Bouton de fermeture */}
                     <button
                       className="btn-close-modal"
                       onClick={() => setIsImageZoomed(false)}
@@ -1759,7 +1735,6 @@ export default function ExamPage() {
               )}
             </div>
 
-            {/* Question et options - responsive */}
             <div className="w-full md:w-1/2 flex flex-col">
               <Card className="flex-1 card-elegant">
                 <CardHeader className="pb-2 md:pb-3">
@@ -1785,18 +1760,13 @@ export default function ExamPage() {
                   <p className="text-sm md:text-base text-foreground font-medium break-words whitespace-pre-wrap leading-relaxed">
                     {currentQuestion.enonce}
                   </p>
-
                   <div className="space-y-3 md:space-y-4">
                     {['A', 'B', 'C', 'D'].map((option, index) => {
                       const optionKey = `option${option}` as keyof Question
                       const optionValue = currentQuestion[optionKey] as string
                       const answerKey = option.toLowerCase()
-                      
-                      // Ne pas afficher l'option si elle n'existe pas
                       if (!optionValue) return null
-                      
                       const isSelected = selectedAnswer === answerKey
-
                       return (
                         <div
                           key={option}
@@ -1823,8 +1793,6 @@ export default function ExamPage() {
                   </div>
                 </CardContent>
               </Card>
-
-              {/* Bouton marquer pour révision - Version desktop */}
               <div className="hidden md:block mt-2 md:mt-4">
                 <Button 
                   variant="outline"
@@ -1849,13 +1817,11 @@ export default function ExamPage() {
                 </Button>
               </div>
 
-
-              {/* Bouton finir l'examen - Visible seulement si toutes les questions sont répondues */}
               {allAnswered && (
                 <div className="mt-4 text-center">
                   <Button 
                     onClick={finishExam}
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg" // Pas de hover jaune car fond jaune
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
                   >
                     <CheckCircle className="h-4 w-4 mr-2" />
                     Terminer l&apos;examen
@@ -1865,7 +1831,6 @@ export default function ExamPage() {
             </div>
           </div>
 
-          {/* Indicateur de scroll intelligent */}
           {showScrollIndicator && (
             <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-40">
               <div className="bg-primary/50 text-primary-foreground w-8 h-8 rounded-full flex items-center justify-center shadow-md animate-bounce">
@@ -1874,7 +1839,6 @@ export default function ExamPage() {
             </div>
           )}
 
-          {/* Navigation fixe - visible sur toutes les tailles d'écran */}
           <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border p-3 z-50">
             <div className="flex justify-between gap-2">
               <Button 
@@ -1896,10 +1860,8 @@ export default function ExamPage() {
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
-            
           </div>
 
-          {/* Version mobile - bouton flottant pour marquer les questions */}
           <button
             onClick={() => toggleMarkForReview(currentQuestion.id)}
             className={`fixed bottom-20 right-4 z-30 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all ${
@@ -1916,8 +1878,6 @@ export default function ExamPage() {
             )}
           </button>
 
-
-          {/* Modal de confirmation pour sortir de l'examen */}
           {showExitConfirm && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
               <Card className="w-full max-w-md card-elegant">
