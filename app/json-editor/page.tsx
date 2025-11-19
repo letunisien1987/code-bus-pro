@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { AlertCircle, Check, Save, Search, Bot, Sparkles, Loader2, ChevronDown, ChevronRight, Database } from 'lucide-react'
+import { getImageUrlSync } from '@/lib/blob-helper'
 
 interface Question {
   id: string // UUID unique et permanent
@@ -64,7 +65,6 @@ export default function JsonEditorPage() {
   const [aiLoading, setAiLoading] = useState<string | null>(null)
   const [expandedQuestionnaires, setExpandedQuestionnaires] = useState<Set<number>>(new Set())
   const [appliedChanges, setAppliedChanges] = useState<Record<string, { field: string, oldValue: any, newValue: any }[]>>({})
-  const [imageUrlMap, setImageUrlMap] = useState<Record<string, string>>({})
   // Fonction wrapper pour sauvegarder sans rechargement
   const saveWithScroll = async (updatedQuestion: Question) => {
     const index = questions.findIndex(q => q.id === updatedQuestion.id)
@@ -110,73 +110,12 @@ export default function JsonEditorPage() {
 
   useEffect(() => {
     loadQuestions()
-    loadImageUrlMap()
   }, [])
   
   useEffect(() => {
     filterQuestions()
   }, [questions, searchTerm, filterProblematic, validationFilter, filterQuestions])
 
-  // Charger le mapping des URLs Blob en production
-  const loadImageUrlMap = async () => {
-    try {
-      console.log('📋 Chargement du mapping des URLs Blob...')
-      const response = await fetch('/api/images/blob-map')
-      
-      if (response.ok) {
-        const data = await response.json()
-        
-        // Si c'est une erreur, logger
-        if (data.error) {
-          console.error('❌ Erreur API blob-map:', data.error, data.details)
-          setImageUrlMap({})
-          return
-        }
-        
-        const urlMap = data.urlMap || data
-        setImageUrlMap(urlMap)
-        console.log(`✅ ${Object.keys(urlMap).length} URLs Blob chargées`)
-        
-        // Logger quelques exemples pour debug
-        if (Object.keys(urlMap).length > 0) {
-          const examples = Object.keys(urlMap).slice(0, 3)
-          console.log('📊 Exemples de chemins chargés:', examples)
-        }
-      } else {
-        const errorData = await response.json().catch(() => ({}))
-        console.error('❌ Erreur HTTP blob-map:', response.status, errorData)
-        setImageUrlMap({})
-      }
-    } catch (error) {
-      console.error('❌ Erreur lors du chargement des URLs Blob:', error)
-      setImageUrlMap({})
-    }
-  }
-
-  // Fonction pour obtenir l'URL de l'image (Blob en production, locale en dev)
-  const getImageSrc = (imagePath: string): string => {
-    if (!imagePath) return '/images/placeholder.jpg'
-    
-    // Nettoyer le chemin
-    const cleanPath = imagePath.replace(/^\/+/, '')
-    
-    // Si on a une URL Blob en cache, l'utiliser
-    if (imageUrlMap[cleanPath]) {
-      return imageUrlMap[cleanPath]
-    }
-    
-    // Log pour debug en production (seulement si pas de mapping trouvé)
-    if (typeof window !== 'undefined' && 
-        window.location.hostname !== 'localhost' && 
-        Object.keys(imageUrlMap).length > 0) {
-      console.warn('⚠️ Image non trouvée dans le mapping Blob:', cleanPath)
-      console.log('📊 Mapping disponible:', Object.keys(imageUrlMap).slice(0, 5))
-    }
-    
-    // Sinon, utiliser le chemin local
-    return `/${cleanPath}`
-  }
-  
   const loadQuestions = async () => {
     try {
       const response = await fetch('/api/json-editor')
@@ -806,7 +745,6 @@ export default function JsonEditorPage() {
                         undoAISuggestion={undoAISuggestion}
                         applyAllSuggestions={applyAllSuggestions}
                         appliedChanges={appliedChanges}
-                        imageUrlMap={imageUrlMap}
                       />
                     ))}
                   </CardContent>
@@ -831,7 +769,6 @@ export default function JsonEditorPage() {
               undoAISuggestion={undoAISuggestion}
               applyAllSuggestions={applyAllSuggestions}
               appliedChanges={appliedChanges}
-              imageUrlMap={imageUrlMap}
             />
           ))
         )}
@@ -854,39 +791,14 @@ interface QuestionCardProps {
   undoAISuggestion: (questionId: string, field: string) => void
   applyAllSuggestions: (questionId: string) => void
   appliedChanges: Record<string, { field: string, oldValue: any, newValue: any }[]>
-  imageUrlMap: Record<string, string>
 }
 
-function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, onSave, aiAnalysis, aiLoading, analyzeWithAI, applyAISuggestion, undoAISuggestion, applyAllSuggestions, appliedChanges, imageUrlMap }: QuestionCardProps) {
+function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, onSave, aiAnalysis, aiLoading, analyzeWithAI, applyAISuggestion, undoAISuggestion, applyAllSuggestions, appliedChanges }: QuestionCardProps) {
   const [formData, setFormData] = useState(question)
   const [isImageZoomed, setIsImageZoomed] = useState(false)
   const [hoveredOption, setHoveredOption] = useState<string | null>(null)
   const [editingField, setEditingField] = useState<string | null>(null)
   const [tempValue, setTempValue] = useState<string>('')
-  
-  // Fonction pour obtenir l'URL de l'image (Blob en production, locale en dev)
-  const getImageSrc = (imagePath: string): string => {
-    if (!imagePath) return '/images/placeholder.jpg'
-    
-    // Nettoyer le chemin
-    const cleanPath = imagePath.replace(/^\/+/, '')
-    
-    // Si on a une URL Blob en cache, l'utiliser
-    if (imageUrlMap[cleanPath]) {
-      return imageUrlMap[cleanPath]
-    }
-    
-    // Log pour debug en production (seulement si pas de mapping trouvé)
-    if (typeof window !== 'undefined' && 
-        window.location.hostname !== 'localhost' && 
-        Object.keys(imageUrlMap).length > 0) {
-      console.warn('⚠️ Image non trouvée dans le mapping Blob:', cleanPath)
-      console.log('📊 Mapping disponible:', Object.keys(imageUrlMap).slice(0, 5))
-    }
-    
-    // Sinon, utiliser le chemin local
-    return `/${cleanPath}`
-  }
   
   // Synchroniser formData avec les changements de la question
   useEffect(() => {
@@ -1120,7 +1032,7 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                 >
                   {isValidImagePath(currentImagePath) ? (
                     <Image 
-                      src={getImageSrc(currentImagePath)} 
+                      src={getImageUrlSync(currentImagePath)} 
                       alt={hoveredOption ? `Réponses Questionnaire ${question.questionnaire}` : `Question ${question.id}`}
                       width={800}
                       height={600}
@@ -1591,7 +1503,7 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
               onClick={(e) => e.stopPropagation()}
             >
               <Image 
-                src={getImageSrc(question.image_path)} 
+                src={getImageUrlSync(question.image_path)} 
                 alt={`Question ${question.id} - Zoom`}
                 width={1200}
                 height={900}
@@ -1747,7 +1659,7 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                 }}
               >
                 <Image
-                  src={getImageSrc(question.image_path)}
+                  src={getImageUrlSync(question.image_path)}
                   alt={`Question ${question.id}`}
                   width={800}
                   height={600}
@@ -1954,7 +1866,7 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
           onClick={(e) => e.stopPropagation()}
         >
           <Image 
-            src={getImageSrc(question.image_path)} 
+            src={getImageUrlSync(question.image_path)} 
             alt={`Question ${question.id} - Zoom`}
             width={1200}
             height={900}
