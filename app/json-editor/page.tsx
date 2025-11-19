@@ -120,14 +120,36 @@ export default function JsonEditorPage() {
   // Charger le mapping des URLs Blob en production
   const loadImageUrlMap = async () => {
     try {
+      console.log('📋 Chargement du mapping des URLs Blob...')
       const response = await fetch('/api/images/blob-map')
+      
       if (response.ok) {
-        const urlMap = await response.json()
+        const data = await response.json()
+        
+        // Si c'est une erreur, logger
+        if (data.error) {
+          console.error('❌ Erreur API blob-map:', data.error, data.details)
+          setImageUrlMap({})
+          return
+        }
+        
+        const urlMap = data.urlMap || data
         setImageUrlMap(urlMap)
         console.log(`✅ ${Object.keys(urlMap).length} URLs Blob chargées`)
+        
+        // Logger quelques exemples pour debug
+        if (Object.keys(urlMap).length > 0) {
+          const examples = Object.keys(urlMap).slice(0, 3)
+          console.log('📊 Exemples de chemins chargés:', examples)
+        }
+      } else {
+        const errorData = await response.json().catch(() => ({}))
+        console.error('❌ Erreur HTTP blob-map:', response.status, errorData)
+        setImageUrlMap({})
       }
     } catch (error) {
       console.error('❌ Erreur lors du chargement des URLs Blob:', error)
+      setImageUrlMap({})
     }
   }
 
@@ -141,6 +163,14 @@ export default function JsonEditorPage() {
     // Si on a une URL Blob en cache, l'utiliser
     if (imageUrlMap[cleanPath]) {
       return imageUrlMap[cleanPath]
+    }
+    
+    // Log pour debug en production (seulement si pas de mapping trouvé)
+    if (typeof window !== 'undefined' && 
+        window.location.hostname !== 'localhost' && 
+        Object.keys(imageUrlMap).length > 0) {
+      console.warn('⚠️ Image non trouvée dans le mapping Blob:', cleanPath)
+      console.log('📊 Mapping disponible:', Object.keys(imageUrlMap).slice(0, 5))
     }
     
     // Sinon, utiliser le chemin local
@@ -844,6 +874,14 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
     // Si on a une URL Blob en cache, l'utiliser
     if (imageUrlMap[cleanPath]) {
       return imageUrlMap[cleanPath]
+    }
+    
+    // Log pour debug en production (seulement si pas de mapping trouvé)
+    if (typeof window !== 'undefined' && 
+        window.location.hostname !== 'localhost' && 
+        Object.keys(imageUrlMap).length > 0) {
+      console.warn('⚠️ Image non trouvée dans le mapping Blob:', cleanPath)
+      console.log('📊 Mapping disponible:', Object.keys(imageUrlMap).slice(0, 5))
     }
     
     // Sinon, utiliser le chemin local
