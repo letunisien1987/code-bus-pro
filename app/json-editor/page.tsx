@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { AlertCircle, Check, Save, Search, Bot, Sparkles, Loader2, ChevronDown, ChevronRight, Database } from 'lucide-react'
-import { getImageUrlSync } from '@/lib/blob-helper'
+import { getImageUrl } from '@/lib/blob-helper'
 
 interface Question {
   id: string // UUID unique et permanent
@@ -65,6 +65,8 @@ export default function JsonEditorPage() {
   const [aiLoading, setAiLoading] = useState<string | null>(null)
   const [expandedQuestionnaires, setExpandedQuestionnaires] = useState<Set<number>>(new Set())
   const [appliedChanges, setAppliedChanges] = useState<Record<string, { field: string, oldValue: any, newValue: any }[]>>({})
+  const [imageUrlMap, setImageUrlMap] = useState<Record<string, string>>({})
+  const [imageUrlsLoaded, setImageUrlsLoaded] = useState(false)
   // Fonction wrapper pour sauvegarder sans rechargement
   const saveWithScroll = async (updatedQuestion: Question) => {
     const index = questions.findIndex(q => q.id === updatedQuestion.id)
@@ -111,10 +113,49 @@ export default function JsonEditorPage() {
   useEffect(() => {
     loadQuestions()
   }, [])
+
+  // Charger les URLs des images depuis Blob en production
+  const loadImageUrls = async () => {
+    // En développement local, pas besoin de charger
+    if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+      setImageUrlsLoaded(true)
+      return
+    }
+
+    if (questions.length === 0) {
+      return
+    }
+
+    try {
+      const urlMap: Record<string, string> = {}
+      
+      // Charger toutes les URLs des questions
+      for (const question of questions) {
+        if (question.image_path) {
+          const url = await getImageUrl(question.image_path)
+          urlMap[question.image_path] = url
+        }
+      }
+      
+      setImageUrlMap(urlMap)
+      setImageUrlsLoaded(true)
+      console.log(`✅ ${Object.keys(urlMap).length} URLs d'images chargées`)
+    } catch (error) {
+      console.error('❌ Erreur lors du chargement des URLs:', error)
+      setImageUrlsLoaded(true)
+    }
+  }
   
   useEffect(() => {
     filterQuestions()
   }, [questions, searchTerm, filterProblematic, validationFilter, filterQuestions])
+
+  // Recharger les URLs quand les questions changent
+  useEffect(() => {
+    if (questions.length > 0 && !imageUrlsLoaded) {
+      loadImageUrls()
+    }
+  }, [questions.length, imageUrlsLoaded])
 
   const loadQuestions = async () => {
     try {
@@ -745,6 +786,7 @@ export default function JsonEditorPage() {
                         undoAISuggestion={undoAISuggestion}
                         applyAllSuggestions={applyAllSuggestions}
                         appliedChanges={appliedChanges}
+                        imageUrlMap={imageUrlMap}
                       />
                     ))}
                   </CardContent>
@@ -769,6 +811,7 @@ export default function JsonEditorPage() {
               undoAISuggestion={undoAISuggestion}
               applyAllSuggestions={applyAllSuggestions}
               appliedChanges={appliedChanges}
+              imageUrlMap={imageUrlMap}
             />
           ))
         )}
@@ -791,14 +834,29 @@ interface QuestionCardProps {
   undoAISuggestion: (questionId: string, field: string) => void
   applyAllSuggestions: (questionId: string) => void
   appliedChanges: Record<string, { field: string, oldValue: any, newValue: any }[]>
+  imageUrlMap: Record<string, string>
 }
 
-function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, onSave, aiAnalysis, aiLoading, analyzeWithAI, applyAISuggestion, undoAISuggestion, applyAllSuggestions, appliedChanges }: QuestionCardProps) {
+function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, onSave, aiAnalysis, aiLoading, analyzeWithAI, applyAISuggestion, undoAISuggestion, applyAllSuggestions, appliedChanges, imageUrlMap }: QuestionCardProps) {
   const [formData, setFormData] = useState(question)
   const [isImageZoomed, setIsImageZoomed] = useState(false)
   const [hoveredOption, setHoveredOption] = useState<string | null>(null)
   const [editingField, setEditingField] = useState<string | null>(null)
   const [tempValue, setTempValue] = useState<string>('')
+  
+  // Fonction pour obtenir l'URL de l'image (Blob en production, locale en dev)
+  const getImageSrc = (imagePath: string): string => {
+    if (!imagePath) return '/images/placeholder.jpg'
+    
+    // Si on a une URL dans le mapping, l'utiliser
+    if (imageUrlMap[imagePath]) {
+      return imageUrlMap[imagePath]
+    }
+    
+    // Sinon, utiliser le chemin local (fonctionne en local et si l'image est dans /public)
+    const cleanPath = imagePath.replace(/^\/+/, '')
+    return `/${cleanPath}`
+  }
   
   // Synchroniser formData avec les changements de la question
   useEffect(() => {
@@ -1032,12 +1090,13 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                 >
                   {isValidImagePath(currentImagePath) ? (
                     <Image 
-                      src={getImageUrlSync(currentImagePath)} 
+                      src={getImageSrc(currentImagePath)} 
                       alt={hoveredOption ? `Réponses Questionnaire ${question.questionnaire}` : `Question ${question.id}`}
                       width={800}
                       height={600}
                       className="w-full h-full object-contain"
                       style={getImageStyle()}
+                      unoptimized={true}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground">
@@ -1503,11 +1562,12 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
               onClick={(e) => e.stopPropagation()}
             >
               <Image 
-                src={getImageUrlSync(question.image_path)} 
+                src={getImageSrc(question.image_path)} 
                 alt={`Question ${question.id} - Zoom`}
                 width={1200}
                 height={900}
                 className="max-w-full max-h-full object-contain"
+                unoptimized={true}
               />
               
               
@@ -1659,13 +1719,14 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                 }}
               >
                 <Image
-                  src={getImageUrlSync(question.image_path)}
+                  src={getImageSrc(question.image_path)}
                   alt={`Question ${question.id}`}
                   width={800}
                   height={600}
                   className="w-full h-full object-contain transition-transform duration-200 cursor-grab active:cursor-grabbing"
                   style={{ transform: 'scale(1) translate(0px, 0px)' }}
                   data-scale="1"
+                  unoptimized={true}
                   data-x="0"
                   data-y="0"
                   onDoubleClick={(e) => {
@@ -1866,12 +1927,13 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
           onClick={(e) => e.stopPropagation()}
         >
           <Image 
-            src={getImageUrlSync(question.image_path)} 
+            src={getImageSrc(question.image_path)} 
             alt={`Question ${question.id} - Zoom`}
             width={1200}
             height={900}
             className="max-w-full max-h-full object-contain cursor-pointer"
             onClick={() => setIsImageZoomed(false)}
+            unoptimized={true}
           />
           {/* Bouton de fermeture */}
           <button
