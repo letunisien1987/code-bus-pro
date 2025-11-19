@@ -53,27 +53,29 @@ export default function Navigation() {
           </Link>
 
           {/* Navigation desktop */}
-          <div className="hidden md:flex items-center gap-1">
-            {navigation.map((item) => {
-              const isActive = pathname === item.href
-              return (
-                <Link key={item.name} href={item.href}>
-                  <Button
-                    variant={isActive ? "default" : "ghost"}
-                    size="sm"
-                    className={`${
-                      isActive 
-                             ? 'bg-primary text-primary-foreground' // Pas de hover sur fond jaune
-                        : 'nav-link-hover' // Hover jaune seulement si pas sur fond jaune
-                    }`}
-                  >
-                    <item.icon className="h-4 w-4 mr-2" />
-                    {item.name}
-                  </Button>
-                </Link>
-              )
-            })}
-          </div>
+          {session && (
+            <div className="hidden md:flex items-center gap-1">
+              {navigation.map((item) => {
+                const isActive = pathname === item.href
+                return (
+                  <Link key={item.name} href={item.href}>
+                    <Button
+                      variant={isActive ? "default" : "ghost"}
+                      size="sm"
+                      className={`${
+                        isActive 
+                               ? 'bg-primary text-primary-foreground' // Pas de hover sur fond jaune
+                          : 'nav-link-hover' // Hover jaune seulement si pas sur fond jaune
+                      }`}
+                    >
+                      <item.icon className="h-4 w-4 mr-2" />
+                      {item.name}
+                    </Button>
+                  </Link>
+                )
+              })}
+            </div>
+          )}
 
           {/* Theme toggle et connexion - visible sur desktop et mobile */}
           <div className="flex items-center gap-2">
@@ -148,7 +150,7 @@ export default function Navigation() {
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-border py-4">
             <div className="space-y-1">
-              {navigation.map((item) => {
+              {session && navigation.map((item) => {
                 const isActive = pathname === item.href
                 return (
                   <Link key={item.name} href={item.href}>
@@ -169,8 +171,8 @@ export default function Navigation() {
                 )
               })}
               
-              {/* Séparateur */}
-              <div className="border-t border-border my-2" />
+              {/* Séparateur - afficher seulement si connecté */}
+              {session && <div className="border-t border-border my-2" />}
               
               {/* Connexion/Déconnexion mobile */}
               {status === 'loading' ? (

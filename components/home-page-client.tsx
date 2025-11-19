@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { Card, CardContent } from '@/components/ui/card'
@@ -441,110 +442,263 @@ export default function HomePageClient() {
       {/* Section des fonctionnalités */}
       <div className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Préparez-vous efficacement</h2>
+          <h2 className="text-3xl font-bold mb-4">Pourquoi choisir Code Bus ?</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Maîtrisez le code de la route avec notre plateforme d&apos;entraînement intelligente
+            L'application la plus complète pour réussir votre code de la route catégorie Bus
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          <Card className="card-elegant text-center">
-            <CardContent className="p-8">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BookOpen className="h-8 w-8 text-primary" />
+        {/* Section Entraînement avec capture d'écran */}
+        <div className="mb-16">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-8 gap-y-6 items-center">
+            <div className="order-1">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <BookOpen className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold">Mode Entraînement Intelligent</h3>
               </div>
-              <h3 className="text-xl font-semibold mb-3">Entraînement adaptatif</h3>
-              <p className="text-muted-foreground">
-                Questions ciblées basées sur vos points faibles pour un apprentissage optimisé
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="card-elegant text-center">
-            <CardContent className="p-8">
-              <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FileText className="h-8 w-8 text-green-500" />
+              <ul className="space-y-3 text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <Star className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span><strong className="text-foreground">Sélection adaptative</strong> : L'algorithme sélectionne les questions selon vos faiblesses</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Clock className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span><strong className="text-foreground">Feedback immédiat</strong> : Apprenez de vos erreurs avec des explications détaillées</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Brain className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span><strong className="text-foreground">Zoom sur images</strong> : Analysez chaque détail des panneaux routiers</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Target className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span><strong className="text-foreground">Filtres avancés</strong> : Par questionnaire, catégorie ou difficulté</span>
+                </li>
+              </ul>
+            </div>
+            <div className="order-2 relative w-full">
+              {/* Desktop */}
+              <div className="hidden md:block relative rounded-lg overflow-hidden shadow-2xl border border-border">
+                <Image 
+                  src="/images/screenshot-training-desktop.jpg" 
+                  alt="Mode Entraînement - Code Bus"
+                  width={1200}
+                  height={675}
+                  className="w-full h-auto"
+                  priority
+                />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Examens blancs</h3>
-              <p className="text-muted-foreground">
-                Simulez les conditions réelles d&apos;examen avec nos tests chronométrés
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="card-elegant text-center">
-            <CardContent className="p-8">
-              <div className="w-16 h-16 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BarChart3 className="h-8 w-8 text-blue-500" />
+              {/* Mobile */}
+              <div className="md:hidden relative w-full max-w-[320px] mx-auto">
+                <div className="rounded-[1.5rem] p-1.5 shadow-2xl border-2 border-black">
+                  <Image 
+                    src="/images/screenshot-training-mobile.jpg" 
+                    alt="Mode Entraînement Mobile - Code Bus"
+                    width={300}
+                    height={533}
+                    className="w-full h-auto rounded-[1.25rem]"
+                    priority
+                  />
+                </div>
               </div>
-              <h3 className="text-xl font-semibold mb-3">Suivi de progression</h3>
-              <p className="text-muted-foreground">
-                Visualisez vos améliorations et identifiez les domaines à renforcer
-              </p>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
 
-        {/* Statistiques globales */}
-        {stats && (
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            <Card className="card-elegant">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <BookOpen className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold">{stats.global?.totalQuestions || 0}</p>
-                    <p className="text-sm text-muted-foreground">Questions disponibles</p>
-                  </div>
+        {/* Section Examens avec capture d'écran */}
+        <div className="mb-16">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-8 gap-y-6 items-center">
+            <div className="order-2 md:order-1 relative w-full">
+              {/* Desktop */}
+              <div className="hidden md:block relative rounded-lg overflow-hidden shadow-2xl border border-border">
+                <Image 
+                  src="/images/screenshot-exam-desktop.jpg" 
+                  alt="Mode Examen - Code Bus"
+                  width={1200}
+                  height={675}
+                  className="w-full h-auto"
+                  priority
+                />
+              </div>
+              {/* Mobile */}
+              <div className="md:hidden relative w-full max-w-[320px] mx-auto">
+                <div className="rounded-[1.5rem] p-1.5 shadow-2xl border-2 border-black">
+                  <Image 
+                    src="/images/screenshot-exam-mobile.jpg" 
+                    alt="Mode Examen Mobile - Code Bus"
+                    width={300}
+                    height={533}
+                    className="w-full h-auto rounded-[1.25rem]"
+                    priority
+                  />
                 </div>
+              </div>
+            </div>
+            <div className="order-1 md:order-2">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center">
+                  <FileText className="h-6 w-6 text-green-500" />
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold">Examens Blancs Réalistes</h3>
+              </div>
+              <ul className="space-y-3 text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <Zap className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                  <span><strong className="text-foreground">Conditions réelles</strong> : Timer, score et notation identiques à l'examen officiel</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <TrendingUp className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                  <span><strong className="text-foreground">Revue complète</strong> : Analysez chaque erreur avec l'image et la correction</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Award className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                  <span><strong className="text-foreground">Sauvegarde automatique</strong> : Consultez votre historique d'examens passés</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Shield className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                  <span><strong className="text-foreground">Préparation optimale</strong> : Familiarisez-vous avec le format et la pression</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Section Tableau de bord avec capture d'écran */}
+        <div className="mb-16">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-8 gap-y-6 items-center">
+            <div className="order-1">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                  <BarChart3 className="h-6 w-6 text-blue-500" />
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold">Suivi de Progression Détaillé</h3>
+              </div>
+              <ul className="space-y-3 text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <Trophy className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                  <span><strong className="text-foreground">Statistiques globales</strong> : Taux de réussite, temps d'étude, série en cours</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Brain className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                  <span><strong className="text-foreground">Analyse par catégorie</strong> : Identifiez vos forces et faiblesses par domaine</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Target className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                  <span><strong className="text-foreground">Questions problématiques</strong> : Listez les questions à réviser en priorité</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <TrendingUp className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                  <span><strong className="text-foreground">Évolution temporelle</strong> : Visualisez vos progrès au fil du temps</span>
+                </li>
+              </ul>
+            </div>
+            <div className="order-2 relative w-full">
+              {/* Desktop */}
+              <div className="hidden md:block relative rounded-lg overflow-hidden shadow-2xl border border-border">
+                <Image 
+                  src="/images/screenshot-dashboard-desktop.jpg" 
+                  alt="Tableau de bord - Code Bus"
+                  width={1200}
+                  height={675}
+                  className="w-full h-auto"
+                  priority
+                />
+              </div>
+              {/* Mobile */}
+              <div className="md:hidden relative w-full max-w-[320px] mx-auto">
+                <div className="rounded-[1.5rem] p-1.5 shadow-2xl border-2 border-black">
+                  <Image 
+                    src="/images/screenshot-dashboard-mobile.jpg" 
+                    alt="Tableau de bord Mobile - Code Bus"
+                    width={300}
+                    height={533}
+                    className="w-full h-auto rounded-[1.25rem]"
+                    priority
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Section Trophées et Succès */}
+        <div className="mb-16">
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto">
+                <Trophy className="h-8 w-8 text-white" />
+              </div>
+            </div>
+            <h3 className="text-2xl font-bold mb-4">Système de Trophées et Succès</h3>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            <Card className="card-elegant text-center">
+              <CardContent className="p-6">
+                <div className="text-4xl mb-3">🏆</div>
+                <h4 className="font-semibold mb-2">Trophées d'Examen</h4>
+                <p className="text-sm text-muted-foreground">Débloquez des succès en réussissant vos examens</p>
               </CardContent>
             </Card>
-            
-            <Card className="card-elegant">
+            <Card className="card-elegant text-center">
               <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center">
-                    <Target className="h-6 w-6 text-green-500" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold">{stats.global?.correctAnswers || 0}</p>
-                    <p className="text-sm text-muted-foreground">Bonnes réponses</p>
-                  </div>
-                </div>
+                <div className="text-4xl mb-3">🔥</div>
+                <h4 className="font-semibold mb-2">Séries Consécutives</h4>
+                <p className="text-sm text-muted-foreground">Maintenez vos séries de bonnes réponses</p>
               </CardContent>
             </Card>
-            
-            <Card className="card-elegant">
+            <Card className="card-elegant text-center">
               <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-yellow-500/10 rounded-lg flex items-center justify-center">
-                    <Award className="h-6 w-6 text-yellow-500" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold">{stats.global?.streak || 0}</p>
-                    <p className="text-sm text-muted-foreground">Série en cours</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="card-elegant">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
-                    <TrendingUp className="h-6 w-6 text-blue-500" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold">{Math.round(stats.global?.averageScore || 0)}%</p>
-                    <p className="text-sm text-muted-foreground">Score moyen</p>
-                  </div>
-                </div>
+                <div className="text-4xl mb-3">📅</div>
+                <h4 className="font-semibold mb-2">Régularité</h4>
+                <p className="text-sm text-muted-foreground">Entraînez-vous quotidiennement pour progresser</p>
               </CardContent>
             </Card>
           </div>
-        )}
+        </div>
+
+        {/* Avantages techniques */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <Card className="card-elegant text-center">
+            <CardContent className="p-6">
+              <div className="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Zap className="h-6 w-6 text-purple-500" />
+              </div>
+              <h4 className="font-semibold mb-2">Interface Rapide</h4>
+              <p className="text-sm text-muted-foreground">Navigation fluide et réactive</p>
+            </CardContent>
+          </Card>
+
+          <Card className="card-elegant text-center">
+            <CardContent className="p-6">
+              <div className="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Shield className="h-6 w-6 text-green-500" />
+              </div>
+              <h4 className="font-semibold mb-2">Données Sécurisées</h4>
+              <p className="text-sm text-muted-foreground">Votre progression sauvegardée</p>
+            </CardContent>
+          </Card>
+
+          <Card className="card-elegant text-center">
+            <CardContent className="p-6">
+              <div className="w-12 h-12 bg-orange-500/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Star className="h-6 w-6 text-orange-500" />
+              </div>
+              <h4 className="font-semibold mb-2">Thème Adaptatif</h4>
+              <p className="text-sm text-muted-foreground">Clair ou sombre selon vos préférences</p>
+            </CardContent>
+          </Card>
+
+          <Card className="card-elegant text-center">
+            <CardContent className="p-6">
+              <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Brain className="h-6 w-6 text-blue-500" />
+              </div>
+              <h4 className="font-semibold mb-2">Intelligence Artificielle</h4>
+              <p className="text-sm text-muted-foreground">Sélection de questions adaptative</p>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Boutons d'authentification pour utilisateurs non connectés */}
         <div className="text-center">

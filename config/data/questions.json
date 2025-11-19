@@ -1428,7 +1428,8 @@
       "c": "il faut contrôler la contenance, la date du prochain contrôle et que ceux-ci aient des plombs"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_3/Question (5).jpg"
+    "image_path": "images/questionnaire_3/Question (5).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "f6824ad9-9937-4514-be98-372d2013358b",
@@ -1445,7 +1446,8 @@
       "c": "La roue de secours doit être un pneu regommé"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_3/Question (6).jpg"
+    "image_path": "images/questionnaire_3/Question (6).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "ab799b23-2b76-4be3-a9cc-34c3b4e0ec28",
@@ -5480,7 +5482,8 @@
       "c": "Par de très basses températures, lorsque la glace et les masses de neige sont fortement figées sur le toit du car, je dois mettre le véhicule pour un moment dans un hangar chauffé et attendre que la neige ait fondu"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_9/Question (1).jpg"
+    "image_path": "images/questionnaire_9/Question (1).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "9fc116fb-5322-4b79-9f29-897f6a4769c3",
@@ -5497,7 +5500,8 @@
       "c": "Disposer le signal de panne sur des routes à faible trafic"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_9/Question (2).jpg"
+    "image_path": "images/questionnaire_9/Question (2).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "2b4b6aef-9f6b-45d5-a068-93fdd9f62ff4",
@@ -5514,7 +5518,8 @@
       "c": "ne doit être utilisée que par des véhicules publics en trafic de ligne"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_9/Question (3).jpg"
+    "image_path": "images/questionnaire_9/Question (3).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "a3ec0f69-169b-4462-bada-5a3d5d4c1178",
@@ -5530,8 +5535,9 @@
       "b": "En descente prolongée avec une voiture automobile lourde, le ralentisseur à la meilleure efficacité au moment où le couple moteur est très élevé",
       "c": "En descente prolongée avec une voiture automobile lourde, le ralentisseur à la meilleure efficacité si le régime moteur se situe vers le milieu de la zone verte du compte-tours"
     },
-    "bonne_reponse": "c",
-    "image_path": "images/questionnaire_9/Question (4).jpg"
+    "bonne_reponse": "a",
+    "image_path": "images/questionnaire_9/Question (4).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "abe3480b-391b-49b8-86a6-35c318eb7e9e",
@@ -5548,7 +5554,8 @@
       "c": "Le conducteur d'un autocar doit déterminer lui-même le nombre de passagers en tenant compte des bagages et des vivres (p. ex. nourriture et boissons) de façon à respecter le poids total"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_9/Question (5).jpg"
+    "image_path": "images/questionnaire_9/Question (5).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "bed57763-ed4b-48b3-a12e-e1e73d79439d",
@@ -5565,7 +5572,8 @@
       "c": "Elle est à conserver dans un local, à l'abri du froid"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_9/Question (6).jpg"
+    "image_path": "images/questionnaire_9/Question (6).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "06ca3f61-c665-4832-9e2a-88516918b708",
@@ -5581,8 +5589,9 @@
       "b": "Comme un essieu simple",
       "c": "Comme un essieu double"
     },
-    "bonne_reponse": "b",
-    "image_path": "images/questionnaire_9/Question (7).jpg"
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_9/Question (7).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "48852da5-7378-446e-8b7d-4f59dcb53a0d",
@@ -5599,7 +5608,8 @@
       "c": "Avec ce véhicule, je ne peux pas tirer de remorque"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_9/Question (8).jpg"
+    "image_path": "images/questionnaire_9/Question (8).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "58e6ec6b-2aed-48f6-97c2-0e07c6445fe7",
@@ -6160,7 +6170,8 @@
       "c": "la voie extérieure de gauche ne peut être utilisée que par des véhicules à moteur qui ont le droit d'atteindre une vitesse de plus de100 km/h"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (1).jpg"
+    "image_path": "images/questionnaire_10/Question (1).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "213daa2b-e04a-4d81-b910-56dabaf71251",
@@ -6177,7 +6188,8 @@
       "c": "le véhicule que le salarié utilise dans son activité professionnelle"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_10/Question (2).jpg"
+    "image_path": "images/questionnaire_10/Question (2).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "faeb1a22-62ce-470b-b905-694636465847",
@@ -6194,7 +6206,8 @@
       "c": "Sur ce pont, il est interdit aux voitures automobiles lourdes de croiser des voitures automobiles légères"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_10/Question (3).jpg"
+    "image_path": "images/questionnaire_10/Question (3).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "a965a9b4-b75b-448d-9e60-6b4b41c8581d",
@@ -6211,7 +6224,8 @@
       "c": "Puisque je ne tire pas de remorque, je peux partir de suite, car le circuit de frein 1 a suffisamment de pression. Le circuit de frein 2 n'est nécessaire que pour l'utilisation d'une remorque"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_10/Question (4).jpg"
+    "image_path": "images/questionnaire_10/Question (4).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "aea525c8-2765-49ae-b467-30657b95008a",
@@ -6228,7 +6242,8 @@
       "c": "Les autocars doivent être équipés d'une petite pharmacie de bord ainsi que d'un extincteur, dont le contenu doit atteindre 2 kg au minimum"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_10/Question (5).jpg"
+    "image_path": "images/questionnaire_10/Question (5).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "cc6f49c4-63c3-4ed8-a33d-3ebec4092404",
@@ -6245,7 +6260,8 @@
       "c": "Oui, si le poids total ou le poids de l'ensemble dépasse 7.5 t"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (6).jpg"
+    "image_path": "images/questionnaire_10/Question (6).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "67407f99-3648-43f5-b61e-e0f1db7795a7",
@@ -6262,7 +6278,8 @@
       "c": "Le poids à vide et la charge utile"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (7).jpg"
+    "image_path": "images/questionnaire_10/Question (7).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "92239f9c-9ee0-4292-ad7b-cf255a18b83c",
@@ -6279,7 +6296,8 @@
       "c": "Pour pouvoir tirer cette remorque, je dois être en possession du permis de la cat D1"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_10/Question (8).jpg"
+    "image_path": "images/questionnaire_10/Question (8).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "6b00bba0-e59d-45fc-9037-3d334ccf87c5",
@@ -6296,7 +6314,8 @@
       "c": "Vu la température de l'eau de refroidissement indiquée, je peux rouler à plein régime"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (9).jpg"
+    "image_path": "images/questionnaire_10/Question (9).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "f66787a5-68ef-481f-907a-fe40fec27801",
@@ -6312,8 +6331,9 @@
       "b": "Il s'agit d'un camion",
       "c": "Il s'agit d'un autocar"
     },
-    "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (10).jpg"
+    "bonne_reponse": "a",
+    "image_path": "images/questionnaire_10/Question (10).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "2cf394e8-f542-4b67-96b2-4bc0cf21c13d",
@@ -6330,7 +6350,8 @@
       "c": "Un clapet d'obturation ferme la sortie du pot d'échappement afin que toute l'installation d'échappement serve de volume de refoulement"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_10/Question (11).jpg"
+    "image_path": "images/questionnaire_10/Question (11).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "e09e97f4-33d7-4faf-9d5e-4504db382646",
@@ -6347,7 +6368,8 @@
       "c": "À la largeur maximale du véhicule y compris le chargement"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (12).jpg"
+    "image_path": "images/questionnaire_10/Question (12).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "f9f4ebc8-2648-443d-a629-7d4009374118",
@@ -6382,7 +6404,8 @@
       "c": "Me rendre le plus rapidement possible dans un atelier de réparation et faire réparer la défectuosité"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (14).jpg"
+    "image_path": "images/questionnaire_10/Question (14).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "dee97224-9688-4040-a163-d24a5f92af18",
@@ -6399,7 +6422,8 @@
       "c": "Au maximum le même poids que le véhicule tracteur"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_10/Question (15).jpg"
+    "image_path": "images/questionnaire_10/Question (15).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "e538adf1-76ed-4267-9dbc-0b09e60685ea",
@@ -6416,7 +6440,8 @@
       "c": "Toute personne qui, même pendant une courte période, conduit une voiture automobile ou un ensemble de véhicules, dont le poids total dépasse 3.5 tonnes"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (16).jpg"
+    "image_path": "images/questionnaire_10/Question (16).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "b50e9036-1aca-48b3-9f28-39d2551c3041",
@@ -6450,7 +6475,8 @@
       "c": "Le poids total de la remorque"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_10/Question (18).jpg"
+    "image_path": "images/questionnaire_10/Question (18).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "e8eb2afa-1194-4943-9839-680635c37177",
@@ -6467,7 +6493,8 @@
       "c": "Que la courroie entraînant l'alternateur pourrait être rompue. S'arrêter immédiatement et chercher la cause"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (19).jpg"
+    "image_path": "images/questionnaire_10/Question (19).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "92c6aa97-2ef6-43a3-9916-fc1993e68ac0",
@@ -6484,7 +6511,8 @@
       "c": "Si l'éclairage public n'est pas suffisant, je dois laisser les feux de position durant la nuit, sauf sur une place de parc signalée comme telle"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (20).jpg"
+    "image_path": "images/questionnaire_10/Question (20).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "3b21639a-d1c2-4fb0-be5c-fa280b02f243",
@@ -6501,7 +6529,8 @@
       "c": "il doit subsister un espace d'environ 1 cm entre le pneu et la chaîne (passage de la main), de cette façon, elles peuvent bouger légèrement, ce qui évite d'endommager le pneu"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (21).jpg"
+    "image_path": "images/questionnaire_10/Question (21).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "d7b2bf2b-2c8f-4940-bd5a-7e3d9740962a",
@@ -6518,7 +6547,8 @@
       "c": "m'indique la grandeur de la jante en pouces"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (22).jpg"
+    "image_path": "images/questionnaire_10/Question (22).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "9c41e0f0-a033-4f73-bf3b-b2bde24a85d3",
@@ -6535,7 +6565,8 @@
       "c": "La combustion du carburant est incomplète"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (23).jpg"
+    "image_path": "images/questionnaire_10/Question (23).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "00ec2f52-fe94-4b21-849f-773cb85c6881",
@@ -6552,7 +6583,8 @@
       "c": "Cette lampe témoin rouge avec un (P), signifie au conducteur que le blocage du différentiel est enclenché"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_10/Question (24).jpg"
+    "image_path": "images/questionnaire_10/Question (24).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "4bc62ec3-9963-4dfa-a7b6-32932c9941b9",
@@ -6569,7 +6601,8 @@
       "c": "Dans tous les cas alerter de suite la police et l'ambulance"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_10/Question (25).jpg"
+    "image_path": "images/questionnaire_10/Question (25).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "081cc4a2-4971-4526-8f70-659be33392f2",
@@ -6586,7 +6619,8 @@
       "c": "25 tonnes"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (26).jpg"
+    "image_path": "images/questionnaire_10/Question (26).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "1aeed364-cc95-4a8f-93b5-1147510089d4",
@@ -6603,7 +6637,8 @@
       "c": "À partir d'ici, je ne peux pas dépasser pendant 2.5 km avec mon camion ou mon car"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (27).jpg"
+    "image_path": "images/questionnaire_10/Question (27).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "ef527904-e258-4296-a6b1-ddbdae887d98",
@@ -6620,7 +6655,8 @@
       "c": "18.75 m"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (28).jpg"
+    "image_path": "images/questionnaire_10/Question (28).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "8d982812-f94b-4fb8-8e0c-8ec289bcf244",
@@ -6637,7 +6673,8 @@
       "c": "Après un changement de roue, les écrous doivent être à nouveau serrés après un trajet d'environ 50 à 100 km"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (29).jpg"
+    "image_path": "images/questionnaire_10/Question (29).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "87b3971c-fa75-4b6b-a708-55e3cdc37cf1",
@@ -6654,7 +6691,8 @@
       "c": "Distance minimale, entre véhicules, en circulation en colonne"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (30).jpg"
+    "image_path": "images/questionnaire_10/Question (30).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "e2030f37-5e1e-4a8e-9142-8c139e915ce4",
@@ -6671,7 +6709,8 @@
       "c": "Tous les essieux du car doivent supporter au moins le 25 % du poids effectif du véhicule"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_10/Question (31).jpg"
+    "image_path": "images/questionnaire_10/Question (31).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "84f44695-e710-4ae7-8f45-32423577fd20",
@@ -6688,7 +6727,8 @@
       "c": "Que la tension (Volt) corresponde à celle du véhicule tracteur"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (32).jpg"
+    "image_path": "images/questionnaire_10/Question (32).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "57ba7f77-8989-4b16-91f7-dd129f516fc0",
@@ -6704,8 +6744,9 @@
       "b": "devant assurer le 50 % du poids sur les côtés",
       "c": "devant assurer le 25 % du poids sur les côtés"
     },
-    "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (33).jpg"
+    "bonne_reponse": "b",
+    "image_path": "images/questionnaire_10/Question (33).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "8c57ef63-45dd-4424-9d6a-691baa7cf785",
@@ -6722,7 +6763,8 @@
       "c": "Le pneu est sans chambre à air"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_10/Question (34).jpg"
+    "image_path": "images/questionnaire_10/Question (34).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "4df8f8ec-6278-4487-93ea-6a718b6ea738",
@@ -6739,7 +6781,8 @@
       "c": "je dois m'arrêter pour porter secours, même si je ne suis pas impliqué dans l'accident"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (35).jpg"
+    "image_path": "images/questionnaire_10/Question (35).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "4b9dd4de-60ea-46d8-a41b-4da915ccbb37",
@@ -6756,7 +6799,8 @@
       "c": "Oui, si elle dépasse 40 km/h"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_10/Question (36).jpg"
+    "image_path": "images/questionnaire_10/Question (36).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "c374e8df-fb91-479e-9db0-f93c764a15c2",
@@ -6772,8 +6816,9 @@
       "b": "Est valable seulement pour les voitures automobiles jusqu'à 3,5 tonnes",
       "c": "Est valable pour tous les véhicules à moteur"
     },
-    "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (37).jpg"
+    "bonne_reponse": "a",
+    "image_path": "images/questionnaire_10/Question (37).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "200bde1f-e8af-4f53-8428-beacc1b05b83",
@@ -6790,7 +6835,8 @@
       "c": "Cela demande plus de force sur la pédale de frein"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_10/Question (38).jpg"
+    "image_path": "images/questionnaire_10/Question (38).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "2e755366-b8d0-4270-8498-0fbc8b2d1fc0",
@@ -6807,7 +6853,8 @@
       "c": "Poids total pour un véhicule lourd ayant trois essieux et équipés de pneus jumelés"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_10/Question (39).jpg"
+    "image_path": "images/questionnaire_10/Question (39).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "f51c027f-cbc6-40ac-8c44-93956b761419",
@@ -6823,7 +6870,8 @@
       "b": "de 12 mètres au maximum et un poids total de 26 tonnes au maximum",
       "c": "de 15 mètres au maximum et un poids total de 26 tonnes au maximum"
     },
-    "bonne_reponse": "b",
-    "image_path": "images/questionnaire_10/Question (40).jpg"
+    "bonne_reponse": "c",
+    "image_path": "images/questionnaire_10/Question (40).jpg",
+    "validation_status": "valide"
   }
 ]
