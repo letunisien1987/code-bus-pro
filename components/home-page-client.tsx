@@ -444,7 +444,7 @@ export default function HomePageClient() {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">Pourquoi choisir Code Bus ?</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            L'application la plus complète pour réussir votre code de la route catégorie Bus
+            L&apos;application la plus complète pour réussir votre code de la route catégorie Bus
           </p>
         </div>
 
@@ -461,7 +461,7 @@ export default function HomePageClient() {
               <ul className="space-y-3 text-muted-foreground">
                 <li className="flex items-start gap-2">
                   <Star className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span><strong className="text-foreground">Sélection adaptative</strong> : L'algorithme sélectionne les questions selon vos faiblesses</span>
+                  <span><strong className="text-foreground">Sélection adaptative</strong> : L&apos;algorithme sélectionne les questions selon vos faiblesses</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Clock className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
@@ -545,15 +545,15 @@ export default function HomePageClient() {
               <ul className="space-y-3 text-muted-foreground">
                 <li className="flex items-start gap-2">
                   <Zap className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                  <span><strong className="text-foreground">Conditions réelles</strong> : Timer, score et notation identiques à l'examen officiel</span>
+                  <span><strong className="text-foreground">Conditions réelles</strong> : Timer, score et notation identiques à l&apos;examen officiel</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <TrendingUp className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                  <span><strong className="text-foreground">Revue complète</strong> : Analysez chaque erreur avec l'image et la correction</span>
+                  <span><strong className="text-foreground">Revue complète</strong> : Analysez chaque erreur avec l&apos;image et la correction</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Award className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                  <span><strong className="text-foreground">Sauvegarde automatique</strong> : Consultez votre historique d'examens passés</span>
+                  <span><strong className="text-foreground">Sauvegarde automatique</strong> : Consultez votre historique d&apos;examens passés</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Shield className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
@@ -577,7 +577,7 @@ export default function HomePageClient() {
               <ul className="space-y-3 text-muted-foreground">
                 <li className="flex items-start gap-2">
                   <Trophy className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
-                  <span><strong className="text-foreground">Statistiques globales</strong> : Taux de réussite, temps d'étude, série en cours</span>
+                  <span><strong className="text-foreground">Statistiques globales</strong> : Taux de réussite, temps d&apos;étude, série en cours</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Brain className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
@@ -636,7 +636,7 @@ export default function HomePageClient() {
             <Card className="card-elegant text-center">
               <CardContent className="p-6">
                 <div className="text-4xl mb-3">🏆</div>
-                <h4 className="font-semibold mb-2">Trophées d'Examen</h4>
+                <h4 className="font-semibold mb-2">Trophées d&apos;Examen</h4>
                 <p className="text-sm text-muted-foreground">Débloquez des succès en réussissant vos examens</p>
               </CardContent>
             </Card>
