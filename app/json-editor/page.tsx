@@ -1,12 +1,11 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import Image from 'next/image'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { AlertCircle, Check, Save, Search, Bot, Sparkles, Loader2, ChevronDown, ChevronRight, Database } from 'lucide-react'
-import { getImageUrl } from '@/lib/blob-helper'
+// Pas besoin d'importer getImageUrl, on utilise l'API route directement
 
 interface Question {
   id: string // UUID unique et permanent
@@ -122,26 +121,38 @@ export default function JsonEditorPage() {
       return
     }
 
-    if (questions.length === 0) {
-      return
-    }
-
     try {
-      const urlMap: Record<string, string> = {}
+      console.log('📋 Chargement du mapping des URLs Blob...')
+      const response = await fetch('/api/images/blob-map')
       
-      // Charger toutes les URLs des questions
-      for (const question of questions) {
-        if (question.image_path) {
-          const url = await getImageUrl(question.image_path)
-          urlMap[question.image_path] = url
+      if (response.ok) {
+        const urlMap = await response.json()
+        
+        // Si c'est une erreur, logger
+        if (urlMap.error) {
+          console.error('❌ Erreur API blob-map:', urlMap.error, urlMap.details)
+          setImageUrlMap({})
+          setImageUrlsLoaded(true)
+          return
         }
+        
+        setImageUrlMap(urlMap)
+        setImageUrlsLoaded(true)
+        console.log(`✅ ${Object.keys(urlMap).length} URLs Blob chargées`)
+        
+        // Logger quelques exemples
+        if (Object.keys(urlMap).length > 0) {
+          console.log('📊 Exemples:', Object.keys(urlMap).slice(0, 3))
+        }
+      } else {
+        const errorData = await response.json().catch(() => ({}))
+        console.error('❌ Erreur HTTP blob-map:', response.status, errorData)
+        setImageUrlMap({})
+        setImageUrlsLoaded(true)
       }
-      
-      setImageUrlMap(urlMap)
-      setImageUrlsLoaded(true)
-      console.log(`✅ ${Object.keys(urlMap).length} URLs d'images chargées`)
     } catch (error) {
-      console.error('❌ Erreur lors du chargement des URLs:', error)
+      console.error('❌ Erreur lors du chargement des URLs Blob:', error)
+      setImageUrlMap({})
       setImageUrlsLoaded(true)
     }
   }
@@ -848,13 +859,15 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
   const getImageSrc = (imagePath: string): string => {
     if (!imagePath) return '/images/placeholder.jpg'
     
-    // Si on a une URL dans le mapping, l'utiliser
-    if (imageUrlMap[imagePath]) {
-      return imageUrlMap[imagePath]
+    // Nettoyer le chemin pour correspondre au format Blob (sans slash initial)
+    const cleanPath = imagePath.replace(/^\/+/, '')
+    
+    // Si on a une URL dans le mapping Blob, l'utiliser
+    if (imageUrlMap[cleanPath]) {
+      return imageUrlMap[cleanPath]
     }
     
     // Sinon, utiliser le chemin local (fonctionne en local et si l'image est dans /public)
-    const cleanPath = imagePath.replace(/^\/+/, '')
     return `/${cleanPath}`
   }
   
@@ -1089,14 +1102,11 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                   onClick={() => setIsImageZoomed(true)}
                 >
                   {isValidImagePath(currentImagePath) ? (
-                    <Image 
+                    <img 
                       src={getImageSrc(currentImagePath)} 
                       alt={hoveredOption ? `Réponses Questionnaire ${question.questionnaire}` : `Question ${question.id}`}
-                      width={800}
-                      height={600}
                       className="w-full h-full object-contain"
                       style={getImageStyle()}
-                      unoptimized={true}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground">
@@ -1561,13 +1571,10 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
               className="max-w-[90vw] max-h-[90vh] flex flex-col items-center justify-center relative"
               onClick={(e) => e.stopPropagation()}
             >
-              <Image 
+              <img 
                 src={getImageSrc(question.image_path)} 
                 alt={`Question ${question.id} - Zoom`}
-                width={1200}
-                height={900}
                 className="max-w-full max-h-full object-contain"
-                unoptimized={true}
               />
               
               
@@ -1718,15 +1725,12 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                   e.currentTarget.dataset.dragging = 'false'
                 }}
               >
-                <Image
+                <img
                   src={getImageSrc(question.image_path)}
                   alt={`Question ${question.id}`}
-                  width={800}
-                  height={600}
                   className="w-full h-full object-contain transition-transform duration-200 cursor-grab active:cursor-grabbing"
                   style={{ transform: 'scale(1) translate(0px, 0px)' }}
                   data-scale="1"
-                  unoptimized={true}
                   data-x="0"
                   data-y="0"
                   onDoubleClick={(e) => {
@@ -1926,14 +1930,11 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
           className="max-w-[90vw] max-h-[90vh] flex items-center justify-center relative"
           onClick={(e) => e.stopPropagation()}
         >
-          <Image 
+          <img 
             src={getImageSrc(question.image_path)} 
             alt={`Question ${question.id} - Zoom`}
-            width={1200}
-            height={900}
             className="max-w-full max-h-full object-contain cursor-pointer"
             onClick={() => setIsImageZoomed(false)}
-            unoptimized={true}
           />
           {/* Bouton de fermeture */}
           <button
