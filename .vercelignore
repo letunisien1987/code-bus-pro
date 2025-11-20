@@ -3,6 +3,10 @@ config/data/questions.backup*.json
 data/questionsreserve.json
 
 # Exclure les images lourdes (servies depuis Vercel Blob)
+# Ces images NE DOIVENT PAS être incluses dans le bundle serverless
+# pour éviter l'erreur "Function exceeds 300mb limit"
+public/images/questionnaire_*/app_zone/
+public/images/reponse/
 
 # Version DEV : Garder l'éditeur JSON pour le développement
 # (L'éditeur JSON est disponible en local pour le développement)
