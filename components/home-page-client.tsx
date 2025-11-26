@@ -686,19 +686,19 @@ export default function HomePageClient() {
               </div>
               <h4 className="font-semibold mb-2">Thème Adaptatif</h4>
               <p className="text-sm text-muted-foreground">Clair ou sombre selon vos préférences</p>
-            </CardContent>
-          </Card>
-
+              </CardContent>
+            </Card>
+            
           <Card className="card-elegant text-center">
-            <CardContent className="p-6">
+              <CardContent className="p-6">
               <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <Brain className="h-6 w-6 text-blue-500" />
-              </div>
+                  </div>
               <h4 className="font-semibold mb-2">Intelligence Artificielle</h4>
               <p className="text-sm text-muted-foreground">Sélection de questions adaptative</p>
-            </CardContent>
-          </Card>
-        </div>
+              </CardContent>
+            </Card>
+          </div>
 
         {/* Boutons d'authentification pour utilisateurs non connectés */}
         <div className="text-center">

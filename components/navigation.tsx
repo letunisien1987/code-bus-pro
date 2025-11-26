@@ -54,27 +54,27 @@ export default function Navigation() {
 
           {/* Navigation desktop */}
           {session && (
-            <div className="hidden md:flex items-center gap-1">
-              {navigation.map((item) => {
-                const isActive = pathname === item.href
-                return (
-                  <Link key={item.name} href={item.href}>
-                    <Button
-                      variant={isActive ? "default" : "ghost"}
-                      size="sm"
-                      className={`${
-                        isActive 
-                               ? 'bg-primary text-primary-foreground' // Pas de hover sur fond jaune
-                          : 'nav-link-hover' // Hover jaune seulement si pas sur fond jaune
-                      }`}
-                    >
-                      <item.icon className="h-4 w-4 mr-2" />
-                      {item.name}
-                    </Button>
-                  </Link>
-                )
-              })}
-            </div>
+          <div className="hidden md:flex items-center gap-1">
+            {navigation.map((item) => {
+              const isActive = pathname === item.href
+              return (
+                <Link key={item.name} href={item.href}>
+                  <Button
+                    variant={isActive ? "default" : "ghost"}
+                    size="sm"
+                    className={`${
+                      isActive 
+                             ? 'bg-primary text-primary-foreground' // Pas de hover sur fond jaune
+                        : 'nav-link-hover' // Hover jaune seulement si pas sur fond jaune
+                    }`}
+                  >
+                    <item.icon className="h-4 w-4 mr-2" />
+                    {item.name}
+                  </Button>
+                </Link>
+              )
+            })}
+          </div>
           )}
 
           {/* Theme toggle et connexion - visible sur desktop et mobile */}
