@@ -1224,35 +1224,41 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                 
                 {/* Boutons de validation */}
                 <div className="flex gap-2 mt-3">
-                  <Button 
+                  <Button
                     size="sm"
                     variant={(question.validation_status || 'non_verifie') === 'non_verifie' ? 'default' : 'outline'}
                     onClick={() => {
                       const updated = { ...question, validation_status: 'non_verifie' as const }
                       onSave(updated)
                     }}
+                    onMouseEnter={() => setHoveredOption('validate')}
+                    onMouseLeave={() => setHoveredOption(null)}
                     className={`text-xs h-7 ${(question.validation_status || 'non_verifie') === 'non_verifie' ? 'bg-gray-500 hover:bg-gray-600' : ''}`}
                   >
                     ❓ Non vérifié
                   </Button>
-                  <Button 
+                  <Button
                     size="sm"
                     variant={question.validation_status === 'a_corriger' ? 'default' : 'outline'}
                     onClick={() => {
                       const updated = { ...question, validation_status: 'a_corriger' as const }
                       onSave(updated)
                     }}
+                    onMouseEnter={() => setHoveredOption('validate')}
+                    onMouseLeave={() => setHoveredOption(null)}
                     className={`text-xs h-7 ${question.validation_status === 'a_corriger' ? 'bg-orange-500 hover:bg-orange-600' : ''}`}
                   >
                     ⚠️ À corriger
                   </Button>
-                  <Button 
+                  <Button
                     size="sm"
                     variant={question.validation_status === 'valide' ? 'default' : 'outline'}
                     onClick={() => {
                       const updated = { ...question, validation_status: 'valide' as const }
                       onSave(updated)
                     }}
+                    onMouseEnter={() => setHoveredOption('validate')}
+                    onMouseLeave={() => setHoveredOption(null)}
                     className={`text-xs h-7 ${question.validation_status === 'valide' ? 'bg-green-500 hover:bg-green-600' : ''}`}
                   >
                     ✓ Validée
