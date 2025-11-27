@@ -18,3 +18,4 @@ dev.db-journal
 *.swo
 *~
 .vercel
+capture_decran/
