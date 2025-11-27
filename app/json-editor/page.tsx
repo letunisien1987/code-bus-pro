@@ -1221,26 +1221,9 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                   <EditableOption option="b" value={question.options.b} label="Option B" />
                   <EditableOption option="c" value={question.options.c} label="Option C" />
                 </div>
-              </div>
-              
-              <div className="flex-shrink-0 flex flex-col gap-2">
-                <div className="flex gap-2">
-                  <Button 
-                    variant="secondary" 
-                    size="sm"
-                    onClick={() => analyzeWithAI(question)}
-                    disabled={aiLoading === question.id}
-                  >
-                    {aiLoading === question.id ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <Bot className="h-4 w-4" />
-                    )}
-                  </Button>
-                </div>
                 
                 {/* Boutons de validation */}
-                <div className="flex gap-1 flex-col">
+                <div className="flex gap-2 mt-3">
                   <Button 
                     size="sm"
                     variant={(question.validation_status || 'non_verifie') === 'non_verifie' ? 'default' : 'outline'}
@@ -1273,6 +1256,23 @@ function QuestionCard({ question, isProblematic, isEditing, onEdit, onCancel, on
                     className={`text-xs h-7 ${question.validation_status === 'valide' ? 'bg-green-500 hover:bg-green-600' : ''}`}
                   >
                     ✓ Validée
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="flex-shrink-0 flex flex-col gap-2">
+                <div className="flex gap-2">
+                  <Button 
+                    variant="secondary" 
+                    size="sm"
+                    onClick={() => analyzeWithAI(question)}
+                    disabled={aiLoading === question.id}
+                  >
+                    {aiLoading === question.id ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Bot className="h-4 w-4" />
+                    )}
                   </Button>
                 </div>
               </div>
