@@ -50,7 +50,8 @@
       "c": "Ce signal m'indique que j'ai le droit de passer avec mon car d'une largeur de 2,3 m, même si la remorque attelée atteint une largeur de 2,55 m"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_1/Question (3).jpg"
+    "image_path": "images/questionnaire_1/Question (3).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "b49d0e14-3e96-4929-b972-d4e380f97d81",
@@ -67,7 +68,8 @@
       "c": "Il n'est pas possible de commander automatiquement le réglage de la force de freinage du véhicule tracteur ou de la remorque par la suspension pneumatique"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_1/Question (4).jpg"
+    "image_path": "images/questionnaire_1/Question (4).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "ca1cc429-8aea-4538-ad8f-b81ef3a8d06d",
@@ -84,7 +86,8 @@
       "c": "S'arrêter sur le côté, arrêter le moteur, porter secours, appeler le 118"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_1/Question (5).jpg"
+    "image_path": "images/questionnaire_1/Question (5).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "bd9e820c-3841-4536-8618-5f3b3a47a103",
@@ -101,7 +104,8 @@
       "c": "Ces marques n'autorisent l'arrêt du véhicule que pour respecter les pauses, selon l'OTR1, jusqu'à 120 minutes"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_1/Question (6).jpg"
+    "image_path": "images/questionnaire_1/Question (6).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "b3fe787b-f47a-42a5-bfb3-58d552d0828d",
@@ -118,7 +122,8 @@
       "c": "2,55 m"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_1/Question (7).jpg"
+    "image_path": "images/questionnaire_1/Question (7).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "fe4a02e4-dbb1-4f98-91a6-39b69d22065d",
@@ -135,7 +140,8 @@
       "c": "Pour conduire ce véhicule, je dois être en possession du permis de conduire cat. D"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_1/Question (8).jpg"
+    "image_path": "images/questionnaire_1/Question (8).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "64d2233d-f41c-419d-bdae-ae19734987be",
@@ -152,7 +158,8 @@
       "c": "Du gasoil"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_1/Question (9).jpg"
+    "image_path": "images/questionnaire_1/Question (9).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "a059eea3-82a2-4b16-ba01-030e84d37270",
@@ -169,7 +176,8 @@
       "c": "Au minimum à 100 m"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_1/Question (10).jpg"
+    "image_path": "images/questionnaire_1/Question (10).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "2e98eb0f-84b5-4139-a68b-058d4c785917",
@@ -186,7 +194,8 @@
       "c": "cylindre combiné 'Tristop' avec desserrage de secours mécanique"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_1/Question (11).jpg"
+    "image_path": "images/questionnaire_1/Question (11).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "f038678d-2fbc-402a-b98e-678a118a8124",
@@ -203,7 +212,8 @@
       "c": "La position de la manche à air n'a pas d'importance pour moi"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_1/Question (12).jpg"
+    "image_path": "images/questionnaire_1/Question (12).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "a1e49c95-3fc0-4dc3-8e03-6ed6c41b983b",
@@ -220,7 +230,8 @@
       "c": "La pression dans les deux circuits de frein est insuffisante pour continuer ma course. Je dois immédiatement réparer ou faire réparer le dommage avant de continuer"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_1/Question (13).jpg"
+    "image_path": "images/questionnaire_1/Question (13).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "e9c20487-612c-4806-a059-e3420a5ac5db",
@@ -237,7 +248,8 @@
       "c": "La plage jaune du compte-tours signifie 'danger'. Il ne faut, si possible, jamais rouler dans cette zone"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_1/Question (14).jpg"
+    "image_path": "images/questionnaire_1/Question (14).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "a889c87a-b78b-42fb-a1f8-73cc35c4109a",
@@ -254,7 +266,8 @@
       "c": "je ne dois pas prendre de précautions particulières"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_1/Question (15).jpg"
+    "image_path": "images/questionnaire_1/Question (15).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "83401da5-9a69-45ed-a200-39403629dc14",
@@ -271,7 +284,8 @@
       "c": "Oui, lorsque le poids total excède 3,5 t"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_1/Question (16).jpg"
+    "image_path": "images/questionnaire_1/Question (16).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "af70caf1-33b5-4d5a-bb06-b1ec2c3df440",
@@ -288,7 +302,8 @@
       "c": "Les camions et autocars peuvent passer, mais les trains routiers lourds sont touchés par cette signalisation"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_1/Question (17).jpg"
+    "image_path": "images/questionnaire_1/Question (17).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "e259a299-e8ee-42d9-a9ca-f8092b3fc904",
@@ -305,7 +320,8 @@
       "c": "2,55 m"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_1/Question (18).jpg"
+    "image_path": "images/questionnaire_1/Question (18).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "f146e0e3-7d4f-4e05-b10b-3ccfb45d2f17",
@@ -322,7 +338,8 @@
       "c": "Avant le départ, il suffit de contrôler la quantité de carburant et la pression d'huile"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_1/Question (19).jpg"
+    "image_path": "images/questionnaire_1/Question (19).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "f126562d-ee5e-4655-bbd6-4cef616ba637",
@@ -339,7 +356,8 @@
       "c": "Oui, pour autant qu’il y ait des places assises"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_1/Question (20).jpg"
+    "image_path": "images/questionnaire_1/Question (20).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "819788a9-9ad3-48a1-8bc7-f5f98aae5299",
@@ -356,7 +374,8 @@
       "c": "peut être remorquée jusqu’à la prochaine sortie"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_1/Question (21).jpg"
+    "image_path": "images/questionnaire_1/Question (21).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "8a0b0979-224f-4633-98c0-fcad19464dc4",
@@ -373,7 +392,8 @@
       "c": "Les périodes durant lesquelles le salarié se trouve à son poste de travail, se tient à la disposition de l’employeur et exerce sa fonction ou ses activités ; les pauses de moins de 15 min. sont également comprises dans le temps de travail"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_1/Question (22).jpg"
+    "image_path": "images/questionnaire_1/Question (22).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "3f2d5805-e6c8-41a1-9420-bf94c940b4b5",
@@ -390,7 +410,8 @@
       "c": "Tant que la lampe de contrôle de la pression d’huile ne s’allume pas, aucun contrôle ne s’impose"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_1/Question (23).jpg"
+    "image_path": "images/questionnaire_1/Question (23).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "786847a7-099f-4e51-bc5a-37a4261192de",
@@ -407,7 +428,8 @@
       "c": "En cas de défaillance de l’un des circuits, l’effet de freinage doit encore atteindre au moins 1/3 de la décélération prescrite"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_1/Question (24).jpg"
+    "image_path": "images/questionnaire_1/Question (24).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "292ae822-624d-4aee-9fd7-85ed03c146fa",
@@ -424,7 +446,8 @@
       "c": "Ici, on doit pouvoir s’arrêter sur la distance de visibilité"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_1/Question (25).jpg"
+    "image_path": "images/questionnaire_1/Question (25).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "0ba0a9ba-9ba9-499e-985e-c92f36c99e1b",
@@ -441,7 +464,8 @@
       "c": "Elle est à conserver dans un local, à l’abri du froid"
     },
     "bonne_reponse": "c",
-    "image_path": "images/questionnaire_1/Question (26).jpg"
+    "image_path": "images/questionnaire_1/Question (26).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "bfd52e1e-6596-42bf-8fa0-99f1fd42433a",
@@ -458,7 +482,8 @@
       "c": "je peux passer avec une remorque à deux essieux, mais non pas avec une remorque à un essieu"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_1/Question (27).jpg"
+    "image_path": "images/questionnaire_1/Question (27).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "5575ae43-876c-4880-8de2-55e9541a068d",
@@ -475,7 +500,8 @@
       "c": "C’est la même chose que “poids remorquable”"
     },
     "bonne_reponse": "a",
-    "image_path": "images/questionnaire_1/Question (28).jpg"
+    "image_path": "images/questionnaire_1/Question (28).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "c6514e36-0521-465f-95fc-937669d363df",
@@ -492,7 +518,8 @@
       "c": "il faut additionner les deux chiffres de l’indice de charge"
     },
     "bonne_reponse": "b",
-    "image_path": "images/questionnaire_1/Question (29).jpg"
+    "image_path": "images/questionnaire_1/Question (29).jpg",
+    "validation_status": "valide"
   },
   {
     "id": "4373a1b4-967d-4124-ad0a-87e6b79778b8",
