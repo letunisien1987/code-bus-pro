@@ -29,6 +29,8 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import ProgressChart from '../../components/analytics/ProgressChart'
+import SimpleChart from '../../components/analytics/SimpleChart'
 
 interface Stats {
   global: {
@@ -87,6 +89,13 @@ interface Stats {
     score: number
     questions: number
   }>
+  examHistoryTimeline: Array<{
+    date: string
+    score: number
+    performanceScore: number
+    avgTimePerQuestion: number
+    badge: 'gold' | 'silver' | 'bronze' | 'standard'
+  }>
 }
 
 export default function DashboardPage() {
@@ -108,7 +117,8 @@ export default function DashboardPage() {
     byQuestionnaire: [],
     byQuestion: [],
     problematicQuestions: [],
-    recentActivity: []
+    recentActivity: [],
+    examHistoryTimeline: []
   })
 
   const [loading, setLoading] = useState(true)
@@ -837,6 +847,110 @@ export default function DashboardPage() {
 
           {activeTab === "analytics" && (
             <div className="space-y-8">
+            {/* Graphiques de progression temporelle */}
+            {stats.examHistoryTimeline && stats.examHistoryTimeline.length > 0 ? (
+              <>
+                {stats.examHistoryTimeline.length >= 2 ? (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Graphique 1 : Évolution du score d'examen */}
+                    <ProgressChart
+                      data={stats.examHistoryTimeline.map(e => ({ date: e.date, value: e.score }))}
+                      title="Évolution du score d'examen"
+                      subtitle="Score en pourcentage dans le temps"
+                      unit="%"
+                      color="hsl(var(--primary))"
+                      showTrend={true}
+                    />
+
+                    {/* Graphique 2 : Évolution du PerformanceScore */}
+                    <ProgressChart
+                      data={stats.examHistoryTimeline.map(e => ({ date: e.date, value: e.performanceScore }))}
+                      title="Évolution du score de performance"
+                      subtitle="Score sur 1000 (justesse + vitesse)"
+                      unit=" pts"
+                      color="hsl(var(--secondary))"
+                      showTrend={true}
+                    />
+
+                    {/* Graphique 3 : Temps moyen par question */}
+                    <ProgressChart
+                      data={stats.examHistoryTimeline.map(e => ({ date: e.date, value: e.avgTimePerQuestion }))}
+                      title="Temps moyen par question"
+                      subtitle="Évolution du temps de réponse (en secondes)"
+                      unit="s"
+                      color="hsl(var(--accent))"
+                      showTrend={true}
+                    />
+
+                    {/* Graphique 4 : Répartition des badges */}
+                    <Card className="card-elegant">
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <Trophy className="h-5 w-5" />
+                          Répartition des badges de performance
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        {(() => {
+                          const badgeCounts = stats.examHistoryTimeline.reduce((acc, e) => {
+                            acc[e.badge] = (acc[e.badge] || 0) + 1
+                            return acc
+                          }, {} as Record<string, number>)
+
+                          const total = stats.examHistoryTimeline.length
+                          const badgeData = [
+                            { label: 'Or', value: Math.round(((badgeCounts['gold'] || 0) / total) * 100), color: 'hsl(45, 100%, 50%)' },
+                            { label: 'Argent', value: Math.round(((badgeCounts['silver'] || 0) / total) * 100), color: 'hsl(0, 0%, 75%)' },
+                            { label: 'Bronze', value: Math.round(((badgeCounts['bronze'] || 0) / total) * 100), color: 'hsl(25, 95%, 53%)' },
+                            { label: 'Standard', value: Math.round(((badgeCounts['standard'] || 0) / total) * 100), color: 'hsl(var(--muted-foreground))' }
+                          ].filter(item => item.value > 0)
+
+                          return badgeData.length > 0 ? (
+                            <SimpleChart
+                              title=""
+                              data={badgeData}
+                              type="doughnut"
+                            />
+                          ) : (
+                            <div className="text-center py-8 text-muted-foreground">
+                              <p>Aucun badge disponible</p>
+                            </div>
+                          )
+                        })()}
+                      </CardContent>
+                    </Card>
+                  </div>
+                ) : (
+                  <Card className="card-elegant">
+                    <CardContent className="text-center py-12">
+                      <TrendingUp className="h-12 w-12 mx-auto mb-4 text-primary opacity-50" />
+                      <p className="text-muted-foreground mb-2">
+                        Passez au moins 2 examens pour voir l&apos;évolution dans le temps
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Vous avez passé {stats.examHistoryTimeline.length} examen{stats.examHistoryTimeline.length > 1 ? 's' : ''}
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+              </>
+            ) : (
+              <Card className="card-elegant">
+                <CardContent className="text-center py-12">
+                  <TrendingUp className="h-12 w-12 mx-auto mb-4 text-primary opacity-50" />
+                  <p className="text-muted-foreground mb-2">
+                    Passez votre premier examen pour voir votre progression !
+                  </p>
+                  <Link href="/exam">
+                    <Button className="mt-4">
+                      <FileText className="h-4 w-4 mr-2" />
+                      Passer un examen
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            )}
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card className="card-elegant">
                 <CardHeader>

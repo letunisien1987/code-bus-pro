@@ -97,7 +97,7 @@ interface ExamHistoryEntry {
   performanceScore?: number  // Score sur 1000
   accuracyScore?: number     // Score de justesse (700 max)
   speedBonus?: number        // Bonus de vitesse (300 max)
-  avgTimePerQuestion?: number // Temps moyen par question en secondes!
+  avgTimePerQuestion?: number // Temps moyen par question en secondes
   performanceBadge?: 'gold' | 'silver' | 'bronze' | 'standard'
   completedAt: string // ISO date
   answers: Array<{

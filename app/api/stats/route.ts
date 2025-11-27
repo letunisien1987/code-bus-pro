@@ -61,14 +61,32 @@ export async function GET(request: NextRequest) {
     
     // Temps d'examens depuis PostgreSQL au lieu de JSON
     let examTime = 0
+    let examHistoryTimeline: Array<{
+      date: string
+      score: number
+      performanceScore: number
+      avgTimePerQuestion: number
+      badge: 'gold' | 'silver' | 'bronze' | 'standard'
+    }> = []
+    
     try {
       const examHistory = await prisma.examHistory.findMany({
-        where: { userId }
+        where: { userId },
+        orderBy: { completedAt: 'asc' } // Plus ancien au plus récent
       })
       
       examTime = examHistory.reduce((total, exam) => 
         total + (exam.timeSpent || 0), 0
       )
+
+      // Construire la timeline des examens
+      examHistoryTimeline = examHistory.map(exam => ({
+        date: exam.completedAt.toISOString().split('T')[0], // Format YYYY-MM-DD
+        score: exam.percentage || 0,
+        performanceScore: exam.performanceScore || 0,
+        avgTimePerQuestion: exam.avgTimePerQuestion || 0,
+        badge: (exam.performanceBadge || 'standard') as 'gold' | 'silver' | 'bronze' | 'standard'
+      }))
     } catch (error) {
       console.error('Erreur lecture exam-history:', error)
     }
@@ -266,7 +284,8 @@ export async function GET(request: NextRequest) {
       byQuestionnaire,
       byQuestion,
       problematicQuestions,
-      recentActivity
+      recentActivity,
+      examHistoryTimeline
     })
   } catch (error) {
     console.error('Erreur lors du calcul des statistiques:', error)
