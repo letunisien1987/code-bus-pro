@@ -1,53 +1,28 @@
 import { NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
 import fs from 'fs'
 import path from 'path'
 
-const prisma = new PrismaClient()
-
 /**
  * API Route pour initialiser la base de données PostgreSQL sur Vercel
- * Crée les tables via Prisma et importe les données depuis questions.json
+ * PROTÉGÉE : Réservée aux administrateurs
  * À appeler une seule fois après le déploiement
  */
 export async function POST() {
   try {
+    // Vérification authentification admin
+    const session = await getServerSession(authOptions)
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
+    }
+    if ((session.user as any).role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Accès réservé aux administrateurs' }, { status: 403 })
+    }
+
     console.log('🚀 Initialisation de la base de données PostgreSQL...')
-    
-    // 1. Créer les tables si elles n'existent pas
-    console.log('📋 Création des tables...')
-    await prisma.$executeRawUnsafe(`
-      CREATE TABLE IF NOT EXISTS "Question" (
-        "id" TEXT PRIMARY KEY,
-        "questionnaire" INTEGER NOT NULL,
-        "question" TEXT NOT NULL,
-        "categorie" TEXT,
-        "astag D/F/I " TEXT,
-        "enonce" TEXT,
-        "optionA" TEXT,
-        "optionB" TEXT,
-        "optionC" TEXT,
-        "optionD" TEXT,
-        "bonneReponse" TEXT NOT NULL,
-        "imagePath" TEXT NOT NULL,
-        "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        "updatedAt" TIMESTAMP(3) NOT NULL
-      );
-    `)
-    
-    await prisma.$executeRawUnsafe(`
-      CREATE TABLE IF NOT EXISTS "Attempt" (
-        "id" TEXT PRIMARY KEY,
-        "userId" TEXT,
-        "questionId" TEXT NOT NULL,
-        "choix" TEXT NOT NULL,
-        "correct" BOOLEAN NOT NULL,
-        "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE RESTRICT ON UPDATE CASCADE
-      );
-    `)
-    
-    console.log('✅ Tables créées ou déjà existantes')
+    console.log('👤 Admin:', session.user.email)
     
     // 2. Lire le fichier questions.json
     const questionsPath = path.join(process.cwd(), 'data', 'questions.json')
@@ -101,8 +76,6 @@ export async function POST() {
       message: 'Erreur lors de l\'initialisation de la base de données',
       error: error instanceof Error ? error.message : 'Erreur inconnue'
     }, { status: 500 })
-  } finally {
-    await prisma.$disconnect()
   }
 }
 

@@ -1,9 +1,21 @@
 import { NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth'
 import fs from 'fs'
 import path from 'path'
 
+// Validation des données JSON (PROTÉGÉ - Admin uniquement)
 export async function POST() {
   try {
+    // Vérification authentification admin
+    const session = await getServerSession(authOptions)
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
+    }
+    if ((session.user as any).role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Accès réservé aux administrateurs' }, { status: 403 })
+    }
+
     console.log('🔄 Vérification des données JSON...')
 
     const questionsPath = path.join(process.cwd(), 'config', 'data', 'questions.json')

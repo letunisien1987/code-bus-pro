@@ -57,8 +57,9 @@ export const authOptions = {
   callbacks: {
     async jwt({ token, user }: any) {
       if (user) {
-        // Définir le rôle admin pour ahmedelghoudi@gmail.com
-        if (user.email === 'ahmedelghoudi@gmail.com') {
+        // Vérifier si l'utilisateur est admin 
+        const adminEmails = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase())
+        if (adminEmails.includes(user.email?.toLowerCase())) {
           token.role = 'ADMIN'
         } else {
           token.role = user.role || 'STUDENT'

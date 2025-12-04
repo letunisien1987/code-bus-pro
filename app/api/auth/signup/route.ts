@@ -1,8 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
 
-const prisma = new PrismaClient()
+// SÉCURITÉ: Validation email
+function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
+}
+
+// SÉCURITÉ: Validation mot de passe fort
+function isStrongPassword(password: string): { valid: boolean; message: string } {
+  if (password.length < 8) {
+    return { valid: false, message: 'Le mot de passe doit contenir au moins 8 caractères' }
+  }
+  if (!/[a-z]/.test(password)) {
+    return { valid: false, message: 'Le mot de passe doit contenir au moins une minuscule' }
+  }
+  if (!/[A-Z]/.test(password)) {
+    return { valid: false, message: 'Le mot de passe doit contenir au moins une majuscule' }
+  }
+  if (!/[0-9]/.test(password)) {
+    return { valid: false, message: 'Le mot de passe doit contenir au moins un chiffre' }
+  }
+  return { valid: true, message: '' }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,23 +37,34 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (password.length < 6) {
+    // SÉCURITÉ: Validation format email
+    if (!isValidEmail(email)) {
       return NextResponse.json(
-        { error: 'Le mot de passe doit contenir au moins 6 caractères' },
+        { error: 'Format d\'email invalide' },
+        { status: 400 }
+      )
+    }
+
+    // SÉCURITÉ: Politique de mot de passe renforcée
+    const passwordCheck = isStrongPassword(password)
+    if (!passwordCheck.valid) {
+      return NextResponse.json(
+        { error: passwordCheck.message },
         { status: 400 }
       )
     }
 
     // Vérifier si l'email existe déjà
     const existingUser = await prisma.user.findUnique({
-      where: { email }
+      where: { email: email.toLowerCase().trim() }
     })
 
+    // SÉCURITÉ: Message générique pour éviter l'énumération d'utilisateurs
     if (existingUser) {
-      return NextResponse.json(
-        { error: 'Un compte avec cet email existe déjà' },
-        { status: 400 }
-      )
+      // On retourne le même message de succès pour ne pas révéler si l'email existe
+      return NextResponse.json({
+        message: 'Si cette adresse email n\'est pas déjà utilisée, un compte a été créé.'
+      })
     }
 
     // Hasher le mot de passe
@@ -41,19 +73,16 @@ export async function POST(request: NextRequest) {
     // Créer l'utilisateur
     const user = await prisma.user.create({
       data: {
-        name,
-        email,
+        name: name.trim(),
+        email: email.toLowerCase().trim(),
         password: hashedPassword,
-        role: 'STUDENT' // Par défaut, tous les nouveaux utilisateurs sont des étudiants
+        role: 'STUDENT'
       }
     })
 
-    // Retourner les données sans le mot de passe
-    const { password: _, ...userData } = user
-
+    // SÉCURITÉ: Ne pas retourner les données utilisateur
     return NextResponse.json({
-      message: 'Compte créé avec succès',
-      user: userData
+      message: 'Si cette adresse email n\'est pas déjà utilisée, un compte a été créé.'
     })
 
   } catch (error) {

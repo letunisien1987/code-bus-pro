@@ -45,6 +45,9 @@ model Attempt {
   createdAt  DateTime @default(now())
   question   Question @relation(fields: [questionId], references: [id])
   user       User?    @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([createdAt])
 }
 
 model ExamHistory {
@@ -68,8 +71,9 @@ model ExamHistory {
   // Relation avec User
   user              User     @relation(fields: [userId], references: [id])
   answers           ExamAnswer[]  // Réponses détaillées de l'examen
-  
+
   @@index([userId])
+  @@index([completedAt])
 }
 
 model ExamAnswer {

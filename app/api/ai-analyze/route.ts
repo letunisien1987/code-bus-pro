@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth'
 import fs from 'fs'
 import path from 'path'
 import OpenAI from 'openai'
@@ -7,6 +9,20 @@ import { getImageUrl } from '@/lib/blob-helper'
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || 'dummy-key-for-build',
 })
+
+// SÉCURITÉ: Validation du chemin d'image pour éviter path traversal
+function isValidImagePath(imagePath: string): boolean {
+  // Normaliser le chemin et vérifier qu'il ne contient pas de traversal
+  const normalized = path.normalize(imagePath)
+  if (normalized.includes('..') || normalized.startsWith('/')) {
+    return false
+  }
+  // Vérifier que c'est bien un chemin d'image valide
+  if (!normalized.match(/^images\/questionnaire_\d+\/.*\.(jpg|jpeg|png)$/i)) {
+    return false
+  }
+  return true
+}
 
 interface Question {
   id: string
@@ -52,14 +68,30 @@ interface AIAnalysisResult {
 
 export async function POST(request: NextRequest) {
   try {
+    // SÉCURITÉ: Authentification admin requise (coûts OpenAI)
+    const session = await getServerSession(authOptions)
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Authentification requise' }, { status: 401 })
+    }
+    if ((session.user as any).role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Accès réservé aux administrateurs' }, { status: 403 })
+    }
+
     // Vérifier si l'API key est configurée
     if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'dummy-key-for-build') {
-      return NextResponse.json({ 
-        error: 'OpenAI API key not configured' 
+      return NextResponse.json({
+        error: 'OpenAI API key not configured'
       }, { status: 500 })
     }
 
     const { question, imagePath } = await request.json() as { question: Question; imagePath: string }
+
+    // SÉCURITÉ: Validation du chemin d'image (anti path traversal)
+    if (!isValidImagePath(imagePath)) {
+      return NextResponse.json({
+        error: 'Chemin d\'image invalide'
+      }, { status: 400 })
+    }
     
     // Extraire le numéro de question du nom de fichier (ex: "Question (25).jpg" -> 25)
     const imageFilename = imagePath.split('/').pop() || ''

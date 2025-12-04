@@ -1,12 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth'
 import fs from 'fs'
 import path from 'path'
 
 const JSON_PATH = path.join(process.cwd(), 'config', 'data', 'questions.json')
 
-// Lire le fichier JSON
+// Helper pour vérifier l'authentification admin
+async function checkAdminAuth() {
+  const session = await getServerSession(authOptions)
+  if (!session?.user) {
+    return { error: 'Non authentifié', status: 401 }
+  }
+  if ((session.user as any).role !== 'ADMIN') {
+    return { error: 'Accès réservé aux administrateurs', status: 403 }
+  }
+  return null
+}
+
+// Lire le fichier JSON (PROTÉGÉ - Admin uniquement)
 export async function GET() {
   try {
+    const authError = await checkAdminAuth()
+    if (authError) {
+      return NextResponse.json({ error: authError.error }, { status: authError.status })
+    }
+
     const data = fs.readFileSync(JSON_PATH, 'utf-8')
     const questions = JSON.parse(data)
     
@@ -34,9 +53,14 @@ export async function GET() {
   }
 }
 
-// Mettre à jour une question dans le fichier
+// Mettre à jour une question dans le fichier (PROTÉGÉ - Admin uniquement)
 export async function PUT(request: NextRequest) {
   try {
+    const authError = await checkAdminAuth()
+    if (authError) {
+      return NextResponse.json({ error: authError.error }, { status: authError.status })
+    }
+
     const updatedQuestion = await request.json()
     
     // Transformer le chemin d'image vers l'ancien format pour la sauvegarde

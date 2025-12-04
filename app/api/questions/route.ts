@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth'
 import fs from 'fs'
 import path from 'path'
 
@@ -6,17 +8,23 @@ const JSON_PATH = path.join(process.cwd(), 'config', 'data', 'questions.json')
 
 export async function GET(request: NextRequest) {
   try {
+    // SÉCURITÉ: Authentification requise pour accéder aux questions
+    const session = await getServerSession(authOptions)
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Authentification requise' }, { status: 401 })
+    }
+
     const { searchParams } = new URL(request.url)
     const questionId = searchParams.get('id')
-    
+
     // Lire le fichier JSON
     const data = fs.readFileSync(JSON_PATH, 'utf-8')
     const questions = JSON.parse(data)
-    
+
     // Transformer les champs pour correspondre au format attendu par le frontend
     const transformedQuestions = questions.map((q: any) => ({
       ...q,
-      imagePath: q.image_path, // Mapper image_path vers imagePath
+      imagePath: q.image_path,
       optionA: q.options?.a || null,
       optionB: q.options?.b || null,
       optionC: q.options?.c || null,
@@ -51,17 +59,23 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // SÉCURITÉ: Authentification requise
+    const session = await getServerSession(authOptions)
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Authentification requise' }, { status: 401 })
+    }
+
     const body = await request.json()
     const { mode, count } = body
-    
+
     // Lire le fichier JSON
     const data = fs.readFileSync(JSON_PATH, 'utf-8')
     const questions = JSON.parse(data)
-    
+
     // Transformer les champs pour correspondre au format attendu par le frontend
     const transformedQuestions = questions.map((q: any) => ({
       ...q,
-      imagePath: q.image_path, // Mapper image_path vers imagePath
+      imagePath: q.image_path,
       optionA: q.options?.a || null,
       optionB: q.options?.b || null,
       optionC: q.options?.c || null,
