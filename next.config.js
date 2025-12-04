@@ -1,5 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Exclure les fichiers lourds des fonctions serverless (limite 250MB)
+  outputFileTracingExcludes: {
+    '*': [
+      './public/images/**',
+      './config/data/**',
+      './data/**',
+      './node_modules/@swc/**',
+      './node_modules/sharp/**',
+    ],
+  },
   images: {
     remotePatterns: [
       {
