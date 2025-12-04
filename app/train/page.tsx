@@ -273,31 +273,31 @@ function TrainPageContent() {
   return (
     <div className="h-screen bg-background flex flex-col overflow-hidden">
       {/* Header épuré - Fixe en haut */}
-      <div className="bg-background border-b border-border px-2 md:px-4 py-2 md:py-3 flex-shrink-0">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 md:gap-3">
-            <Button 
-              variant="ghost" 
-              size="sm" 
+      <div className="bg-background border-b border-border px-4 sm:px-6 lg:px-8 xl:px-12 py-3 sm:py-3.5 lg:py-4 flex-shrink-0">
+        <div className="flex items-center justify-between w-full">
+          <div className="flex items-center gap-2 sm:gap-3 lg:gap-4">
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => setShowMenu(!showMenu)}
-              className="text-muted-foreground"
+              className="text-muted-foreground h-8 w-8 sm:h-9 sm:w-9 p-0"
             >
-              <Menu className="h-4 w-4" />
+              <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
-            <h1 className="text-base md:text-lg font-semibold">Entraînement</h1>
+            <h1 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold">Entraînement</h1>
           </div>
-          
-          <div className="flex items-center gap-1 md:gap-2">
-            <Button 
-              variant="ghost" 
-              size="sm" 
+
+          <div className="flex items-center gap-2 sm:gap-3 lg:gap-4">
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => setShowFilters(!showFilters)}
-              className="text-muted-foreground"
+              className="text-muted-foreground text-sm sm:text-base"
             >
-              <Filter className="h-4 w-4 mr-1" />
-              <span className="hidden md:inline">Filtres</span>
+              <Filter className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5" />
+              <span className="hidden sm:inline">Filtres</span>
             </Button>
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="text-xs sm:text-sm lg:text-base font-semibold px-2 sm:px-3 lg:px-4 py-1 lg:py-1.5">
               {currentIndex + 1} / {filteredQuestions.length}
             </Badge>
           </div>
@@ -319,8 +319,8 @@ function TrainPageContent() {
                     <ArrowLeft className="h-4 w-4 mr-1" />
                     Accueil
                   </Button>
-                  <Button 
-                    variant={smartMode ? "default" : "outline"} 
+                  <Button
+                    variant={smartMode ? "default" : "outline"}
                     size="sm"
                     onClick={() => setSmartMode(!smartMode)}
                   >
@@ -395,225 +395,217 @@ function TrainPageContent() {
             )}
           </div>
         )}
+      </div>
 
-        {/* Contenu principal - Layout responsive */}
-        <div className="flex-1 flex flex-col md:flex-row gap-4 p-2 md:p-4 min-h-0 pb-20 md:pb-4">
-          {/* Image - responsive */}
-          <div className="w-full md:w-1/2">
-            <Card className="h-48 md:h-full card-elegant relative">
-              <CardContent className="p-2 md:p-4 h-full flex items-center justify-center">
-                <Image 
-                  src={getImageUrlSync(currentQuestion.imagePath)} 
+      {/* Contenu principal - Layout moderne pleine largeur */}
+      <div className="flex-1 flex flex-col lg:flex-row gap-4 sm:gap-5 lg:gap-6 xl:gap-8 px-4 sm:px-6 lg:px-8 xl:px-12 py-4 sm:py-5 lg:py-6 xl:py-8 pb-20 sm:pb-24 lg:pb-8 xl:pb-10 min-h-0 overflow-y-auto w-full">
+        {/* Image - responsive avec proportions optimales */}
+        <div className="w-full lg:w-[45%] xl:w-[48%] flex-shrink-0">
+          <Card className="h-[300px] sm:h-[380px] md:h-[450px] lg:h-full card-elegant relative overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <CardContent className="p-4 sm:p-5 lg:p-6 xl:p-8 h-full flex flex-col">
+              {/* Image centrée dans un conteneur flex-1 */}
+              <div className="flex-1 flex items-center justify-center relative min-h-0">
+                <Image
+                  src={getImageUrlSync(currentQuestion.imagePath)}
                   alt={`Question ${currentQuestion.question}`}
                   width={800}
                   height={600}
-                  className="max-w-full max-h-48 md:max-h-full object-contain cursor-pointer transition-all duration-300"
+                  className="max-w-full max-h-full object-contain cursor-pointer transition-all duration-300 hover:scale-[1.02]"
                   onClick={() => setIsImageZoomed(!isImageZoomed)}
+                  priority
                 />
-                
+
                 {/* Badge principal avec numéro de question */}
-                <div className="absolute top-2 left-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
-                  <div className="font-black text-xl leading-none">{extractImageNumber(currentQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentQuestion.questionnaire)}</div>
+                <div className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
+                  <div className="font-black text-base sm:text-xl leading-none">{extractImageNumber(currentQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentQuestion.questionnaire)}</div>
                 </div>
-                
-                {/* Badge de notification pour le questionnaire (position sûre) */}
-                <div className="badge-questionnaire-absolute">
+
+                {/* Badge de notification pour le questionnaire */}
+                <div className="badge-questionnaire-absolute text-xs sm:text-sm">
                   {currentQuestion.questionnaire}
                 </div>
-              </CardContent>
-            </Card>
-            
-            {/* Overlay de zoom séparé */}
-            {isImageZoomed && (
-              <div 
-                className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-                onClick={() => setIsImageZoomed(false)}
-              >
-                  <div 
-                    className="max-w-[90vw] max-h-[90vh] flex items-center justify-center relative"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Image 
-                      src={getImageUrlSync(currentQuestion.imagePath)} 
-                      alt={`Question ${currentQuestion.question} - Zoom`}
-                      width={1200}
-                      height={900}
-                      className="max-w-full max-h-full object-contain cursor-pointer"
-                      onClick={() => setIsImageZoomed(false)}
-                    />
-                    
-                    {/* Badge avec numéro d'image et questionnaire dans le zoom */}
-                    <div className="absolute top-2 left-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
-                      <div className="flex items-center gap-2">
-                        <div className="font-black text-xl leading-none">{currentQuestion.questionnaire}</div>
-                        <div className="text-[11px] opacity-80 font-bold">{extractImageNumber(currentQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentQuestion.questionnaire)}</div>
-                      </div>
-                    </div>
-                    
-                    {/* Bouton de fermeture */}
-                    <button
-                      className="btn-close-modal"
-                      onClick={() => setIsImageZoomed(false)}
-                      aria-label="Fermer le zoom"
-                    >
-                      ×
-                    </button>
-                  </div>
               </div>
-            )}
-          </div>
+            </CardContent>
+          </Card>
 
-          {/* Question et options - responsive */}
-          <div className="w-full md:w-1/2 flex flex-col">
-            <Card className="flex-1 card-elegant">
-              <CardHeader className="pb-2 md:pb-3">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-base md:text-lg">
-                    Question {currentQuestion.question}
-                  </CardTitle>
-                  <div className="flex gap-1 md:gap-2">
-                    {currentQuestion.categorie && (
-                      <Badge variant="secondary" className="text-xs bg-primary text-primary-foreground">
-                        {currentQuestion.categorie}
-                      </Badge>
-                    )}
-                    {currentQuestion.astag && (
-                      <Badge variant="outline" className="text-xs">
-                        {currentQuestion.astag}
-                      </Badge>
-                    )}
+          {/* Overlay de zoom séparé */}
+          {isImageZoomed && (
+            <div
+              className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+              onClick={() => setIsImageZoomed(false)}
+            >
+              <div
+                className="max-w-[90vw] max-h-[90vh] flex items-center justify-center relative"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Image
+                  src={getImageUrlSync(currentQuestion.imagePath)}
+                  alt={`Question ${currentQuestion.question} - Zoom`}
+                  width={1200}
+                  height={900}
+                  className="max-w-full max-h-full object-contain cursor-pointer"
+                  onClick={() => setIsImageZoomed(false)}
+                />
+
+                {/* Badge avec numéro d'image et questionnaire dans le zoom */}
+                <div className="absolute top-2 left-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold shadow-2xl backdrop-blur-md border border-primary-foreground/30 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
+                  <div className="flex items-center gap-2">
+                    <div className="font-black text-xl leading-none">{currentQuestion.questionnaire}</div>
+                    <div className="text-[11px] opacity-80 font-bold">{extractImageNumber(currentQuestion.imagePath) || '?'}/{getTotalQuestionsInQuestionnaire(currentQuestion.questionnaire)}</div>
                   </div>
                 </div>
-              </CardHeader>
-              <CardContent className="space-y-2 md:space-y-4 p-2 md:p-6">
-                <p className="text-sm md:text-base text-foreground font-medium break-words whitespace-pre-wrap">
-                  {currentQuestion.enonce}
-                </p>
 
-                <div className="space-y-1 md:space-y-2">
-                  {['A', 'B', 'C', 'D'].map((option, index) => {
-                    const optionKey = `option${option}` as keyof Question
-                    const optionValue = currentQuestion[optionKey] as string
-                    const answerKey = option.toLowerCase()
-                    
-                    if (!optionValue) return null
-                    
-                    const isSelected = selectedAnswer === answerKey
-                    const isCorrect = answerKey === currentQuestion.bonneReponse
-                    const showCorrect = showFeedback && isCorrect
-                    const showIncorrect = showFeedback && isSelected && !isCorrect
+                {/* Bouton de fermeture */}
+                <button
+                  className="btn-close-modal"
+                  onClick={() => setIsImageZoomed(false)}
+                  aria-label="Fermer le zoom"
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
 
-                    return (
-                      <div
-                        key={option}
-                        className={`p-2 md:p-3 rounded-lg border-2 ${!showFeedback ? 'cursor-pointer' : ''} question-option transition-all ${
-                          showCorrect 
-                            ? 'question-option-correct' 
-                            : showIncorrect 
-                            ? 'question-option-incorrect' 
-                            : isSelected 
-                            ? 'question-option-selected' 
-                            : 'bg-muted border-border hover:bg-muted/50 interactive-hover'
-                        }`}
-                        onClick={() => !showFeedback && handleAnswerSelect(answerKey)}
-                      >
-                        <div className="flex items-center gap-2 md:gap-3">
-                          <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs md:text-sm font-bold transition-all ${
-                            showCorrect 
-                              ? 'bg-success text-success-foreground' 
-                              : showIncorrect 
-                              ? 'bg-destructive text-destructive-foreground' 
-                              : isSelected 
-                              ? 'bg-primary text-primary-foreground' 
-                              : 'bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground'
-                          }`}>
-                            {option}
-                          </div>
-                          <span className="text-left flex-1 break-words whitespace-pre-wrap text-xs md:text-sm">{optionValue}</span>
-                          {showFeedback && (
-                            <div className="flex items-center gap-1 md:gap-2">
-                              {showCorrect && (
-                                <div className="flex items-center gap-1 text-success">
-                                  <CheckCircle className="h-3 w-3 md:h-4 md:w-4" />
-                                  <span className="text-xs font-medium">Correcte</span>
-                                </div>
-                              )}
-                              {showIncorrect && (
-                                <div className="flex items-center gap-1 text-destructive">
-                                  <XCircle className="h-3 w-3 md:h-4 md:w-4" />
-                                  <span className="text-xs font-medium">Votre réponse</span>
-                                </div>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )
-                  })}
+        {/* Question et options - prend l'espace restant */}
+        <div className="w-full lg:w-[55%] xl:w-[52%] flex flex-col min-h-0">
+          <Card className="flex-1 card-elegant flex flex-col overflow-hidden shadow-lg">
+            <CardHeader className="pb-3 sm:pb-4 px-4 sm:px-5 lg:px-6 xl:px-8 pt-4 sm:pt-5 lg:pt-6 xl:pt-8 flex-shrink-0">
+              <div className="flex items-start sm:items-center justify-between gap-2 flex-wrap">
+                <CardTitle className="text-base sm:text-lg lg:text-xl font-bold">
+                  Question {currentQuestion.question}
+                </CardTitle>
+                <div className="flex gap-1.5 sm:gap-2 flex-wrap">
+                  {currentQuestion.categorie && (
+                    <Badge variant="secondary" className="text-xs sm:text-sm bg-primary text-primary-foreground px-2 sm:px-3 py-0.5 sm:py-1">
+                      {currentQuestion.categorie}
+                    </Badge>
+                  )}
+                  {currentQuestion.astag && (
+                    <Badge variant="outline" className="text-xs sm:text-sm px-2 sm:px-3 py-0.5 sm:py-1">
+                      {currentQuestion.astag}
+                    </Badge>
+                  )}
                 </div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4 sm:space-y-5 lg:space-y-6 xl:space-y-7 p-4 sm:p-5 lg:p-6 xl:p-8 flex-1 overflow-y-auto">
+              <p className="text-sm sm:text-base lg:text-lg xl:text-xl text-foreground font-medium break-words whitespace-pre-wrap leading-relaxed">
+                {currentQuestion.enonce}
+              </p>
 
-                {showFeedback && (
-                  <div className="mt-2 md:mt-4 p-2 md:p-3 bg-muted/30 rounded-lg">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        {selectedAnswer === currentQuestion.bonneReponse ? (
-                          <span className="text-success font-medium">✓ Réponse correcte</span>
-                        ) : (
-                          <span className="text-destructive font-medium">
-                            ✗ Réponse incorrecte. La bonne réponse était {currentQuestion.bonneReponse.toUpperCase()}.
-                          </span>
+              <div className="space-y-3 sm:space-y-3.5 lg:space-y-4">
+                {['A', 'B', 'C', 'D'].map((option, index) => {
+                  const optionKey = `option${option}` as keyof Question
+                  const optionValue = currentQuestion[optionKey] as string
+                  const answerKey = option.toLowerCase()
+
+                  if (!optionValue) return null
+
+                  const isSelected = selectedAnswer === answerKey
+                  const isCorrect = answerKey === currentQuestion.bonneReponse
+                  const showCorrect = showFeedback && isCorrect
+                  const showIncorrect = showFeedback && isSelected && !isCorrect
+
+                  return (
+                    <div
+                      key={option}
+                      className={`p-3 sm:p-4 lg:p-5 xl:p-6 rounded-xl lg:rounded-2xl border-2 ${!showFeedback ? 'cursor-pointer' : 'cursor-default'} question-option transition-all duration-200 ${
+                        showCorrect
+                          ? 'question-option-correct shadow-md'
+                          : showIncorrect
+                          ? 'question-option-incorrect shadow-md'
+                          : isSelected
+                          ? 'question-option-selected shadow-lg scale-[1.02]'
+                          : 'bg-muted border-border hover:bg-muted/70 hover:border-primary/50 interactive-hover hover:shadow-md hover:scale-[1.01]'
+                      }`}
+                      onClick={() => !showFeedback && handleAnswerSelect(answerKey)}
+                    >
+                      <div className="flex items-center gap-3 sm:gap-4 lg:gap-5">
+                        <div className={`w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 xl:w-14 xl:h-14 rounded-full flex items-center justify-center text-sm sm:text-base lg:text-lg xl:text-xl font-bold transition-all flex-shrink-0 ${
+                          showCorrect
+                            ? 'bg-success text-success-foreground shadow-lg'
+                            : showIncorrect
+                            ? 'bg-destructive text-destructive-foreground shadow-lg'
+                            : isSelected
+                            ? 'bg-primary text-primary-foreground scale-110 shadow-lg'
+                            : 'bg-muted-foreground/10 text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:scale-110'
+                        }`}>
+                          {option}
+                        </div>
+                        <span className="text-left flex-1 break-words whitespace-pre-wrap text-sm sm:text-base lg:text-lg xl:text-xl leading-relaxed">{optionValue}</span>
+                        {showFeedback && (
+                          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+                            {showCorrect && (
+                              <div className="flex items-center gap-1.5 sm:gap-2 text-success">
+                                <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7" />
+                                <span className="text-xs sm:text-sm lg:text-base font-semibold hidden sm:inline">Correcte</span>
+                              </div>
+                            )}
+                            {showIncorrect && (
+                              <div className="flex items-center gap-1.5 sm:gap-2 text-destructive">
+                                <XCircle className="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7" />
+                                <span className="text-xs sm:text-sm lg:text-base font-semibold hidden sm:inline">Incorrect</span>
+                              </div>
+                            )}
+                          </div>
                         )}
                       </div>
                     </div>
+                  )
+                })}
+              </div>
+
+              {showFeedback && (
+                <div className="mt-3 sm:mt-4 p-3 sm:p-4 lg:p-5 bg-muted/30 rounded-xl border border-border/50">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      {selectedAnswer === currentQuestion.bonneReponse ? (
+                        <span className="text-success font-semibold text-sm sm:text-base lg:text-lg flex items-center gap-2">
+                          <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6" />
+                          Réponse correcte
+                        </span>
+                      ) : (
+                        <span className="text-destructive font-semibold text-sm sm:text-base lg:text-lg flex items-center gap-2">
+                          <XCircle className="h-5 w-5 sm:h-6 sm:w-6" />
+                          <span className="flex-1">
+                            Réponse incorrecte. La bonne réponse était <span className="font-bold">{currentQuestion.bonneReponse.toUpperCase()}</span>.
+                          </span>
+                        </span>
+                      )}
+                    </div>
                   </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Navigation - masquée sur mobile (sera fixe en bas) */}
-            <div className="hidden md:flex justify-between mt-4">
-              <Button 
-                variant="outline" 
-                onClick={handlePrevious}
-                disabled={currentIndex === 0}
-                className="flex items-center gap-2"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Précédent
-              </Button>
-              
-              <Button 
-                onClick={handleNext}
-                disabled={currentIndex === filteredQuestions.length - 1}
-                className="flex items-center gap-2 interactive-hover"
-              >
-                Suivant
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
+      </div>
 
-        {/* Navigation fixe mobile */}
-        <div className="fixed md:hidden bottom-0 left-0 right-0 bg-background border-t border-border p-3 z-50">
-          <div className="flex justify-between gap-2">
-            <Button 
-              variant="outline" 
+      {/* Navigation fixe - Design moderne pleine largeur */}
+      <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border shadow-2xl z-50">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-3 sm:py-4 lg:py-5">
+          <div className="flex justify-between gap-3 sm:gap-4 lg:gap-6 xl:gap-8">
+            <Button
+              variant="outline"
               onClick={handlePrevious}
               disabled={currentIndex === 0}
-              className="flex items-center gap-2 flex-1"
+              className="flex items-center justify-center gap-2 sm:gap-3 flex-1 max-w-md h-12 sm:h-14 lg:h-16 xl:h-18 text-sm sm:text-base lg:text-lg xl:text-xl font-semibold transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
             >
-              <ArrowLeft className="h-4 w-4" />
-              Précédent
+              <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7" />
+              <span className="hidden sm:inline">Précédent</span>
+              <span className="sm:hidden">Préc.</span>
             </Button>
-            
-            <Button 
+
+            <Button
               onClick={handleNext}
               disabled={currentIndex === filteredQuestions.length - 1}
-              className="flex items-center gap-2 flex-1 interactive-hover"
+              className="flex items-center justify-center gap-2 sm:gap-3 flex-1 max-w-md h-12 sm:h-14 lg:h-16 xl:h-18 text-sm sm:text-base lg:text-lg xl:text-xl font-semibold interactive-hover transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg rounded-xl"
             >
-              Suivant
-              <ArrowRight className="h-4 w-4" />
+              <span className="hidden sm:inline">Suivant</span>
+              <span className="sm:hidden">Suiv.</span>
+              <ArrowRight className="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7" />
             </Button>
           </div>
         </div>
