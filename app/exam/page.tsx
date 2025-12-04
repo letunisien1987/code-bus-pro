@@ -1239,11 +1239,11 @@ export default function ExamPage() {
             </CardContent>
           </Card>
 
-          {/* Contenu principal - Layout responsive */}
-          <div className="flex-1 flex flex-col md:flex-row mx-2 md:mx-4 pb-20 md:pb-24 gap-4">
-            {/* Image - responsive */}
-            <div className="w-full md:w-1/2">
-              <Card className="h-64 md:h-full card-elegant relative">
+          {/* Contenu principal - Layout responsive professionnel */}
+          <div className="flex-1 flex flex-col lg:flex-row gap-4 sm:gap-5 lg:gap-6 xl:gap-8 px-4 sm:px-6 lg:px-8 xl:px-12 py-4 sm:py-5 lg:py-6 xl:py-8 pb-24 sm:pb-28 lg:pb-10 xl:pb-12 min-h-0 overflow-y-auto w-full">
+            {/* Image - s'adapte à l'espace restant */}
+            <div className="w-full lg:w-[45%] xl:w-[48%] flex-shrink lg:flex-shrink-0 order-1 lg:order-none">
+              <Card className="h-auto lg:h-full card-elegant relative overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <CardContent className="p-2 md:p-4 h-full flex items-center justify-center">
                   <Image 
                     src={getImageUrlSync(currentReviewQuestion.imagePath)} 
@@ -1673,11 +1673,11 @@ export default function ExamPage() {
             </CardContent>
           </Card>
 
-          {/* Contenu principal - Layout responsive */}
-          <div className="flex-1 flex flex-col md:flex-row mx-2 md:mx-4 pb-20 md:pb-24 gap-4">
-            {/* Image - responsive */}
-            <div className="w-full md:w-1/2">
-              <Card className="h-64 md:h-full card-elegant relative">
+          {/* Contenu principal - Layout responsive professionnel */}
+          <div className="flex-1 flex flex-col lg:flex-row gap-4 sm:gap-5 lg:gap-6 xl:gap-8 px-4 sm:px-6 lg:px-8 xl:px-12 py-4 sm:py-5 lg:py-6 xl:py-8 pb-24 sm:pb-28 lg:pb-10 xl:pb-12 min-h-0 overflow-y-auto w-full">
+            {/* Image - s'adapte à l'espace restant */}
+            <div className="w-full lg:w-[45%] xl:w-[48%] flex-shrink lg:flex-shrink-0 order-1 lg:order-none">
+              <Card className="h-auto lg:h-full card-elegant relative overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <CardContent className="p-2 md:p-4 h-full flex flex-col">
                   {/* Légende des états en haut */}
                   <div className="flex gap-2 mb-2 text-[10px] text-muted-foreground">
@@ -1759,34 +1759,34 @@ export default function ExamPage() {
               )}
             </div>
 
-            {/* Question et options - responsive */}
-            <div className="w-full md:w-1/2 flex flex-col">
-              <Card className="flex-1 card-elegant">
-                <CardHeader className="pb-2 md:pb-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-base md:text-lg">
+            {/* Question et options - priorité sur l'espace */}
+            <div className="w-full lg:w-[55%] xl:w-[52%] flex flex-col min-h-0 flex-shrink-0 order-2 lg:order-none">
+              <Card className="h-auto lg:flex-1 card-elegant flex flex-col shadow-lg">
+                <CardHeader className="pb-2 sm:pb-3 px-3 sm:px-4 lg:px-5 pt-3 sm:pt-4 lg:pt-5 flex-shrink-0">
+                  <div className="flex items-start sm:items-center justify-between gap-2 flex-wrap">
+                    <CardTitle className="text-base sm:text-lg lg:text-xl font-bold">
                       Question {currentQuestion.question}
                     </CardTitle>
-                    <div className="flex gap-1 md:gap-2">
+                    <div className="flex gap-1.5 sm:gap-2 flex-wrap">
                       {currentQuestion.categorie && (
-                        <Badge variant="secondary" className="text-xs badge-questionnaire">
+                        <Badge variant="secondary" className="text-xs sm:text-sm bg-primary text-primary-foreground px-2 sm:px-3 py-0.5 sm:py-1">
                           {currentQuestion.categorie}
                         </Badge>
                       )}
                       {currentQuestion.astag && (
-                        <Badge variant="outline" className="text-xs">
+                        <Badge variant="outline" className="text-xs sm:text-sm px-2 sm:px-3 py-0.5 sm:py-1">
                           {currentQuestion.astag}
                         </Badge>
                       )}
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4 md:space-y-6 p-3 md:p-6">
-                  <p className="text-sm md:text-base text-foreground font-medium break-words whitespace-pre-wrap leading-relaxed">
+                <CardContent className="space-y-3 sm:space-y-4 lg:space-y-5 p-3 sm:p-4 lg:p-5">
+                  <p className="text-sm sm:text-base lg:text-lg text-foreground font-medium break-words whitespace-pre-wrap leading-relaxed">
                     {currentQuestion.enonce}
                   </p>
 
-                  <div className="space-y-3 md:space-y-4">
+                  <div className="space-y-3 sm:space-y-3.5 lg:space-y-4">
                     {['A', 'B', 'C', 'D'].map((option, index) => {
                       const optionKey = `option${option}` as keyof Question
                       const optionValue = currentQuestion[optionKey] as string
@@ -1800,22 +1800,22 @@ export default function ExamPage() {
                       return (
                         <div
                           key={option}
-                          className={`p-3 md:p-4 rounded-lg border-2 cursor-pointer question-option transition-all hover:shadow-md ${
-                            isSelected 
-                              ? 'question-option-selected shadow-lg' 
-                              : 'bg-muted border-border hover:bg-muted/50 interactive-hover'
+                          className={`p-2.5 sm:p-3 lg:p-4 rounded-lg lg:rounded-xl border-2 cursor-pointer question-option transition-all duration-200 ${
+                            isSelected
+                              ? 'question-option-selected shadow-lg scale-[1.02]'
+                              : 'bg-muted border-border hover:bg-muted/70 hover:border-primary/50 interactive-hover hover:shadow-md hover:scale-[1.01]'
                           }`}
                           onClick={() => handleAnswerSelect(answerKey)}
                         >
-                          <div className="flex items-center gap-3 md:gap-4">
-                            <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-sm md:text-base font-bold transition-all ${
-                              isSelected 
-                                ? 'bg-primary text-primary-foreground scale-110' 
-                                : 'bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground'
+                          <div className="flex items-center gap-3 sm:gap-4 lg:gap-5">
+                            <div className={`w-7 h-7 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-full flex items-center justify-center text-sm sm:text-base lg:text-lg font-bold transition-all flex-shrink-0 ${
+                              isSelected
+                                ? 'bg-primary text-primary-foreground scale-110 shadow-lg'
+                                : 'bg-muted-foreground/10 text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:scale-110'
                             }`}>
                               {option}
                             </div>
-                            <span className="text-sm md:text-base text-left break-words whitespace-pre-wrap leading-relaxed">{optionValue}</span>
+                            <span className="text-left flex-1 break-words whitespace-pre-wrap text-sm sm:text-base lg:text-lg leading-snug">{optionValue}</span>
                           </div>
                         </div>
                       )
@@ -1825,11 +1825,11 @@ export default function ExamPage() {
               </Card>
 
               {/* Bouton marquer pour révision - Version desktop */}
-              <div className="hidden md:block mt-2 md:mt-4">
-                <Button 
+              <div className="hidden md:block mt-3 lg:mt-4">
+                <Button
                   variant="outline"
                   onClick={() => toggleMarkForReview(currentQuestion.id)}
-                  className={`w-full text-xs md:text-sm ${
+                  className={`w-full text-sm sm:text-base lg:text-lg h-11 sm:h-12 lg:h-14 transition-all hover:scale-[1.02] ${
                     markedForReview.has(currentQuestion.id)
                       ? 'bg-primary text-primary-foreground hover:bg-primary/90'
                       : 'hover:bg-muted/50 hover:text-primary'
@@ -1837,12 +1837,12 @@ export default function ExamPage() {
                 >
                   {markedForReview.has(currentQuestion.id) ? (
                     <>
-                      <CheckCircle className="h-4 w-4 mr-2" />
+                      <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 mr-2" />
                       Marquée pour révision
                     </>
                   ) : (
                     <>
-                      <span className="mr-2">⚠️</span>
+                      <span className="mr-2 text-lg sm:text-xl">⚠️</span>
                       Marquer pour révision
                     </>
                   )}
@@ -1852,12 +1852,12 @@ export default function ExamPage() {
 
               {/* Bouton finir l'examen - Visible seulement si toutes les questions sont répondues */}
               {allAnswered && (
-                <div className="mt-4 text-center">
-                  <Button 
+                <div className="mt-4 lg:mt-5 text-center">
+                  <Button
                     onClick={finishExam}
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg" // Pas de hover jaune car fond jaune
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg h-12 sm:h-14 lg:h-16 text-base sm:text-lg lg:text-xl font-semibold transition-all hover:scale-[1.02]"
                   >
-                    <CheckCircle className="h-4 w-4 mr-2" />
+                    <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 mr-2" />
                     Terminer l&apos;examen
                   </Button>
                 </div>
@@ -1874,35 +1874,38 @@ export default function ExamPage() {
             </div>
           )}
 
-          {/* Navigation fixe - visible sur toutes les tailles d'écran */}
-          <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border p-3 z-50">
-            <div className="flex justify-between gap-2">
-              <Button 
-                variant="outline" 
-                onClick={handlePrevious}
-                disabled={currentIndex === 0}
-                className="flex items-center gap-2 flex-1"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Précédent
-              </Button>
-              
-              <Button 
-                onClick={handleNext}
-                disabled={currentIndex === examQuestions.length - 1}
-                className="flex items-center gap-2 flex-1"
-              >
-                Suivant
-                <ArrowRight className="h-4 w-4" />
-              </Button>
+          {/* Navigation fixe - Design moderne pleine largeur */}
+          <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border shadow-2xl z-50">
+            <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-3 sm:py-4 lg:py-5">
+              <div className="flex justify-between gap-3 sm:gap-4 lg:gap-6 xl:gap-8">
+                <Button
+                  variant="outline"
+                  onClick={handlePrevious}
+                  disabled={currentIndex === 0}
+                  className="flex items-center justify-center gap-2 sm:gap-3 flex-1 max-w-md h-12 sm:h-14 lg:h-16 xl:h-18 text-sm sm:text-base lg:text-lg xl:text-xl font-semibold transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
+                >
+                  <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7" />
+                  <span className="hidden sm:inline">Précédent</span>
+                  <span className="sm:hidden">Préc.</span>
+                </Button>
+
+                <Button
+                  onClick={handleNext}
+                  disabled={currentIndex === examQuestions.length - 1}
+                  className="flex items-center justify-center gap-2 sm:gap-3 flex-1 max-w-md h-12 sm:h-14 lg:h-16 xl:h-18 text-sm sm:text-base lg:text-lg xl:text-xl font-semibold interactive-hover transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg rounded-xl"
+                >
+                  <span className="hidden sm:inline">Suivant</span>
+                  <span className="sm:hidden">Suiv.</span>
+                  <ArrowRight className="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7" />
+                </Button>
+              </div>
             </div>
-            
           </div>
 
           {/* Version mobile - bouton flottant pour marquer les questions */}
           <button
             onClick={() => toggleMarkForReview(currentQuestion.id)}
-            className={`fixed bottom-20 right-4 z-30 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all ${
+            className={`fixed lg:hidden bottom-24 sm:bottom-28 right-4 sm:right-6 z-30 w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 ${
               markedForReview.has(currentQuestion.id)
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-background text-primary border-2 border-primary'
@@ -1910,9 +1913,9 @@ export default function ExamPage() {
             aria-label="Marquer pour révision"
           >
             {markedForReview.has(currentQuestion.id) ? (
-              <CheckCircle className="h-6 w-6" />
+              <CheckCircle className="h-7 w-7 sm:h-8 sm:w-8" />
             ) : (
-              <span className="text-2xl">⚠️</span>
+              <span className="text-2xl sm:text-3xl">⚠️</span>
             )}
           </button>
 
